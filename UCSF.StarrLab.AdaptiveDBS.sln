@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedAdaptiveDBSApplication", "EmbeddedAdaptiveDBSApplication\EmbeddedAdaptiveDBSApplication.csproj", "{4AFC424B-81C5-4492-ABAB-798C8165EAAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AFC424B-81C5-4492-ABAB-798C8165EAAE}.Debug|x64.ActiveCfg = Debug|x64
+		{4AFC424B-81C5-4492-ABAB-798C8165EAAE}.Debug|x64.Build.0 = Debug|x64
+		{4AFC424B-81C5-4492-ABAB-798C8165EAAE}.Release|x64.ActiveCfg = Release|x64
+		{4AFC424B-81C5-4492-ABAB-798C8165EAAE}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD735607-26AB-4342-A051-9888EDF59378}
+	EndGlobalSection
+EndGlobal

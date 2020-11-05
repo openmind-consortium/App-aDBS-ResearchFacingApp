@@ -1,0 +1,1324 @@
+﻿<Window x:Class="EmbeddedAdaptiveDBSApplication.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EmbeddedAdaptiveDBSApplication.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+        xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d" WindowState="Maximized"
+        Title="{Binding TitleText}" Height="600" Width="1200" FontSize="20">
+
+    <Window.Resources>
+        <Style x:Key="ButtonRoundedCorner" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Red"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="White"
+                            BorderBrush="Blue"
+                                CornerRadius="5"
+                            BorderThickness="2">
+                            <ContentPresenter x:Name="PART_Content"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"></ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Foreground" Value="Blue"/>
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <BooleanToVisibilityConverter x:Key="Converter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl
+            Name="tabs"
+            Grid.Row="0" Grid.RowSpan="2">
+
+            <!--Main Page-->
+            <TabItem Header="Main">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Row 0-->
+                    <TextBlock Text="Mode" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <TextBlock Text="Ratio" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <StackPanel Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="INS ID: "/>
+                            <TextBlock Text="{Binding DevicePatientID}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="INS Battery: "/>
+                            <TextBlock Text="{Binding INSBatteryLevel}"/>
+                            <TextBlock Text="%"/>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <!-- Row 1-->
+                    
+                    <Border BorderBrush="{Binding ModeBorderColor}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="3" Grid.Row="1" Margin="20, 5, 20, 5">
+                        <ComboBox  x:Name="ModeCB" SelectedItem="{Binding Path=SelectedMode, Mode=TwoWay}" />
+                    </Border>
+                    <Border BorderBrush="{Binding RatioBorderColor}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="4" Grid.Row="1" Margin="20, 5, 20, 5">
+                        <ComboBox  x:Name="RatioCB" SelectedItem="{Binding Path=SelectedRatio, Mode=TwoWay}"/>
+                    </Border>
+                    <Button x:Name="NewSessionButton" Content="New Session" Grid.Column="2" Grid.Row="1" Margin="10, 0, 10, 0" HorizontalContentAlignment="Center" 
+                            ToolTipService.ToolTip="Creates a new Medtronic json session directory" ToolTipService.Placement="Mouse"/>
+                    <Button x:Name="Connect" Content="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}" IsEnabled="{Binding CanConnect}" Grid.Column="8" Grid.Row="1" Margin="10, 0, 10, 0" HorizontalContentAlignment="Center"/>
+                    <CheckBox IsChecked="{Binding ConnectWithSelectedCTM}" Grid.Column="6" Grid.Row="1" VerticalAlignment="Center" ToolTipService.ToolTip="Check the box to connect with the CTM in the dropdown menu. Uncheck will automatically connect to the first CTM found" ToolTipService.Placement="Mouse">
+                        <TextBlock Text="Connect CTM" Margin="0,-8,0,0"/>
+                        <CheckBox.LayoutTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1.2" />
+                        </CheckBox.LayoutTransform>
+                    </CheckBox>
+                    <ComboBox  x:Name="CTMCB" SelectedItem="{Binding Path=SelectedCTM, Mode=TwoWay}" SelectedIndex="0" Grid.Column="5" Grid.Row="1" Margin="20, 5, 20, 5"/>
+                    
+                    <!--Row 2-->
+
+
+                    <!-- Row 3-->
+                    <ListBox x:Name="Messages" FontSize="18"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="8" Margin="0, 10, 0, 10"/>
+                    
+                    <!-- Row 4-->
+                    <Border x:Name="border_therapy_status" Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" Margin="0, 10, 0, 10" Background="{Binding TherapyStatusBackground}">
+                        <Border.ToolTip>
+                            <ToolTip>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontWeight="Bold" Text="Amp Limits: "/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding AmpLowerLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="mA"/>
+                                        <TextBlock FontWeight="Bold" Text="-"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding AmpUpperLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="mA"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontWeight="Bold" Text="Rate Limits: "/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding RateLowerLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="Hz"/>
+                                        <TextBlock FontWeight="Bold" Text="-"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding RateUpperLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="Hz"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontWeight="Bold" Text="PW Limits: "/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding PWLowerLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="µS"/>
+                                        <TextBlock FontWeight="Bold" Text="-"/>
+                                        <TextBlock FontWeight="Bold" Text="{Binding PWUpperLimit}"/>
+                                        <TextBlock FontWeight="Bold" Text="µS"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </ToolTip>
+                        </Border.ToolTip>
+                    </Border>
+                    <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="4" VerticalAlignment="Center" Orientation="Vertical" Margin="0, 10, 0, 10">
+                        <TextBlock x:Name ="StimActiveDisplay" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock x:Name ="StimAmpDisplay" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock x:Name ="StimRateDisplay" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text=" Hz" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock x:Name ="StimPWDisplay" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text=" µS" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock x:Name="StimElectrode" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock x:Name="ActiveRechargeStatus" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <!--Row 5-->
+                    <ComboBox Grid.Column="2" Grid.Row="5" x:Name="ProgramOptions" SelectedItem="{Binding Path=SelectedProgram, Mode=TwoWay}" Margin="5, 10, 5, 0"/>
+                    <StackPanel Grid.Column="6" Grid.Row ="5" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,2">
+                        <TextBlock Text="aDBS State: " HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock x:Name ="StimStateDisplay" FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="aDBS Session: " HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock x:Name ="SessionDisplay" FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </StackPanel>
+                    
+                    <!-- Row 6-->
+                    <StackPanel Grid.Column="2" Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" ToolTipService.ToolTip="Input stim amp step value. 0.1mA resolution" ToolTipService.Placement="Mouse">
+                        <TextBlock Text="Step Amp:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StepValueInputBox" VerticalAlignment="Center" MinWidth="60" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" ToolTipService.ToolTip="Input stim rate step value. 0.1Hz resolution" ToolTipService.Placement="Mouse">
+                        <TextBlock Text="Step Rate:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StepRateValueInputBox" VerticalAlignment="Center" MinWidth="60" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="6" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" ToolTipService.ToolTip="Input pulse width step value. 10µS resolution" ToolTipService.Placement="Mouse">
+                        <TextBlock Text="Step PW:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StepPWInputBox" VerticalAlignment="Center" MinWidth="60" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <Button x:Name="SenseStreamOnButton" Content="Stream On" IsEnabled="{Binding SenseStreamOnEnabled}" Grid.Column="6" Grid.Row="6" Margin="20, 0, 20, 20" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="GroupAButtonClick" IsEnabled="{Binding GroupAButtonEnabled}" Grid.Column="5" Grid.Row="6" Margin="20, 0, 20, 20" Content="Group A" HorizontalContentAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="7" Grid.Row="6" Grid.RowSpan="4">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <Button x:Name="UpdateDBSButtonClick" Grid.Column="8" Grid.Row="6" Grid.RowSpan="2" Margin="20, 0, 20, 20" Content="aDBS &#x0a; On/Update" HorizontalContentAlignment="Center"/>
+                    <!--<StackPanel Grid.Column="7" Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="State 2:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StateTwoInputBox" MinWidth="60" Margin="10, 0, 0, 0"/>
+                    </StackPanel>-->
+
+                    <!-- Row 7-->
+                    <StackPanel Grid.Column="2" Grid.Row="7" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0" ToolTipService.ToolTip="Step stim amp to specified step value. 0.1mA resolution" ToolTipService.Placement="Mouse">
+                        <Button x:Name="DecrementStimButton" Content="-" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                        <Button x:Name="IncrementStimButton" Content="+" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3" Grid.Row="7" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0" ToolTipService.ToolTip="Step stim rate to specified step value. 0.1Hz resolution" ToolTipService.Placement="Mouse">
+                        <Button x:Name="DecrementStimRateButton" Content="-" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                        <Button x:Name="IncrementStimRateButton" Content="+" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4" Grid.Row="7" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,5,0,0" ToolTipService.ToolTip="Step pulse width to specified step value. 10µS resolution" ToolTipService.Placement="Mouse">
+                        <Button x:Name="DecrementStimPWButton" Content="-" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                        <Button x:Name="IncrementStimPWButton" Content="+" MinWidth="50" Margin="10, 0, 10, 0" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    </StackPanel>
+                    <Button x:Name="SenseStreamOffButton" Content="Stream Off" IsEnabled="{Binding SenseStreamOffEnabled}" Grid.Column="6" Grid.Row="7" Margin="20, 0, 20, 20" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="GroupBButtonClick" IsEnabled="{Binding GroupBButtonEnabled}" Grid.Column="5" Grid.Row="7" Margin="20, 0, 20, 20" Content="Group B" HorizontalContentAlignment="Center"/>
+                    <!--<StackPanel Grid.Column="7" Grid.Row="4" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="State 1:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StateOneInputBox" MinWidth="60" Margin="10, 0, 0, 0"/>
+                    </StackPanel>-->
+
+                    <!--Row 8-->
+                    <Button x:Name="StimOnButtonClick" IsEnabled="{Binding StimOnButtonEnabled}" Grid.Column="1" Grid.Row="8" Margin="20, 0, 20, 20" Content="Stim On" HorizontalContentAlignment="Center"/>
+                    <TextBox x:Name="StimChangeValueInput" Grid.Column="2" Grid.Row="8" MinWidth="70" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="20,10,20,0" ToolTipService.ToolTip="Sets stim amp to specified value. 0.1mA resolution" ToolTipService.Placement="Mouse"/>
+                    <TextBox x:Name="StimChangeRateInput" Grid.Column="3" Grid.Row="8" MinWidth="70" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="20,10,20,0" ToolTipService.ToolTip="Sets stim rate to specified value. 0.1Hz resolution" ToolTipService.Placement="Mouse"/>
+                    <TextBox x:Name="StimChangePWInput" Grid.Column="4" Grid.Row="8" MinWidth="70" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="20,10,20,0" ToolTipService.ToolTip="Sets pulse width to specified value. 10µS resolution" ToolTipService.Placement="Mouse"/>
+                    <Button x:Name="GroupCButtonClick" IsEnabled="{Binding GroupCButtonEnabled}" Grid.Column="5" Grid.Row="8" Margin="20, 0, 20, 20" Content="Group C" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="TurnOffEmbedded" Content="aDBS Off" Grid.Column="8" Grid.Row="8" Grid.RowSpan="2" Margin="20, 0, 20, 20" HorizontalContentAlignment="Center"/>
+                    <!--<StackPanel Grid.Column="7" Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="State 0:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="StateZeroInputBox" MinWidth="60" Margin="10, 0, 0, 0"/>
+                    </StackPanel>-->
+
+                    <!--Row 9-->
+                    <Button x:Name="StimOffButtonClick" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="9" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="SetStimValueInputButton" Content="Change Amp" MinWidth="60" Grid.Column="2" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="20, 0, 20, 20" ToolTipService.ToolTip="Sets stim amp to specified value. 0.1mA resolution" ToolTipService.Placement="Mouse" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    <Button x:Name="SetStimRateInputButton" Content="Change Rate" MinWidth="60" Grid.Column="3" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="20, 0, 20, 20" ToolTipService.ToolTip="Sets stim rate to specified value. 0.1Hz resolution" ToolTipService.Placement="Mouse" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    <Button x:Name="SetStimPWInputButton" Content="Change PW" MinWidth="60" Grid.Column="4" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="20, 0, 20, 20" ToolTipService.ToolTip="Sets pulse width to specified value. 10µS resolution" ToolTipService.Placement="Mouse" IsEnabled="{Binding StimSettingButtonsEnabled}"/>
+                    <Button x:Name="GroupDButtonClick" IsEnabled="{Binding GroupDButtonEnabled}" Grid.Column="5" Grid.Row="9" Margin="20, 0, 20, 20" Content="Group D" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="AlignButtonClick" Content="Align" Grid.Column="6" Grid.Row="9" Margin="20, 0, 20, 20" HorizontalContentAlignment="Center"/>
+
+                </Grid>
+            </TabItem>
+
+            
+            <TabItem FontSize="15">
+                <TabItem.Header>
+                    <TextBlock Text="Sense Settings" FontSize="20" />
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Row 0-->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding SuccessMessageInSenseSettings}" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <Button x:Name="SaveConfigStartStreamButton" IsEnabled="{Binding SenseButtonEnabled}" Style="{StaticResource ButtonRoundedCorner}" Content="Save + Update" Background="White" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Margin="15, 0, 15, 3" VerticalAlignment="Center" HorizontalContentAlignment="Center" ToolTipService.ToolTip="Saves the current configuration to file, loads it up and starts streaming with that configuration" ToolTipService.Placement="Mouse"/>
+                    <TextBlock Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2" Text="TD Sampling Rate" FontSize="12"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <Border x:Name="border_tdch0" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row ="0" Grid.RowSpan="5" Background="LightGray" CornerRadius="0, 0, 20, 20" Margin="5, 5, 5, 0"/>
+                    <Button x:Name="TimeDomainCh0SenseButton" BorderBrush="{Binding TimeDomainCh0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="{Binding TimeDomainCh0SenseText}" Background="{Binding TDCh0SenseButtonColor}" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row="0" Margin="5, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                    <!--Row 1-->
+                    <Button x:Name="ReloadConfigButton" IsEnabled="{Binding SenseButtonEnabled}" Style="{StaticResource ButtonRoundedCorner}" Content="Load Original Config" Background="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="15, 3, 15, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center" ToolTipService.ToolTip="Reloads the most recent saved configuration or configuration upon start of application (if no save occurred since start of application)" ToolTipService.Placement="Mouse"/>
+                    <Button x:Name="SaveConfigButton" IsEnabled="{Binding SenseButtonEnabled}" Style="{StaticResource ButtonRoundedCorner}" Content="Save" Background="White" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Margin="15, 3, 15, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center" ToolTipService.ToolTip="Saves the current configuration to file but does not start streaming with that configuration" ToolTipService.Placement="Mouse"/>
+                    <Border BorderBrush="{Binding TDSampleRateCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="4" Grid.Row="1" Grid.ColumnSpan="2" Margin="20, 0, 20, 3">
+                        <ComboBox  x:Name="TDSampleRateCB" SelectedItem="{Binding Path=SelectedTDRate, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="6" Grid.Row="1" Text="+"  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+                    <Border BorderBrush="{Binding TDCh0PosInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="1" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh0PosInputCB" SelectedItem="{Binding Path=SelectedTDCh0PosInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="1" Text="HPF1"  HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20, 0, 0, 0"/>
+                    <Border BorderBrush="{Binding TDCh0HPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="1" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh0HPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh0HPF1Input, Mode=TwoWay}" />
+                    </Border>
+                    <Button x:Name="TDCh0PowerBand0SenseButton" BorderBrush="{Binding TDCh0PowerBand0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="PowerBand0" Background="{Binding TDCh0PB0SenseButtonColor}" Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="1" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="TDCh0PowerBand1SenseButton" BorderBrush="{Binding TDCh0PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="PowerBand1" Background="{Binding TDCh0PB1SenseButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="1" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                    <!--Row 2-->
+                    <Border x:Name="border_sense" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row ="2" Grid.RowSpan="10" Background="LightGray" CornerRadius="20" Margin="5, 5, 5, 25"/>
+                    <Border x:Name="border_stream" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row ="2" Grid.RowSpan="11" Background="LightGray" CornerRadius="20" Margin="5, 5, 5, 25"/>
+                    <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Text="Sense Options" FontSize="12" FontWeight="Bold" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <TextBlock Grid.Column="3" Grid.Row="2"  Grid.ColumnSpan="3" Text="Stream Options" FontSize="12" FontWeight="Bold" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <TextBlock Grid.Column="8" Grid.Row="2" Text="LPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0LPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="2" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh0LPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh0LPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="2" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0PB0LowInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="2" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh0PB0LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh0PB0LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="2" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0PB1LowInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="2"  Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh0PB1LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh0PB1LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 3-->
+                    <Button x:Name="TimeDomainSenseButton" BorderBrush="{Binding TimeDomainSenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="Time Domain" Background="{Binding TDSenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0">
+
+                    </Button>
+                    <Button x:Name="TimeDomainStreamButton" BorderBrush="{Binding TimeDomainStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="Time Domain" Background="{Binding TDStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <TextBlock Grid.Column="6" Grid.Row="3" Text="-"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0NegInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="3"  Margin="5, 0, 5, 0">
+                        <ComboBox  x:Name="TDCh0NegInputCB" SelectedItem="{Binding Path=SelectedTDCh0NegInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="3" Text="LPF2"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0LPF2InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="3" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh0LPF2InputCB" SelectedItem="{Binding Path=SelectedTDCh0LPF2Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="3" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0PB0UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="3" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh0PB0UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh0PB0UpperInput, Mode=TwoWay}" >
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="3" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh0PB1UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="3" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh0PB1UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh0PB1UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 4-->
+                    <Button x:Name="FFTSenseButton" BorderBrush="{Binding FFTSenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="FFT" Background="{Binding FFTSenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="FFTStreamButton" BorderBrush="{Binding FFTStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="FFT" Background="{Binding FFTStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="4" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+
+                    <!--Row 5-->
+                    <Button x:Name="PowerSenseButton" BorderBrush="{Binding PowerSenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Power" Background="{Binding PowerSenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="5" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="PowerStreamButton" BorderBrush="{Binding PowerStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Power" Background="{Binding PowerStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="5" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Border x:Name="border_tdch1" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row ="5" Grid.RowSpan="5" Background="LightGray" CornerRadius="0, 0, 20 , 20" Margin="5, 5, 5, 0"/>
+                    <Button x:Name="TimeDomainCh1SenseButton" BorderBrush="{Binding TimeDomainCh1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="{Binding TimeDomainCh1SenseText}" Background="{Binding TDCh1SenseButtonColor}" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row="5" Margin="5, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                    <!--Row 6-->
+                    <Button x:Name="LD0SenseButton" BorderBrush="{Binding LD0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="LD0" Background="{Binding LD0SenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="AccStreamButton" BorderBrush="{Binding AccStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Accelerometry" Background="{Binding AccStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="6" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <TextBlock Grid.Column="6" Grid.Row="6" Text="+"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1PosInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="6" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh1PosInputCB" SelectedItem="{Binding Path=SelectedTDCh1PosInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="6" Text="HPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1HPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="6" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh1HPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh1HPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <Button x:Name="TDCh1PowerBand0SenseButton" BorderBrush="{Binding TDCh1PowerBand0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand0" Background="{Binding Ch1PB0SenseButtonColor}" Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="6" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="TDCh1PowerBand1SenseButton" BorderBrush="{Binding TDCh1PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand1" Background="{Binding Ch1PB1SenseButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="6" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    
+                    <!--Row 7-->
+                    <Button x:Name="LD1SenseButton" BorderBrush="{Binding LD1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="LD1" Background="{Binding LD1SenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="7" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="AdaptiveStreamButton" BorderBrush="{Binding AdaptiveStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Adaptive Therapy" Background="{Binding AdaptherapyStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="7" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <TextBlock Grid.Column="8" Grid.Row="7" Text="LPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1LPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="7" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh1LPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh1LPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="7" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1PB0LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="7" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh1PB0LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh1PB0LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="7" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1PB1LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="7" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh1PB1LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh1PB1LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    
+                    <!--Row 8-->
+                    <Button x:Name="AdaptiveStateSenseButton" BorderBrush="{Binding AdaptiveStateSenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Adaptive State" Background="{Binding AdaptiveStateSenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="8" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="AdaptiveStateStreamButton" BorderBrush="{Binding AdaptiveStateStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Adaptive State" Background="{Binding AdaptiveStateStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="8" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <TextBlock Grid.Column="6" Grid.Row="8" Text="-"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1NegInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="8" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh1NegInputCB" SelectedItem="{Binding Path=SelectedTDCh1NegInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="8" Text="LPF2"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1LPF2InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="8" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh1LPF2InputCB" SelectedItem="{Binding Path=SelectedTDCh1LPF2Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="8" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1PB0UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="8" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh1PB0UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh1PB0UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="8" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh1PB1UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="8" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh1PB1UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh1PB1UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 9-->
+                    <Button x:Name="LoopRecSenseButton" BorderBrush="{Binding LoopRecSenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Loop Recording" Background="{Binding LoopRecSenseButtonColor}" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Button x:Name="EventMarkerStreamButton" BorderBrush="{Binding EventMarkerStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Event Marker" Background="{Binding EventStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+
+                    <!--Row 10-->
+                    <Button x:Name="TimeStampStreamButton" BorderBrush="{Binding TimeStampStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Time Stamp" Background="{Binding TimeStampStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="10" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <Border x:Name="border_tdch2" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row ="10" Grid.RowSpan="5" Background="LightGray" CornerRadius="0, 0, 20 , 20" Margin="5, 5, 5, 0"/>
+                    <Button x:Name="TimeDomainCh2SenseButton" BorderBrush="{Binding TimeDomainCh2SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="{Binding TimeDomainCh2SenseText}" Background="{Binding TDCh2SenseButtonColor}" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row="10" Margin="5, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                    <!--Row 11-->
+                    <Border x:Name="border_fft" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row ="11" Grid.RowSpan="10" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
+                    <TextBlock Grid.Column="6" Grid.Row="11" Text="+"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2PosInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="11" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh2PosInputCB" SelectedItem="{Binding Path=SelectedTDCh2PosInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="11" Text="HPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh02HPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="11" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh02HPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh2HPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <Button x:Name="TDCh2PowerBand0SenseButton" BorderBrush="{Binding TDCh2PowerBand0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand0" Background="{Binding TDCh2PB0ButtonColor}" Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="11" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="TDCh2PowerBand1SenseButton" BorderBrush="{Binding TDCh2PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand1" Background="{Binding TDCh2PB1ButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="11" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    
+                    <!--Row 12-->
+                    <TextBlock Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" Text="FFT" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <Border x:Name="border_accelerometry" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row ="12" Grid.RowSpan="7" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
+                    <Border x:Name="border_misc" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row ="12" Grid.RowSpan="9" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
+                    <TextBlock Grid.Column="8" Grid.Row="12" Text="LPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2LPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="12" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh2LPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh2LPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="12" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2PB0LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="12" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh2PB0LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh2PB0LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="12" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2PB1LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="12" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh2PB1LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh2PB1LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 13-->
+                    <TextBlock Grid.Column="0" Grid.Row="13" Text="Channel" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTChannelCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="13" Margin="0, 5, 10, 0">
+                        <ComboBox x:Name="FFTChannelCB" SelectedItem="{Binding Path=SelectedFFTChannel, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="4" Grid.Row="13" Grid.ColumnSpan="2" Text="Miscellaneous" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <TextBlock Grid.Column="6" Grid.Row="13" Text="-"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2NegInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="13" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh2NegInputCB" SelectedItem="{Binding Path=SelectedTDCh2NegInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="13" Text="LPF2"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2LPF2InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="13" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh2LPF2InputCB" SelectedItem="{Binding Path=SelectedTDCh2LPF2Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="13" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2PB0UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="13" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh2PB0UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh2PB0UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="13" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh2PB1UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="13" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh2PB1UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh2PB1UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 14-->
+                    <TextBlock Grid.Column="0" Grid.Row="14" Text="Size(pt)" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTSizeCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}"  Grid.Column="1" Grid.Row="14" Margin="0, 5, 10, 0">
+                        <ComboBox x:Name="FFTSizeCB" SelectedItem="{Binding Path=SelectedFFTSize, Mode=TwoWay}"/>
+                    </Border>
+                    <Button x:Name="AccelOnOffButton" BorderBrush="{Binding AccelOnOffBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="Accelerometry" Background="{Binding AccelOnOffButtonColor}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="14" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+                    <TextBlock Grid.Column="4" Grid.Row="14" Text="Stream &#10;Rate(ms)" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding MiscSampleRateCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="5" Grid.Row="14" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="MiscSampleRateCB" SelectedItem="{Binding Path=SelectedMiscSampleRate, Mode=TwoWay}"/>
+                    </Border>
+
+                    <!--Row 15-->
+                    <TextBlock Grid.Column="0" Grid.Row="15" Text="Win load(%)" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTWindowLoadCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="15" Margin="0, 5, 10, 0">
+                        <ComboBox x:Name="FFTWindowLoadCB" SelectedItem="{Binding Path=SelectedFFTWindowLoad, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="2" Grid.Row="15" Grid.ColumnSpan="2" Text="Sample Rate" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border x:Name="border_tdch3" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row ="15" Grid.RowSpan="5" Background="LightGray" CornerRadius="0, 0, 20 , 20" Margin="5, 5, 5, 0"/>
+                    <Button x:Name="TimeDomainCh3SenseButton" BorderBrush="{Binding TimeDomainCh3SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="{Binding TimeDomainCh3SenseText}" Background="{Binding TDCh3SenseButtonColor}" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row="15" Margin="5, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                    <!--Row 16-->
+                    <TextBlock Grid.Column="0" Grid.Row="16" Text="Interval" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTIntervalTBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="16" Margin="0,5,10,5" >
+                        <TextBox x:Name="FFTIntervalTB" ToolTipService.ToolTip="50-10,000" ToolTipService.Placement="Mouse"/>
+                    </Border>
+                    <Border BorderBrush="{Binding AccSampleRateCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="2" Grid.Row="16" Grid.ColumnSpan="2" Margin="10, 0, 10, 5">
+                        <ComboBox x:Name="AccSampleRateCB" SelectedItem="{Binding Path=SelectedAccSampleRate, Mode=TwoWay}" />
+                    </Border>
+                    <TextBlock Grid.Column="6" Grid.Row="16" Text="+"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3PosInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="16" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh3PosInputCB" SelectedItem="{Binding Path=SelectedTDCh3PosInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="16" Text="HPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3HPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="16" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh3HPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh3HPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <Button x:Name="TDCh3PowerBand0SenseButton" BorderBrush="{Binding TDCh3PowerBand0SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand0" Background="{Binding TDCh3PB0ButtonColor}" Grid.Column="10" Grid.ColumnSpan="2" Grid.Row="16" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="TDCh3PowerBand1SenseButton" BorderBrush="{Binding TDCh3PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand1" Background="{Binding TDCh3PB1ButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="16" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
+                    
+                    <!--Row 17-->
+                    <TextBlock Grid.Column="0" Grid.Row="17" Text="Lower FFT" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTLowerBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="17"  Margin="0,5,10,0" >
+                        <!--<TextBox x:Name="FFTSizeBinsTB" ToolTipService.ToolTip="FFT Size Bins" ToolTipService.Placement="Mouse"/>-->
+                        <ComboBox x:Name="FFTLowerInputCB" SelectedItem="{Binding Path=SelectedFFTLowerInput, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="17" Text="LPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3LPF1InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="17" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh3LPF1InputCB" SelectedItem="{Binding Path=SelectedTDCh3LPF1Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="17" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3PB0LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="17" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh3PB0LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh3PB0LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="17" Text="Lower(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3PB1LowerInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="17" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh3PB1LowerInputCB" SelectedItem="{Binding Path=SelectedTDCh3PB1LowerInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 18-->
+                    <TextBlock Grid.Column="0" Grid.Row="18" Text="Upper FFT" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                    <Border BorderBrush="{Binding FFTUpperBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="18" Margin="0,5,10,0">
+                        <!--<TextBox x:Name="FFTOffsetTB" ToolTipService.ToolTip="FFT Offset" ToolTipService.Placement="Mouse"/>-->
+                        <ComboBox x:Name="FFTUpperInputCB" SelectedItem="{Binding Path=SelectedFFTUpperInput, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="6" Grid.Row="18" Text="-"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3NegInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="18" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh3NegInputCB" SelectedItem="{Binding Path=SelectedTDCh3NegInput, Mode=TwoWay}" FontSize="20"/>
+                    </Border>
+                    <TextBlock Grid.Column="8" Grid.Row="18" Text="LPF2"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3LPF2InputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="9" Grid.Row="18" Margin="5, 0, 5, 0">
+                        <ComboBox x:Name="TDCh3LPF2InputCB" SelectedItem="{Binding Path=SelectedTDCh3LPF2Input, Mode=TwoWay}"/>
+                    </Border>
+                    <TextBlock Grid.Column="10" Grid.Row="18" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3PB0UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="11" Grid.Row="18" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh3PB0UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh3PB0UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+                    <TextBlock Grid.Column="12" Grid.Row="18" Text="Upper(Hz)" FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <Border BorderBrush="{Binding TDCh3PB1UpperInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="13" Grid.Row="18" Margin="5, 0, 10, 0">
+                        <ComboBox x:Name="TDCh3PB1UpperInputCB" SelectedItem="{Binding Path=SelectedTDCh3PB1UpperInput, Mode=TwoWay}">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                        </ComboBox>
+                    </Border>
+
+                    <!--Row 19-->
+                    <Button x:Name="WindowEnabledFFTButton" BorderBrush="{Binding WindowEnabledFFTBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Window Enabled" Background="{Binding WindowEnabledButtonColor}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="19" FontSize="12" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
+
+
+                </Grid>
+            </TabItem>
+
+            <!--Visualization Page For adaptive for Power/detector, state/current-->
+            <TabItem Header="Vis(Adaptive)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--  Row 0 and Row 1-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="top">
+                        <Button Content="Start Chart" Margin="2" x:Name="StartButton"/>
+                        <Button Content="Pause Chart" Margin="2" x:Name="PauseButton"/>
+                        <ComboBox Margin="2" Height="30" x:Name="PowerChannelOptions" SelectedItem="{Binding Path=SelectedPowerChannel, Mode=TwoWay}"/>
+                        <ComboBox Margin="2" Height="30" x:Name="PowerScaleOptions" SelectedItem="{Binding Path=SelectedPowerScaleOption, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
+                        <TextBlock Text="Data Points (x):" Margin="2"/>
+                        <TextBox x:Name="DataPoints" Margin="2"/>
+                        <Button Content="Set Data Points" Margin="2" x:Name="SetDataPointsButton"/>
+                        <Button Margin="0, 20, 0, 0" Content="aDBS On/update" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="UpdateDBSButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <s:SciChartSurface x:Name="PowerChart"
+                                       ChartTitle="Power/Detector"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Grid.RowSpan="2"
+                                       Grid.ColumnSpan="2" 
+                                       YAxes="{s:AxesBinding YAxesPower}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding PowerDataChart}" YAxisId="PowerAxisID" Stroke="LightPink" StrokeThickness="5" />
+                            <s:FastLineRenderableSeries DataSeries="{Binding DetectorLD0Chart}" YAxisId="DetectorAxisID" Stroke="PowderBlue" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding B1ThresholdLine}" YAxisId="DetectorAxisID" Stroke="Orange" StrokeDashArray="3,3"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding B0ThresholdLine}" YAxisId="DetectorAxisID" Stroke="Orange" StrokeDashArray="3,3" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <!-- The default height is 16. You can set it to any value -->
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.YAxis>
+                            <s:NumericAxis AxisTitle="Power" GrowBy="0.1, 0.1" VisibleRange="{Binding PowerYAxisVisibleRange, Mode=TwoWay}">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.YAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                                <s:LegendModifier ShowLegend="True" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </s:ModifierGroup>
+
+                        </s:SciChartSurface.ChartModifier>
+
+                    </s:SciChartSurface>
+
+                    <!--  Row 2  -->
+                    <StackPanel Grid.Row="2" Grid.Column="0">
+                        <TextBlock Text="Connection:"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffVisualization" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <s:SciChartSurface  x:Name="CurrentChart"
+                                            ChartTitle="Current/State"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Grid.ColumnSpan="2" YAxes="{s:AxesBinding YAxes}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentChart}" YAxisId="CurrentAxisID" Stroke="LimeGreen" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveStateChart}" YAxisId="StateAxisID" Stroke="Yellow" StrokeThickness="5"/>
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                                <s:LegendModifier ShowLegend="True" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </s:ModifierGroup>
+
+                        </s:SciChartSurface.ChartModifier>
+                    </s:SciChartSurface>
+                </Grid>
+            </TabItem>
+
+            <!--Visualization Page For sense for TimeDomain and Accelerometry-->
+            <TabItem Header="Vis(TD/Acc)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Row 0-->
+                    <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="top">
+                        <TextBlock Text="Ch:" Margin="2"/>
+                        <ComboBox Margin="2" Height="50" x:Name="TimeDomainSTNDropDown" SelectedItem="{Binding Path=SelectedTimeDomainSTN, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <s:SciChartSurface x:Name="TDSTNChart"
+                                       ChartTitle="{Binding TimeDomainSTNChartTitle}"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2" 
+                                       FontSize="20"
+                                       YAxes="{s:AxesBinding YAxesTimeDomainSTN}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding TimeDomainSTNChart}" YAxisId="TimeDomainSTNID" Stroke="LightSkyBlue" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                            </s:ModifierGroup>
+                        </s:SciChartSurface.ChartModifier>
+                    </s:SciChartSurface>
+
+                    <!--Row 1-->
+                    <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="top">
+                        <TextBlock Text="Ch:" Margin="2"/>
+                        <ComboBox Margin="2" Height="50" x:Name="TimeDomainM1DropDown" SelectedItem="{Binding Path=SelectedTimeDomainM1, Mode=TwoWay}"/>
+                        <TextBlock Text="(X)Data Points:" Margin="2"/>
+                        <TextBox x:Name="DataPointsForVisualizationSense" Margin="2"/>
+                        <Button Content="Set X Points" Margin="2" x:Name="SetDataPointsForSenseVisualizationButton"/>
+                    </StackPanel>
+                    <s:SciChartSurface x:Name="TDM1Chart"
+                                       ChartTitle="{Binding TimeDomainM1ChartTitle}"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2" 
+                                       FontSize="20"
+                                       YAxes="{s:AxesBinding YAxesTimeDomainM1}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding TimeDomainM1Chart}" YAxisId="TimeDomainM1ID" Stroke="AliceBlue" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                            </s:ModifierGroup>
+                        </s:SciChartSurface.ChartModifier>
+                    </s:SciChartSurface>
+
+                    <!--Row 2-->
+                    <StackPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Top">
+                        <TextBlock Text="Connection:"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffSenseVisualization" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+
+                    </StackPanel>
+                    <s:SciChartSurface x:Name="AccelerometryChart"
+                                       ChartTitle="Accelerometry"
+                                       Grid.Row="2"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2" 
+                                       FontSize="20"
+                                       YAxes="{s:AxesBinding YAxesAccelerometer}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AccelerometryXChart}" YAxisId="AccelerometryID" Stroke="LightBlue" />
+                            <s:FastLineRenderableSeries DataSeries="{Binding AccelerometryYChart}" YAxisId="AccelerometryID" Stroke="LightPink"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AccelerometryZChart}" YAxisId="AccelerometryID" Stroke="LightGoldenrodYellow" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                                <s:LegendModifier ShowLegend="True" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </s:ModifierGroup>
+                        </s:SciChartSurface.ChartModifier>
+                    </s:SciChartSurface>
+                </Grid>
+            </TabItem>
+
+            <!--Visualization Sense 2 Page-->
+            <TabItem Header="Vis(FFT)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <ComboBox Margin="2" Height="30" x:Name="FFTScaleOptions" SelectedItem="{Binding Path=SelectedFFTScaleOption, Mode=TwoWay}"/>
+                        <TextBlock Text="Mean:" Margin="2"/>
+                        <TextBox x:Name="FFTMean" Margin="2"/>
+                        <Button Content="Set" Margin="2" x:Name="FFTMeanButton"/>
+                        <TextBlock Text="Overlap:" Margin="2"/>
+                        <TextBlock x:Name ="FFTOverlapDisplay" Margin="2" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Time:" Margin="2"/>
+                        <TextBlock x:Name ="FFTTimeDisplay" Margin="2" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1">
+                        <Button Content="Ch. 0" Margin="2, 5, 2, 5" x:Name="FFTChannel0Button"/>
+                        <Button Content="Ch. 1" Margin="2, 5, 2, 5" x:Name="FFTChannel1Button"/>
+                        <Button Content="Ch. 2" Margin="2, 5, 2, 5" x:Name="FFTChannel2Button"/>
+                        <Button Content="Ch. 3" Margin="2, 5, 2, 5" x:Name="FFTChannel3Button"/>
+                        <TextBlock Text="Current:" Margin="2"/>
+                        <TextBlock x:Name="FFTCurrentChannel" Margin="2"/>
+
+                        <TextBlock Text="Connection:"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffFftVisualization" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <s:SciChartSurface x:Name="FFTChart"
+                                       ChartTitle="FFT"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2" 
+                                       Grid.RowSpan="2"
+                                       YAxes="{s:AxesBinding YAxesFFT}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding FFTChart}" YAxisId="FFTID" Stroke="LimeGreen" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.YAxis>
+                            <s:NumericAxis AxisTitle="FFT" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.YAxis>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+
+                                <s:RolloverModifier x:Name="rolloverModifier" ShowAxisLabels="False" UseInterpolation="True" ShowTooltipOn="Always" />
+
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                            </s:ModifierGroup>
+                        </s:SciChartSurface.ChartModifier>
+
+                        <s:SciChartSurface.Annotations>
+                            <s:CustomAnnotation Content="{Binding Source={x:Reference Name=rolloverModifier}, Path=SeriesData}"
+                                    CoordinateMode="Relative"
+                                    HorizontalAnchorPoint="Left"
+                                    Opacity="1"
+                                    VerticalAnchorPoint="Top"
+                                    X1="0.01"
+                                    Y1="0.02">
+                                <s:CustomAnnotation.ContentTemplate>
+                                    <DataTemplate>
+                                        <!--  Define a panel to display rollover results  -->
+                                        <Border HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" BorderBrush="#77FFFFFF" BorderThickness="2" Padding="5">
+                                            <ItemsControl DataContext="{Binding}" ItemsSource="{Binding SeriesInfo}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <!--  Template will be instantiated for each SeriesInfo in the RolloverModifier.SeriesInfo collection  -->
+                                                    <!--  See the SciChart API Documentation for SeriesInfo types, there is a different type for OHLC and XyzDataSeries for instance  -->
+                                                    <!--  SeriesInfo is the datacontext for the below. Note you can access the original RenderableSeries via SeriesInfo.RenderableSeries  -->
+                                                    <DataTemplate>
+                                                        <Grid HorizontalAlignment="Left">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <Ellipse Width="9" Height="9" Margin="3"/>
+
+                                                            <TextBlock Grid.Column="1" Foreground="White" Width="90" Text="{Binding SeriesName}" />
+
+                                                            <!--  When binding to XValue, YValue of type IComparable, StringFormat is mandatory due to a  -->
+                                                            <!--  XAML bug that cannot convert IComparable to text, even though underlying type is double  -->
+                                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                                <TextBlock  Text="X: " Foreground="White"/>
+                                                                <TextBlock Foreground="White" Text="{Binding XValue, StringFormat=\{0:0.00\}}" />
+                                                            </StackPanel>
+                                                            <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                                                <TextBlock Text=" Y: " Foreground="White"/>
+                                                                <TextBlock Foreground="White" Text="{Binding YValue, StringFormat=\{0:0.00\}}" />
+                                                            </StackPanel>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Border>
+                                    </DataTemplate>
+                                </s:CustomAnnotation.ContentTemplate>
+                            </s:CustomAnnotation>
+                        </s:SciChartSurface.Annotations>
+                    </s:SciChartSurface>
+
+
+                </Grid>
+            </TabItem>
+
+            <!--Report Page-->
+            <TabItem Header="Report">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="100"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Row 0-->
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Text="Choose one or more symptoms from the list below:" Margin="10 0 0 0"/>
+                    <TextBlock Grid.Column="2" Grid.Row="0" Text="Medication" Margin="10 0 0 0"/>
+                    <StackPanel Grid.Row="0" Grid.Column="3" Orientation="Horizontal">
+                        <TextBlock Text="Connection: "/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
+                    </StackPanel>
+
+                    <!--Row 1-->
+                    <ListBox Name="listCondition" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="10" ItemsSource="{Binding ConditionList}" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Name="ChecksBoxZone" Content="{Binding Condition}" Tag="{Binding Index}" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox Name="listMedication" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="10" ItemsSource="{Binding MedicationList}" VerticalContentAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox Name="CheckBoxZone" Content="{Binding Medication}" Tag="{Binding Index}" IsChecked="{Binding Path=IsSelected, Mode=TwoWay}" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!--Row 2-->
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="Time last meds taken:" VerticalAlignment="Center" TextWrapping="Wrap" TextAlignment="Right" Margin="0 0 10 0"/>
+                    <wpfTool:DateTimeUpDown Grid.Column="4" Grid.Row="2" Value="{Binding MedicationTime}"  Margin="0 0 20 0" Format="ShortTime" AllowSpin="True" TextAlignment="Left" ButtonSpinnerLocation="Left" DisplayDefaultValueOnEmptyText="True"  MouseWheelActiveOnFocus="True" ShowButtonSpinner="True" FontSize="26"/>
+
+                    <!--Row 3-->
+                    <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="Add additional comments below:" Margin="10 10 0 0"/>
+
+                    <!--Row 4-->
+                    <TextBox x:Name="AdditionalCommentsForReportBox"  Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="10" />
+                    <ListBox ItemsSource="{Binding Messages}" FontSize="18"  Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Margin="0, 10, 0, 10"/>
+
+                    <!--Row 5-->
+                    <Button x:Name="ResetClick" Grid.Column="2" Grid.Row="5" Grid.ColumnSpan="1" Content="Reset" Margin="20 30 20 10"/>
+                    <Button x:Name="ReportClick" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="1" Content="Report" Margin="20 30 20 10"/>
+                </Grid>
+            </TabItem>
+
+            <!--Montage Page-->
+            <TabItem Header="Montage">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="20, 10, 0, 0" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Text="Files for Stim Sweep and Montage go in C:\AdaptiveDBS\Montage\ &#x0a;See README on github for more information.&#x0a;Please wait for Montage/stim sweep to finish before pressing any other buttons"/>
+                    <ListBox ItemsSource="{Binding Messages}" FontSize="18"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Margin="20"/>
+                    <StackPanel Grid.Column="2" Grid.Row="2" Margin="20, 0, 20, 20">
+                        <Button x:Name="ButtonReadMontage"  Content="Read Montage" Margin="0, 0, 0, 10" HorizontalContentAlignment="Center"/>
+                        <Button x:Name="ButtonRunMontage"  Content="Run Montage" Margin="0, 10, 0, 0" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Grid.Row="2" Margin="20, 0, 20, 0">
+                        <Button x:Name="ReadStimSweepButton"  Content="Read Stim Sweep" Margin="0, 0, 0, 10" HorizontalContentAlignment="Center"/>
+                        <Button x:Name="RunStimSweepButton"  Content="Run Stim Sweep" Margin="0, 10, 0, 10" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Vertical">
+                        <TextBlock Text="Connection:" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}" HorizontalAlignment="Center"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffMontage" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Lead Integrity">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <!--Row 0-->
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Margin="20, 10, 0, 0" Text="Please be sure that sensing and aDBS are off before running lead integrity.&#x0a;Test results are logged into Medtronic EventLog.json in the current session directory."/>
+                    
+                    <!--Row 1-->
+                    <ListBox ItemsSource="{Binding Messages}" FontSize="18"  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Margin="20"/>
+
+                    <!--Row 2-->
+                    <StackPanel Grid.Column="0" Grid.Row="3" Orientation="Vertical">
+                        <TextBlock Text="Connection:" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}" HorizontalAlignment="Center"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffLead" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="02" Grid.Row="3" Orientation="Vertical" VerticalAlignment="Center">
+                        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                            <TextBlock Text="Case (Default is 16):" VerticalAlignment="Center" Margin="20,0,0,20"/>
+                            <TextBox x:Name="CaseInputBox" VerticalAlignment="Center" MinWidth="60" Margin="20,0,0,20"/>
+                        </StackPanel>
+                        <Button x:Name="RunLeadIntegrityTestButton" IsEnabled="{Binding LeadIntegrityButtonEnabled}" Grid.Column="2" Grid.Row="2" Content="Run Lead Integrity" Margin="20, 10, 20, 10" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>
+            <!--<TabItem Header="Stream Log">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    -->
+            <!--Row 0-->
+            <!--
+                    <ListBox ItemsSource="{Binding Messages}" FontSize="18"  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="2" Margin="20"/>
+                    <StackPanel Grid.Column="2" Grid.Row="2" Orientation="Horizontal" >
+                        <Button x:Name="StartStreamLogButton" MinHeight="50" Grid.Column="2" Grid.Row="2" Content="Start Stream Log" Margin="10, 10, 20, 10" HorizontalContentAlignment="Center"/>
+                        <Button x:Name="StopStreamLogButton" MinHeight="50" Grid.Column="2" Grid.Row="2" Content="Stop Stream Log" Margin="20, 10, 10, 10" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+
+                </Grid>
+            </TabItem>-->
+
+        </TabControl>
+        <fa:ImageAwesome x:Name="spinner" Panel.ZIndex="1" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="4" Icon="CircleOutlineNotch" Spin="True" Height="150" Width="150" Visibility="{Binding IsSpinnerVisible, Converter={StaticResource Converter}}"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,2573 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SciChart.Data</name>
+    </assembly>
+    <members>
+        <member name="T:SciChart.Core.Cpp.Interop.IntVector.IntVectorEnumerator">
+            Note that the IEnumerator documentation requires an InvalidOperationException to be thrown
+            whenever the collection is modified. This has been done for changes in the size of the
+            collection but not when one of the elements of the collection is modified as it is a bit
+            tricky to detect unmanaged code that modifies the collection under our feet.
+        </member>
+        <member name="M:SciChart.Core.Cpp.Interop.CoreDllLoader.TryLoadCoreLibrary">
+            <summary>
+            Loads DLL with resampling algorithms
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.ColoredVertex">
+            <summary>
+            Defines a Colored Vertex with X,Y Coordinate and Color
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.ColoredVertex.X">
+            <summary>
+            The X-Coordinate
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.ColoredVertex.Y">
+            <summary>
+            The Y-Coordinate
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.ColoredVertex.ColorArgb">
+            <summary>
+            The Color, in Argb format
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.ColoredVertex.U">
+            <summary>
+            The U-Coordinate
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.ColoredVertex.SizeOf">
+            <summary>
+            Gets the SizeOf the struct in bytes 
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Extensions.ListExtensions.ToUncheckedList``1(System.Collections.Generic.IList{``0})">
+            <returns>warning: returned array may contain padding zeros in end</returns>
+        </member>
+        <member name="T:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory">
+            <summary>
+            Instantiates <see cref="!:IPointResampler"/> instances.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.GetPointResampler``2">
+            <summary>
+            Instantiates a <see cref="!:IPointResampler"/> instance for the combination of <typeparamref name="TX"/> and <typeparamref name="TY"/>.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DoubleSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Double},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SingleSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Single},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int32SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int32},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt32SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt32},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int64SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int64},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt64SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt64},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.Int16SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Int16},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16DoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16SingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16Int32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16UInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16Int64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16UInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16Int16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16UInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16ByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.UInt16SByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.UInt16},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.ByteSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.Byte},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.SByteSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.SByte},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.DateTimeSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.DateTime},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanDoubleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Double},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanSingleResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Single},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Int32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanUInt32Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.UInt32},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Int64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanUInt64Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.UInt64},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Int16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanUInt16Resampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.UInt16},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.Byte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerFactory.TimeSpanSByteResampler.ReducePointUnevenImpl(System.Collections.Generic.IList{System.TimeSpan},System.Collections.Generic.IList{System.SByte},SciChart.Data.Model.IPointSeries,System.Int32,System.Int32,System.Double,System.Double,System.Int32,System.Boolean)">
+            <summary>
+            Generic implementation where an unchecked list has been retrieved for x- and y-values.
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Numerics.PointResamplers.ResamplingParams">
+            <summary>
+            Provides arguments which are required by <see cref="T:SciChart.Data.Numerics.PointResamplers.IPointResampler`2"/>
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.IsSortedData">
+            <summary>
+            Specifies whether the data is sorted in the X direction.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.IsEvenlySpacedData">
+            <summary>
+            Specifies whether the data is evenly spaced in the X direction.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.IsCategoryData">
+            <summary>
+            Specifies if the XAxis is a category axis. It allows performance optimization in avoiding copying the X values.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.ContainsNaN">
+            <summary>
+            Specifies if the yData contains NaN values
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.ZeroLineY">
+            <summary>
+            Specifies the value which determines the zero line in Y directio
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.PointRange">
+            <summary>
+            The indices of the X and Y input data to use (clips by indices)
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.VisibleRange">
+            <summary>
+            The VisibleRange of the XAxis at the time of resampling
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.ViewportWidth">
+            <summary>
+            The current width of the Viewport
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.PointResamplers.ResamplingParams.ResamplingPrecision">
+            <summary>
+            The resampling precisions factor which allows to increase amount of points in resampled point series
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.ResamplingParams.Equals(System.Object)">
+            <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.</summary>
+            <returns>true if the specified object  is equal to the current object; otherwise, false.</returns>
+            <param name="obj">The object to compare with the current object. </param>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.ResamplingParams.GetHashCode">
+            <summary>Serves as a hash function for a particular type. </summary>
+            <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:SciChart.Data.Numerics.PointResamplers.IPointResampler`2">
+            <summary>
+            Provides the interface to a Pointresampler - an algorithm which is able to reduce the number of data-points in a series for rendering fast, while maintaining visual accuracy of the series 
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.IPointResampler`2.Execute(System.Collections.Generic.IList{`0},System.Collections.Generic.IList{`1},SciChart.Data.Numerics.PointResamplers.ResamplingParams,SciChart.Data.Numerics.ResamplingMode,SciChart.Data.Model.IPointSeries)">
+            <summary>
+            Transforms the input X and Y series into an <see cref="T:SciChart.Data.Model.IPointSeries"/>, a resampled, reduced dataset for rendering on screen
+            </summary>
+            <param name="xColumn">The input X-Value Series</param>
+            <param name="yColumn">The input Y-Value Series</param>
+            <param name="resamplingParams">The resampling parameters</param>
+            <param name="resamplingMode">The resampling mode</param>
+            <param name="pointSeries">The <see cref="T:SciChart.Data.Model.IPointSeries"/> to update</param>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.PointResamplerBase`2.Execute(System.Collections.Generic.IList{`0},System.Collections.Generic.IList{`1},SciChart.Data.Numerics.PointResamplers.ResamplingParams,SciChart.Data.Numerics.ResamplingMode,SciChart.Data.Model.IPointSeries)">
+            <summary>
+            Transforms the input X and Y series into an <see cref="T:SciChart.Data.Model.IPointSeries" />, a resampled, reduced dataset for rendering on screen
+            </summary>
+            <param name="xColumn">The input X-Value Series</param>
+            <param name="yColumn">The input Y-Value Series</param>
+            <param name="resamplingParams">The resampling parameters</param>
+            <param name="pointSeries">The <see cref="T:SciChart.Data.Model.IPointSeries" /> instance to update</param>
+        </member>
+        <member name="T:SciChart.Data.Numerics.PointResamplers.IPointResamplerFactory">
+            <summary>
+            A Factory class to get PointResamplers, which are used to reduce datasets to minimal sets for efficient on-screen rendering
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResamplers.IPointResamplerFactory.GetPointResampler``2">
+            <summary>
+            Gets the <see cref="!:IPointResampler"/> instance to handle this combination of Tx and Ty generic type parameters
+            </summary>
+            <typeparam name="TX"></typeparam>
+            <typeparam name="TY"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="T:SciChart.Data.Numerics.ResamplingMode">
+            <summary>
+            Defines the ResamplingMode used by a RenderableSeries
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.None">
+            <summary>
+            Do not use resampling when redrawing a series
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.MinMax">
+            <summary>
+            Assumes Evenly-spaced data (TimeSeries). Resample by taking the min-max of oversampled data. This results in the most visually accurate resampling, with the most performant rendering
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.Mid">
+            <summary>
+            Assumes Evenly-spaced data (TimeSeries). Resample by taking the median point of oversampled data
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.Max">
+            <summary>
+            Assumes Evenly-spaced data (TimeSeries). Resample by taking the maximum point of oversampled data
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.Min">
+            <summary>
+            Assumes Evenly-spaced data (TimeSeries). Resample by taking the minimum point of oversampled data
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.MinMaxWithUnevenSpacing">
+            <summary>
+            Does not assume Evenly-spaced data (TimeSeries). Resample by taking the min-max of oversampled data. This results in the most visually accurate resampling, with the most performant rendering
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.Auto">
+            <summary>
+            Auto-detect the most suitable resampling algorithm (Fastest, plus most accurate) for the type of data appended
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Numerics.ResamplingMode.MinOrMax">
+            <summary>
+            EXPERIMENTAL! Assumes Evenly-spaced data (TimeSeries). Resample by taking the Min, or the Max point of oversampled data. Outputs Min and Max when points in the resampling bucket span zero
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.Minimum``1(``0[])">
+            <returns>T.MaxValue if there are no elements in input. This is required for joining ranges of dataseries</returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.Minimum``1(``0[],System.Int32,System.Int32)">
+            <returns>T.MaxValue if there are no elements in input. This is required for joining ranges of dataseries</returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.Maximum``1(``0[])">
+            <returns>T.MinValue if there are no elements in input. This is required for joining ranges of dataseries</returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.Maximum``1(``0[],System.Int32,System.Int32)">
+            <returns>T.MinValue if there are no elements in input. This is required for joining ranges of dataseries</returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.MinMax``1(``0[],``0@,``0@)">
+            <summary>
+            Fast generic computation of the Min and Max of an array 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="array">The input array.</param>
+            <param name="min">T.MaxValue if there are no elements in input. This is required for joining ranges of dataseries</param>
+            <param name="max">T.MinValue if there are no elements in input. This is required for joining ranges of dataseries</param>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.MinMax``1(``0[],System.Int32,System.Int32,``0@,``0@)">
+            <summary>
+            Fast generic computation of the Min and Max of an array 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="array">The input array.</param>
+            <param name="startIndex">The start index.</param>
+            <param name="count">The end index</param>
+            <param name="min">T.MaxValue if there are no elements in input. This is required for joining ranges of dataseries</param>
+            <param name="max">T.MinValue if there are no elements in input. This is required for joining ranges of dataseries</param>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.IsSortedAscending``1(``0[])">
+            <summary>
+            Fast generic computation of whether an array is sorted
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.IsSortedAscending``1(``0[],System.Int32,System.Int32)">
+            <summary>
+            Fast generic computation of whether an array is sorted
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.IsEvenlySpaced``1(``0[],System.Double,System.Double@)">
+            <summary>
+            Fast generic computation of whether an array is evenly spaced
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.IsEvenlySpaced``1(``0[],System.Int32,System.Int32,System.Double,System.Double@)">
+            <summary>
+            Fast generic computation of whether an array is evenly spaced
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.ContainsNaN``1(``0[])">
+            <summary>
+            Fast generic computation of whether an array contains NaN values 
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.ArrayOperations.ContainsNaN``1(``0[],System.Int32,System.Int32)">
+            <summary>
+            Fast generic computation of whether an array contains NaN values 
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Numerics.GenericMath.ArrayOperations.IGenericArrayHelper`1">
+            <summary>Interface to fast autogenerated generic Min Max helpers</summary>
+        </member>
+        <member name="T:SciChart.Data.Numerics.GenericMath.IMath`1">
+            <summary>
+            Defines the interface to a generic math helper
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:SciChart.Data.Numerics.GenericMath.IMath`1.MinValue">
+            <summary>
+            Gets the MinValue for T. for DateTime it returns DateTime.MinValue (it has .Ticks = 0)
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.GenericMath.IMath`1.MaxValue">
+            <summary>
+            Gets the MaxValue for T.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.GenericMath.IMath`1.ZeroValue">
+            <summary>
+            Gets the ZeroValue for T. for DateTime it returns DateTime.MinValue (it has .Ticks = 0)
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Max(`0,`0)">
+            <summary>
+            Returns the Max of A and B
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Min(`0,`0)">
+            <summary>
+            Returns the Min of A and B
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.MinGreaterThan(`0,`0,`0)">
+            <summary>
+            Returns the Min of A and B greater than a Floor
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.IsNaN(`0)">
+            <summary>
+            Returns if T is NaN. Only valid for Float, Double types. For all other types, always returns false
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Subtract(`0,`0)">
+            <summary>
+            Subtracts a - b. For DateTime it returns a new DateTime with .Ticks = a.Ticks - b.Ticks
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Abs(`0)">
+            <summary>
+            Get the Absolute value of (a)
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.ToDouble(`0)">
+            <summary>
+            Converts to the equivalent value as a double
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Mult(`0,`0)">
+            <summary>
+            Multiplies lhs * rhs
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Mult(`0,System.Double)">
+            <summary>
+            Multiplies lhs * rhs
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Div(`0,`0)">
+            <summary>
+            Divides lhs / rhs
+            </summary>      
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Add(`0,`0)">
+            <summary>
+            Adds lhs + rhs. for DateTime it returns a new DateTime with .Ticks = lhs.Ticks + rhs.Ticks
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Inc(`0@)">
+            <summary>
+                Returns T++
+            for DateTime it increments .Ticks
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.Dec(`0@)">
+            <summary>
+                Returns T--
+            for DateTime it decrements .Ticks
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.GenericMath.IMath`1.FromDouble(System.Double)">
+            <summary>
+            Converts a Double value to type <typeparam name="T"></typeparam>
+            </summary>
+            <param name="dValue"></param>
+            <returns></returns>
+        </member>
+        <member name="P:SciChart.Data.Numerics.IPointResampler_Old.Resolution">
+            <summary>
+            Gets the current resolution. This must be greater than equal to 2 and the higher the number, the larger the reduced datasets
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Numerics.IPointResampler_Old.ResamplingMode">
+            <summary>
+            Gets the current Resampling Mode.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Numerics.IPointResampler_Old.RequiresReduction(SciChart.Data.Model.IndexRange,System.Int32)">
+            <summary>
+            Returns true if a dataset with the specified index range requires point reduction on the given viewport size
+            </summary>
+            <param name="pointIndices"></param>
+            <param name="viewportWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.IPointResampler_Old.WithMode(SciChart.Data.Numerics.ResamplingMode)">
+            <summary>
+            Sets a new ResamplingMode on the IPointsResampler
+            </summary>
+            <param name="newMode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.IPointResampler_Old.ReducePoints(System.Collections.IList,System.Int32)">
+            <summary>
+            Reduces the input points using the current ResamplingMode and Resolution
+            </summary>
+            <param name="inputPoints"></param>
+            <param name="viewportWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.IPointResampler_Old.ReducePoints(System.Collections.IList,SciChart.Data.Model.IndexRange,System.Int32)">
+            <summary>
+            Reduces the input points using the current ResamplingMode and Resolution
+            </summary>
+            <param name="inputPoints"></param>
+            <param name="pointIndices"></param>
+            <param name="viewportWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Numerics.PointResampler_Old.#ctor(System.Int32,SciChart.Data.Numerics.ResamplingMode)">
+            <summary>
+            Creates a new PointResampler instance
+            </summary>
+            <param name="resolution">The resolution constant, must be 2 or more. The higher resolution means larger datasets after resampling (which results in cleaner but slower rendering)</param>
+            <param name="resamplingMode"></param>
+        </member>
+        <member name="T:SciChart.Data.Model.BindableObject">
+            <summary>
+            Provides a base-type for classes that need to raise <see cref="T:System.ComponentModel.INotifyPropertyChanged"/> events
+            </summary>
+        </member>
+        <member name="E:SciChart.Data.Model.BindableObject._propertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.BindableObject.OnPropertyChanged(System.String)">
+            <summary>
+            Raises the <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> event
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.BindableObject.OnPropertyChanged(System.String,System.Object,System.Object)">
+            <summary>
+            Raises the <see cref="E:System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> event
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="oldValue">Old value of the property.</param>
+            <param name="newValue">New value of the property.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:SciChart.Data.Model.DateRange">
+            <summary>
+            Defines a Range of Type DateTime
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DateRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DateRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>A <see cref="T:System.String"/> that represents this instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.DateRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.DateRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <returns></returns>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.DateTime})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a maximum range limit, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DateRange.ClipTo(SciChart.Data.Model.IRange{System.DateTime})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.DecimalRange">
+            <summary>
+            Defines a range of type <see cref="T:System.Decimal"/>
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DecimalRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.#ctor(System.Decimal,System.Decimal)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DecimalRange"/> class.
+            </summary>
+            <param name="min">The min value.</param>
+            <param name="max">The max value.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.DecimalRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.DecimalRange.IsZero">
+            <summary>
+            Gets a value indicating whether this instance is zero.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <returns></returns>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Decimal})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DecimalRange.ClipTo(SciChart.Data.Model.IRange{System.Decimal})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.DoubleRange">
+            <summary>
+            Defines a range of type <see cref="T:System.Double"/>
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DoubleRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.#ctor(System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.DoubleRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.DoubleRange.UndefinedRange">
+            <summary>
+            Returns a new Undefined range
+            </summary>        
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.DoubleRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.DoubleRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Double})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.DoubleRange.ClipTo(SciChart.Data.Model.IRange{System.Double})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.FloatRange">
+            <summary>
+            Defines a range of type <see cref="T:System.Single"/>
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.FloatRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.#ctor(System.Single,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.FloatRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.FloatRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.FloatRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Single})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.FloatRange.ClipTo(SciChart.Data.Model.IRange{System.Single})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.GridData`1">
+            <summary>
+            A Data Structure which stores a 2D uniform array of <typeparam name="T">T</typeparam> elements
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Model.GridData`1.SyncRoot">
+            <summary>
+            The synchronization object
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.GridData`1"/> class, which creates a two-dimensional
+            </summary>
+            <param name="xSize">Size of the x.</param>
+            <param name="zSize">Size of the z.</param>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.#ctor(`0[][])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.GridData`1"/> class, passing in the two-dimensional array. Assumes the array is rectangular
+            </summary>
+            <param name="innerArray">The inner array.</param>
+        </member>
+        <member name="P:SciChart.Data.Model.GridData`1.InternalArray">
+            <summary>
+            Gets the internal array, which is a rectangular two-dimensional array 
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.GridData`1.XSize">
+            <summary>
+            Gets the size of the Internal array in the X-direction
+            </summary>        
+        </member>
+        <member name="P:SciChart.Data.Model.GridData`1.ZSize">
+            <summary>
+            Gets the size of the Internal array in the Z-direction
+            </summary>        
+        </member>
+        <member name="P:SciChart.Data.Model.GridData`1.Item(System.Int32,System.Int32)">
+            <summary>
+            Gets or sets the element with the specified z and x index.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.Clear(System.Int32,System.Int32)">
+            <summary>
+            Clears and recreates the internal array with the desired X and Z size
+            </summary>
+            <param name="xSize">Size of the x.</param>
+            <param name="zSize">Size of the z.</param>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.GetRowAt(System.Int32)">
+            <summary>
+            Gets the row at the specified Z index. The row is length X
+            </summary>
+            <param name="zIndex">Index of the z.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.SetRowAt(System.Int32,`0[])">
+            <summary>
+            Sets the row at the specified Z index
+            </summary>
+            <param name="zIndex">Index of the z.</param>
+            <param name="row">The row.</param>
+        </member>
+        <member name="M:SciChart.Data.Model.GridData`1.PushRow(`0[])">
+            <summary>
+            Pushes a row into the array, which discards one old row in a First In First Out fashion. use this method to scroll the GridData in the Z-direction
+            </summary>
+            <param name="row">The row.</param>
+        </member>
+        <member name="T:SciChart.Data.Model.IndexRange">
+            <summary>
+            Defines a range used to specify array indices to another series
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IndexRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IndexRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.IndexRange.IsDefined">
+            <summary>
+            Gets whether this Range is defined
+            </summary>
+            <example>Min and Max are not equal to double.NaN and are greater or equal to zero</example>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.IndexRange.Diff">
+            <summary>
+            Gets the Diff (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IndexRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Int32})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IndexRange.ClipTo(SciChart.Data.Model.IRange{System.Int32})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.Int64Range">
+            <summary>
+            Defines a Range of type Int64
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IntegerRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.#ctor(System.Int64,System.Int64)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IntegerRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.Int64Range.Diff">
+            <summary>
+            Gets the Diff (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Int64Range.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Int64})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Int64Range.ClipTo(SciChart.Data.Model.IRange{System.Int64})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.IntegerRange">
+            <summary>
+            Defines a Range of type Integer
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IntegerRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.IntegerRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.IntegerRange.Diff">
+            <summary>
+            Gets the Diff (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IntegerRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.Int32})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IntegerRange.ClipTo(SciChart.Data.Model.IRange{System.Int32})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.IPointSeries">
+            <summary>
+            Defines the interface to a collection of X,Y data used to render points to the screen.
+            </summary>
+            <seealso cref="T:SciChart.Data.Model.Point2DSeries"/>
+        </member>
+        <member name="P:SciChart.Data.Model.IPointSeries.XValues">
+            <summary>
+            Gets the Raw X-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IPointSeries.YValues">
+            <summary>
+            Gets the Raw Y-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IPointSeries.Indexes">
+            <summary>
+            Gets the indexes of points in the original DataSeries
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IPointSeries.Count">
+            <summary>
+            Gets or sets the count of the PointSeries
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IPointSeries.Capacity">
+            <summary>
+            Gets or sets the capacity of the PointSeries
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IPointSeries.GetYRange">
+            <summary>
+            Gets the min, max range in the Y-Direction.
+            </summary>
+            <returns>A <see cref="T:SciChart.Data.Model.DoubleRange"/> defining the min, max in the Y-direction.</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IPointSeries.Clear">
+            <summary>
+            Clears content of this instance
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.IXyyPointSeries">
+            <summary>
+            Defines the interface to a collection of X,Y,Y1 data used to render points to the screen. 
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IXyyPointSeries.Y1Values">
+            <summary>
+            Gets the Y1-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.IRange">
+            <summary>
+            Defines the base interface to a Range (Min, Max), used throughout SciChart for visible, data and index range calculations
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange.Min">
+            <summary>
+            Gets or sets the Min value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange.Max">
+            <summary>
+            Gets or sets the Max value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange.IsDefined">
+            <summary>
+            Gets whether this Range is defined
+            </summary>
+            <example>Min and Max are not equal to double.NaN, or DateTime.MinValue or DateTime.MaxValue</example>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.SetMinMaxWithLimit(System.Double,System.Double,SciChart.Data.Model.IRange)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.ClipTo(SciChart.Data.Model.IRange)">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange"/> to a maxmimum range with <see cref="F:SciChart.Data.Model.RangeClipMode.MinMax"/> mode
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.ClipTo(SciChart.Data.Model.IRange,SciChart.Data.Model.RangeClipMode)">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange"/> to a maximum according to clip mode
+            </summary>
+            <param name="maximumRange">The maximum range</param>
+            <param name="clipMode">clip mode which defines how to clip range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.Union(SciChart.Data.Model.IRange)">
+            <summary>
+            Performs the Union of two <see cref="T:SciChart.Data.Model.IRange"/> instances, returning a new <see cref="T:SciChart.Data.Model.IRange"/>
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange.IsValueWithinRange(System.IComparable)">
+            <summary>
+            Returns True if the value is within the Min and Max of the Range
+            </summary>
+            <param name="value">The value to test</param>
+            <returns>True if the value is within the Min and Max of the Range</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.IRange`1">
+            <summary>
+            Defines the generic interface to a Range (Min, Max), used throughout SciChart for visible, data and index range calculations
+            </summary>
+            <typeparam name="T">The Type Parameter, expected types are Double, DateTime etc... </typeparam>
+            <remarks></remarks>    
+        </member>
+        <member name="P:SciChart.Data.Model.IRange`1.Min">
+            <summary>
+            Gets or sets the Min value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange`1.Max">
+            <summary>
+            Gets or sets the Max value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.IRange`1.Diff">
+            <summary>
+            Gets the Diff (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange`1.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and maxFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange`1.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange`1.SetMinMaxT(`0,`0)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.IRange`1.Union(SciChart.Data.Model.IRange{`0})">
+            <summary>
+            Performs the Union of two <see cref="T:SciChart.Data.Model.IRange"/> instances, returning a new <see cref="T:SciChart.Data.Model.IRange"/>
+            </summary>
+            <example>
+            <code>
+            var firstRange = new DoubleRange(1, 2);
+            var secondRange = new DoubleRange(1.5, 2.5)
+            var unionRange = firstRange.Union(secondRange); 
+            // unionRange result should be new DoubleRange(1, 2.5)
+            </code>
+            </example>
+            <param name="range"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SciChart.Data.Model.RangeClipMode">
+            <summary>
+            Provide values which define how to perform clipping of <see cref="T:SciChart.Data.Model.IRange"/>
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Model.RangeClipMode.MinMax">
+            <summary>
+            Allow clipping at Min and Max
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Model.RangeClipMode.Max">
+            <summary>
+            Allow clipping only at Max
+            </summary>
+        </member>
+        <member name="F:SciChart.Data.Model.RangeClipMode.Min">
+            <summary>
+            Allow clipping only at Min
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.ISciList`1">
+            <summary>
+            Defines a high-performance array-backed generic list type
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.GetMaximum">
+            <summary>
+            Gets the maximum in the list
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.GetMinimum">
+            <summary>
+            Gets the minimum in the list
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.GetMinMax(`0@,`0@)">
+            <summary>
+            Gets the minimum and maximum in the list
+            </summary>
+            <param name="min">The minimum value in the list</param>
+            <param name="max">The maximum value in the list</param>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a range of items to the list
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Inserts a range of items to the list
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.RemoveRange(System.Int32,System.Int32)">
+            <summary>
+            Removes a range of items from the list
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.ISciList`1.ItemsArray">
+            <summary>
+            Gets the internal ItemsArray that this list wraps for direct unchecked access
+            NOTE: The count of the ItemsArray may differ from the count of the List. Use the List.Count when iterating
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.SetCount(System.Int32)">
+            <summary>
+            Forces the count of the list, in operations where we know the capacity in advance
+            </summary>
+            <param name="setLength"></param>
+        </member>
+        <member name="P:SciChart.Data.Model.ISciList`1.HasValues">
+            <summary>
+            Gets a value indicating whether this list has any values.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.AsList">
+            <summary>
+            Gets this instance as <see cref="T:System.Collections.IList"/> instance
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.ContainsNaN(System.Int32,System.Int32)">
+            <summary>
+            Gets a value indicating whether this list has NaN values in specified range
+            </summary>
+            <param name="startIndex"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.IsSortedAscending(System.Int32,System.Int32)">
+            <summary>
+            Gets a value indicating whether this list has sorted ascending values in specified range
+            </summary>
+            <param name="startIndex"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SciChart.Data.Model.ISciList`1.IsEvenlySpaced(System.Int32,System.Int32,System.Double,System.Double@)">
+            <summary>
+            Gets a value indicating whether this list has evenly spaced values in specified range 
+            </summary>
+            <param name="startIndex"></param>
+            <param name="count"></param>
+            <param name="epsilon"></param>
+            <param name="spacing"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SciChart.Data.Model.Point2DSeries">
+            <summary>
+            Defines a strongly typed PointSeries which contains subset of X,Y data used to render points to the screen.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Point2DSeries"/> class.
+            </summary>
+            <param name="capacity">The required capacity.</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.#ctor(SciChart.Data.Model.Values{System.Double},SciChart.Data.Model.Values{System.Double},SciChart.Data.Model.Values{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Point2DSeries"/> class.
+            </summary>
+            <param name="xValues">The xValues</param>
+            <param name="yValues">The yValues</param>
+            <param name="indexes">The indexes</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.GetYRange">
+            <summary>
+            Gets the min, max range in the Y-Direction.
+            </summary>
+            <returns>
+            A <see cref="T:SciChart.Data.Model.DoubleRange"/> defining the min, max in the Y-direction.
+            </returns>
+        </member>
+        <member name="P:SciChart.Data.Model.Point2DSeries.XValues">
+            <summary>
+            Gets the X-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Point2DSeries.YValues">
+            <summary>
+            Gets the Y-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Point2DSeries.Indexes">
+            <summary>
+            Gets the indexes of points in the original DataSeries
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Point2DSeries.Count">
+            <summary>
+            Gets the count of the PointSeries.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.Resize(System.Int32)">
+            <summary>
+            Resizes this point series instance
+            </summary>
+            <param name="newCount">The new count value</param>
+        </member>
+        <member name="P:SciChart.Data.Model.Point2DSeries.Capacity">
+            <summary>
+            Gets or sets the capacity of the PointSeries
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.EnsureCapacity(System.Int32)">
+            <summary>
+            Changes capacity of this point series instance
+            </summary>
+            <param name="newCapacity">The new capacity value</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Point2DSeries.Clear">
+            <summary>
+            Clears content of this instance
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.XyyPoint2DSeries">
+            <summary>
+            Defines a strongly typed PointSeries which contains subset of X,Y,Y1 data used to render points to the screen.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.XyyPoint2DSeries"/> class.
+            </summary>
+            <param name="capacity">The required capacity.</param>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.#ctor(SciChart.Data.Model.Values{System.Double},SciChart.Data.Model.Values{System.Double},SciChart.Data.Model.Values{System.Double},SciChart.Data.Model.Values{System.Int32})">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.XyyPoint2DSeries"/> class.
+            </summary>
+            <param name="xValues">The xValues</param>
+            <param name="yValues">The yValues</param>
+            <param name="y1Values">The y1Values</param>
+            <param name="indexes">The indexes</param>
+        </member>
+        <member name="P:SciChart.Data.Model.XyyPoint2DSeries.Y1Values">
+            <summary>
+            Gets the Y1-Values for the PointSeries.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.Resize(System.Int32)">
+            <summary>
+            Resizes this point series instance
+            </summary>
+            <param name="newCount">The new count value</param>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.EnsureCapacity(System.Int32)">
+            <summary>
+            Changes capacity of this point series instance
+            </summary>
+            <param name="newCapacity">The new capacity value</param>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.Clear">
+            <summary>
+            Clears content of this instance
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.XyyPoint2DSeries.GetYRange">
+            <summary>
+            Gets the min, max range in the Y-Direction.
+            </summary>
+            <returns>
+            A <see cref="T:SciChart.Data.Model.DoubleRange"/> defining the min, max in the Y-direction.
+            </returns>
+        </member>
+        <member name="T:SciChart.Data.Model.PropertyChangedEventArgsWithValues">
+            <summary>
+             Provides data for the System.ComponentModel.INotifyPropertyChanged.PropertyChanged event.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.PropertyChangedEventArgsWithValues.#ctor(System.String,System.Object,System.Object)">
+            <summary>
+            Initializes a new instance of the PropertyChangedEventArgsWithValues class
+            </summary>
+            <param name="propertyName"> The name of the property that changed.</param>
+            <param name="oldValue"> Old value of the property that changed. </param>
+            <param name="newValue"> New value of the property that changed. </param>
+        </member>
+        <member name="P:SciChart.Data.Model.PropertyChangedEventArgsWithValues.OldValue">
+            <summary>
+            Gets an old value of property that changed
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.PropertyChangedEventArgsWithValues.NewValue">
+            <summary>
+            Gets a new value of property that changed
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.Range`1">
+            <summary>
+            Abstract base implementation of <see cref="T:SciChart.Data.Model.IRange"/>, used throughout SciChart for visible, data and index range calculations
+            </summary>
+            <typeparam name="T">The typeparameter of the range, e.g. <see cref="T:System.Double"/></typeparam>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Range`1"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.#ctor(`0,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Range`1"/> class.
+            </summary>
+            <param name="min">The min value.</param>
+            <param name="max">The max value.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.IsDefined">
+            <summary>
+            Gets whether this Range is defined
+            </summary>
+            <example>Min and Max are not equal to double.NaN, or DateTime.MinValue or DateTime.MaxValue</example>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#Min">
+            <summary>
+            Gets or sets the Min value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#Max">
+            <summary>
+            Gets or sets the Max value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.Min">
+            <summary>
+            Gets or sets the Min value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.Max">
+            <summary>
+            Gets or sets the Max value of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Range`1.Diff">
+            <summary>
+            Gets the Diff (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.Clone">
+            <summary>
+            Creates a new object that is a copy of the current instance.
+            </summary>
+            <returns>A new object that is a copy of this instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.ClipTo(SciChart.Data.Model.IRange{`0})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <returns></returns>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.DateRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SetMinMaxT(`0,`0)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{`0})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a maximum range limit, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SetMinMaxInternal(`0,`0)">
+            <summary>
+            Internal implementation: Sets the Min, Max values of the <see cref="T:SciChart.Data.Model.Range`1"/>
+            </summary>
+            <param name="min">The new Min value</param>
+            <param name="max">The new Max value</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.ClipTo(SciChart.Data.Model.IRange)">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange"/> to a maxmimum range with <see cref="F:SciChart.Data.Model.RangeClipMode.MinMax"/> mode
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.ClipTo(SciChart.Data.Model.IRange,SciChart.Data.Model.RangeClipMode)">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange"/> to a maximum according to clip mode
+            </summary>
+            <param name="maximumRange">The maximum range</param>
+            <param name="clipMode">clip mode which defines how to clip range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.Union(SciChart.Data.Model.IRange)">
+            <summary>
+            Performs the Union of two <see cref="T:SciChart.Data.Model.IRange"/> instances, returning a new <see cref="T:SciChart.Data.Model.IRange"/>
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.IsValueWithinRange(System.IComparable)">
+            <summary>
+            Returns True if the value is within the Min and Max of the Range
+            </summary>
+            <param name="value">The value to test</param>
+            <returns>
+            True if the value is within the Min and Max of the Range
+            </returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.Union(SciChart.Data.Model.IRange{`0})">
+            <summary>
+            Performs a Union logical operation between two ranges. The returned <see cref="T:SciChart.Data.Model.IRange`1"/> has Min = Math.Min(range1.min, range2.min) 
+            and Max = Math.Max(range1.Max, range2.Max)
+            </summary>
+            <param name="range">The input range to union with this range</param>
+            <returns>The range result</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#SetMinMaxWithLimit(System.Double,System.Double,SciChart.Data.Model.IRange)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange"/> with a max range to clip values to, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range, which is used to clip values.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.SciChart#Data#Model#IRange#GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The max fraction.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.ToString">
+            <summary>
+            Returns the <see cref="T:System.String"/> that represents current <see cref="T:SciChart.Data.Model.IRange"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/> that represents this instance.</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.Equals(System.Object)">
+            <summary>
+            Compares Min and Max values to determine whether the specified <see cref="T:System.Object"/> is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.Range`1.Equals(SciChart.Data.Model.IRange{`0})">
+            <summary>
+            Compares Min and Max values to determine whether the specified <see cref="T:SciChart.Data.Model.IRange`1"/> is equal to this instance.
+            </summary>
+            <param name="other">The <see cref="T:SciChart.Data.Model.IRange`1"/> to compare with the current <see cref="T:SciChart.Data.Model.IRange`1"/>.</param>
+            <returns><c>true</c> if the specified <see cref="T:SciChart.Data.Model.IRange`1"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:SciChart.Data.Model.RangeFactory">
+            <summary>
+            Helper class to instantiate IRange derived types, where strong typing is required underneath but the runtime type of IRange is not known
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.RangeFactory.NewWithMinMax(SciChart.Data.Model.IRange,System.IComparable,System.IComparable)">
+            <summary>
+            Creates a new <see cref="T:SciChart.Data.Model.IRange"/> derived instance of the same type as originalRange with the specified Min and Max
+            </summary>
+            <param name="originalRange">The original range to use as a reference</param>
+            <param name="min">The min value of the new range</param>
+            <param name="max">The max value of the new range</param>
+            <returns>A new <see cref="T:SciChart.Data.Model.IRange"/> derived instance of the same type as originalRange</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.RangeFactory.NewWithMinMax(SciChart.Data.Model.IRange,System.Double,System.Double,SciChart.Data.Model.IRange)">
+            <summary>
+            Creates a new <see cref="T:SciChart.Data.Model.IRange"/> derived instance of the same type as originalRange with the specified Min and Max, with a Range Limit to clip min, max to.
+            </summary>
+            <param name="originalRange">The original range to use as a reference</param>
+            <param name="min">The min value of the new range</param>
+            <param name="max">The max value of the new range</param>
+            <param name="rangeLimit">The range limit to clip Min and Max to.</param>
+            <returns>A new <see cref="T:SciChart.Data.Model.IRange"/> derived instance of the same type as originalRange</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.RangeFactory.NewRange(System.IComparable,System.IComparable)">
+            <summary>
+            Creates a new <see cref="T:SciChart.Data.Model.IRange"/> instance of the same type as the min, max range with the specified Min and Max
+            </summary>
+            <param name="min">The min value of the new range</param>
+            <param name="max">The max value of the new range</param>
+            <returns>A new <see cref="T:SciChart.Data.Model.IRange"/> derived instance of the same type as the input values</returns>
+        </member>
+        <member name="M:SciChart.Data.Model.RangeFactory.NewRange(System.Type,System.IComparable,System.IComparable)">
+            <summary>
+            Creates a new <see cref="T:SciChart.Data.Model.IRange" /> instance of desired type, setting the min and max value
+            </summary>
+            <param name="rangeType">Type of the range to create, e.g. <see cref="T:SciChart.Data.Model.IndexRange"/> or <see cref="T:SciChart.Data.Model.DoubleRange"/>.</param>
+            <param name="min">The min value of the new range</param>
+            <param name="max">The max value of the new range</param>
+            <returns>
+            A new <see cref="T:SciChart.Data.Model.IRange" /> derived instance of the same type as the input values
+            </returns>
+        </member>
+        <member name="T:SciChart.Data.Model.Values`1">
+            <summary>
+            Defines a wrapper class for an array which can be resized
+            </summary>
+            <typeparam name="T">Type of items</typeparam>
+        </member>
+        <member name="M:SciChart.Data.Model.Values`1.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Values`1" /> class.
+            </summary>
+            <param name="capacity">initial capacity of <see cref="P:SciChart.Data.Model.Values`1.Items"/> array</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Values`1.#ctor(`0[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.Values`1" /> class.
+            </summary>
+            <param name="items">Initial <see cref="P:SciChart.Data.Model.Values`1.Items"/> array</param>
+        </member>
+        <member name="P:SciChart.Data.Model.Values`1.Items">
+            <summary>
+            Gets the array with value for direct unchecked access
+            NOTE: The length of array may differ from the count of the Values. Use <see cref="P:SciChart.Data.Model.Values`1.Count"/> when iterating
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Values`1.Item(System.Int32)">
+            <summary>
+            Gets or sets the value at the specified index.
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Values`1.Count">
+            <summary>
+            Gets or sets the number of values contained in this <see cref="T:SciChart.Data.Model.Values`1"/> instance
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.Values`1.Capacity">
+            <summary>
+            Gets or sets the size of <see cref="P:SciChart.Data.Model.Values`1.Items"/> array
+            NOTE. If new capacity is less than current capacity then new value is ignored
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Values`1.Clear(System.Boolean)">
+            <summary>
+            Clears content of this <see cref="T:SciChart.Data.Model.Values`1"/> instance
+            </summary>
+            <param name="disposeItems">If true <see cref="P:SciChart.Data.Model.Values`1.Items"/> array will be recreated, otherwise it will be reused</param>
+        </member>
+        <member name="M:SciChart.Data.Model.Values`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through values.
+            </summary>
+        </member>
+        <member name="M:SciChart.Data.Model.Values`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through values.
+            </summary>
+        </member>
+        <member name="T:SciChart.Data.Model.SciList`1">
+            <summary>
+            Implementation of generic list, same as .NET Framework version however we expose the inner array 
+            for direct manipulation of the array. Tests show this to be around 4x faster than accessing via the indexed
+            property
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:SciChart.Data.Model.SciList`1.Add(`0)">
+            <summary>Adds an object to the end of the <see cref="T:System.Collections.Generic.List`1" />.</summary>
+            <param name="item">The object to be added to the end of the <see cref="T:System.Collections.Generic.List`1" />. The value can be null for reference types.</param>
+        </member>
+        <member name="T:SciChart.Data.Model.TimeSpanRange">
+            <summary>
+            Defines a Range of Type TimeSpan
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.TimeSpanRange"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.#ctor(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SciChart.Data.Model.TimeSpanRange"/> class.
+            </summary>
+            <param name="min">The min.</param>
+            <param name="max">The max.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>A <see cref="T:System.String"/> that represents this instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.Clone">
+            <summary>
+            Clones this instance.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:SciChart.Data.Model.TimeSpanRange.Diff">
+            <summary>
+            Gets the difference (Max - Min) of this range
+            </summary>
+        </member>
+        <member name="P:SciChart.Data.Model.TimeSpanRange.IsZero">
+            <summary>
+            Gets whether the range is Zero, where Max equals Min
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.AsDoubleRange">
+            <summary>
+            Converts this range to a <see cref="T:SciChart.Data.Model.DoubleRange"/>, which are used internally for calculations
+            </summary>
+            <returns></returns>
+            <example>For numeric ranges, the conversion is simple. For <see cref="T:SciChart.Data.Model.TimeSpanRange"/> instances, returns a new <see cref="T:SciChart.Data.Model.DoubleRange"/> with the Min and Max Ticks</example>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.SetMinMax(System.Double,System.Double)">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/>, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.SetMinMax(System.Double,System.Double,SciChart.Data.Model.IRange{System.TimeSpan})">
+            <summary>
+            Sets the Min, Max values on the <see cref="T:SciChart.Data.Model.IRange`1"/> with a maximum range limit, returning this instance after modification
+            </summary>
+            <param name="min">The new Min value.</param>
+            <param name="max">The new Max value.</param>
+            <param name="maxRange">The max range.</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.GrowBy(System.Double,System.Double)">
+            <summary>
+            Grows the current <see cref="T:SciChart.Data.Model.IRange`1"/> by the min and max fraction, returning this instance after modification
+            </summary>
+            <param name="minFraction">The Min fraction to grow by. For example, Min = -10 and minFraction = 0.1 will result in the new Min = -11</param>
+            <param name="maxFraction">The Max fraction to grow by. For example, Max = 10 and minFraction = 0.2 will result in the new Max = 12</param>
+            <returns>This instance, after the operation</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:SciChart.Data.Model.TimeSpanRange.ClipTo(SciChart.Data.Model.IRange{System.TimeSpan})">
+            <summary>
+            Clips the current <see cref="T:SciChart.Data.Model.IRange`1"/> to a maxmimum range 
+            </summary>
+            <param name="maximumRange">The Maximum Range</param>
+            <returns>This instance, after the operation</returns>
+        </member>
+        <member name="T:SciChart.Data.Model.UncheckedList`1">
+            <summary>
+            A list wrapper that gives access to the underlying array. 
+            TODO: Not fully implemented
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+    </members>
+</doc>

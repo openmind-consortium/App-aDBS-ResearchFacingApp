@@ -1,0 +1,101 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSTesting\\EmbeddedAdaptiveDBSTesting.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSApplication\\EmbeddedAdaptiveDBSApplication.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSApplication\\EmbeddedAdaptiveDBSApplication.csproj",
+        "projectName": "EmbeddedAdaptiveDBSApplication",
+        "projectPath": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSApplication\\EmbeddedAdaptiveDBSApplication.csproj"
+      },
+      "frameworks": {
+        "net461": {}
+      }
+    },
+    "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSTesting\\EmbeddedAdaptiveDBSTesting.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSTesting\\EmbeddedAdaptiveDBSTesting.csproj",
+        "projectName": "EmbeddedAdaptiveDBSTesting",
+        "projectPath": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSTesting\\EmbeddedAdaptiveDBSTesting.csproj",
+        "packagesPath": "C:\\Users\\mrran\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSTesting\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\mrran\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {
+              "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSApplication\\EmbeddedAdaptiveDBSApplication.csproj": {
+                "projectPath": "C:\\Users\\mrran\\Documents\\git_projects\\AdaptiveDBS\\EmbeddedAdaptiveDBSApplication\\EmbeddedAdaptiveDBSApplication.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.2.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.14.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            },
+            "Newtonsoft.Json.Schema": {
+              "target": "Package",
+              "version": "[3.0.11, )"
+            },
+            "nunit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

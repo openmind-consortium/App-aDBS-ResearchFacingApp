@@ -1,0 +1,35 @@
+Copyright Notice
+The Regents of the University of California (“The Regents”) is the owner of certain copyrights in and to Adaptive DBS software, 
+including source code and associated material disclosed in, but not limited, to UC Case No. SF2019-206 (“the Software”) 
+developed by Randy Perrone and Dr. Ro’Ee Gilron at the University of California, San Francisco.  The Software also contains source 
+code created by certain third parties.  Use of the Software with or without modification is permitted subject to the following 
+conditions and provided that the Software must retain the following copyright notice, list of terms and conditions, and disclaimer.
+
+Copyright Notice
+Copyright © 2019, The Regents of the University of California
+All rights reserved.
+
+List of Terms and Conditions 
+a)	Only researchers at a non-profit organization may use this Software for Non-Commercial Use. “Non-Commercial Use” means use of the Software for teaching and internal research purposes only. “Non-Commercial Use” specifically excludes any other use of the Software, including but not limited to: (i) use of this Software in contractual arrangements with any third parties; and (ii) transfer of Software to any other person or entity without the express written consent of The Regents. 
+b)	Any publications reporting use of or resulting from the Non-Commercial Use of the Software must acknowledge the source of the Software and the names of the developers Randy Perrone and Dr. Ro’Ee Gilron.
+c)	Non-Commercial Use of the Software in humans, will be done only after obtaining all legal and regulatory approvals required for such use. The Software is not intended to be professional medical advice, diagnostic testing, diagnosis, or treatment.
+d)	Use of the Software for the sale of any product or service or for the purpose of profit-making or use by a commercial or non-commercial entity is strictly prohibited.
+e)	This Software will work only with DLL's (API) provided by Medtronic. Obtaining these DLL's require a separate contract with Medtronic. By using this Software, you acknowledge you have the legal right to use the Medtronic API and have express permission from Medtronic to do so.
+f)	Any request from a third party to use or be furnished with all or any portion of the Software must be addressed to Randy Perrone (Randy.Perrone@ucsf.edu) and, Ro’Ee Gilron (Roee.Gilron@ucsf.edu) in writing, at the University of California, San Francisco (Reference: UC Case No. SF2019-206). 
+g)	The Software uses third party resources listed below in Table 1 (“Third Party Resources”). Certain licenses attach to Third Party Resources and by using Software you agree to abide by those licenses.
+
+Table 1
+Third Party Resources | License                                   | Web link
+SciChart              | https://www.scichart.com/SCICHART-EULA/   | http://try.scichart.com/wpf-charts-trial/
+Medtronic API         | Need legal access from Medtronic
+
+Disclaimer
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, 
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  TO THE MAXIMUM 
+PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, DAMAGES ARISING OUT OF USE OF THE SOFTWARE ON HUMANS; 
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
