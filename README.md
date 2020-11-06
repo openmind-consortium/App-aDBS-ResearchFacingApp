@@ -24,6 +24,8 @@ Installation instructions are below, as well as more details about each "screen"
 
 [Application Walkthrough](https://ucsf.box.com/s/4rtvu8f206d8dtqy5f6lexh6ssjz7rbd)
 
+[Sense/Stim Montage Setup and Walkthrough](https://ucsf.box.com/s/3q1p538oox0cji2p31pp75v9xw5wr7yl)
+
 
 ### Main Screen
 Main screen shows that you can turn stim on/off, change stim amp/rate/pulse width, change groups/programs, turn stream on/off, turn embedded adaptive on/off/update, and align to align with an external device. You can connect to a specific ctm or unchecked box will connect to first ctm found. New Session starts a new session directory for the Medtronic .json files for a fresh set of files. Mode/ratio allows you to change signal bandwidth and packets up/down.
