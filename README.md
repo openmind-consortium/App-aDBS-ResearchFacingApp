@@ -29,36 +29,37 @@ Installation instructions are below, as well as more details about each "screen"
 
 ### Main Screen
 Main screen shows that you can turn stim on/off, change stim amp/rate/pulse width, change groups/programs, turn stream on/off, turn embedded adaptive on/off/update, and align to align with an external device. You can connect to a specific ctm or unchecked box will connect to first ctm found. New Session starts a new session directory for the Medtronic .json files for a fresh set of files. Mode/ratio allows you to change signal bandwidth and packets up/down.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/MainScreen.PNG)
+![](photos/MainScreen.PNG)
+
 
 ### Sense Settings
 Sense Settings screen allows you to adjust the sense parameters. When making a change that is not saved, the border will highlight red. After saving is complete the border will unhighlight. If you save and update it will update visualization screens, whereas save will save the file without updating the visualization screens.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/SenseSetup.PNG)
+![](photos/SenseSetup.PNG)
 
 ### Adaptive Visualization
 Adaptive Vis screen allows you to visualize the power/detector together along with the upper and lower thresholds. The detector is on a y axis with the thresholds and the power is on its own y axis. The state and current visualization is each on their own y axes and will set to the limits set by the adaptive configurations. You may choose the powerband to visualize power from with the drop down menu. You may also change the visualization of the power/detector visualization using dropdown menu to make them auto-scale, view the thresholds(sets the thresholds inside the screen as shown in image) and none (which will allow the user to adjust themselves by pulling the side axes bars). You can also change the amount of data points shown.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/aDBSScreen.PNG)
+![](photos/aDBSScreen.PNG)
 
 ### Sense Visualization
 Sense Vis screen allows you to view the time domain and the accelerometry data. You may change the data points and choose which time domain channel to visualize.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/SenseVisScreen.PNG)
+![](photos/SenseVisScreen.PNG)
 
 ### FFT Visualization
 FFT Vis screen allows you to view the fft data. You may view the auto scale (as shown in image), the log10 of the points, and none which allows you to adjust it yourself.  You can choose which time domain channel you would like to visualize from. You can also set the mean which will average the number of fft samples coming in. Setting it to 1 will not do any averaging.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/FFTVisScreen.PNG)
+![](photos/FFTVisScreen.PNG)
 
 ### Report Screen
 Report screen allows you to log events in the Medtronic .json eventLog.json file. You may change the symptom/medication fields with a configuration file. Reporting will log down the checked symptoms, medications and any additional information you provide by typing text into the box. The medication time can also be added and will be logged. Once finished, you may click reset to uncheck boxes and clear text from the box.
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/ReportScreen.PNG)
+![](photos/ReportScreen.PNG)
 
 ### Montage Screen
 Montage screen allows you to run a montage of different sense configurations. It essentially loads up different pre-defined sense configurations and runs each for a specific amount of time.
 Stim sweep allows you to run different groups, stim amp/rate/pw for a specific amount of time for each run. 
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/MontageStimSweepScreen.PNG)
+![](photos/MontageStimSweepScreen.PNG)
 
 ### Lead Integrity Screen
 Lead Integrity screen allows you to run a lead integrity test on all the contacts. You can change the case, but the default is 16. 
-![](https://github.com/openmind-consortium/OpenMind-Clinician-ResearcherFacingApp/blob/master/photos/LeadIntegrityScreen.PNG)
+![](photos/LeadIntegrityScreen.PNG)
 
 ## Installation
 
