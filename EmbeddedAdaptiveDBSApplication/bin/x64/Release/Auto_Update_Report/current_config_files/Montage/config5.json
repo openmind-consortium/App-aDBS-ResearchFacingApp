@@ -1,0 +1,136 @@
+{
+  "eventType": {
+    "comment": "event name to use to log to .json files",
+    "type": "Home streaming"
+  },
+  "Mode": 4,
+  "Ratio": 4,
+  "SenseOptions": {
+    "comment": "lets you set what to sense",
+    "TimeDomain": true,
+    "FFT": false,
+    "Power": false,
+    "LD0": false,
+    "LD1": false,
+    "AdaptiveState": false,
+    "LoopRecording": false,
+    "Unused": false
+  },
+  "StreamEnables": {
+    "comment": "lets you set what to stream",
+    "TimeDomain": true,
+    "FFT": false,
+    "Power": false,
+    "Accelerometry": true,
+    "AdaptiveTherapy": false,
+    "AdaptiveState": false,
+    "EventMarker": false,
+    "TimeStamp": true
+  },
+  "Sense": {
+    "commentTDChannelDefinitions": "No more than two channels can be on a single bore. When configuring, channels on first bore will always be first. Can only have sampling rates of: 250, 500, and 1000 (Hz) or disable it by setting IsDisabled to true",
+    "commentFilters": "Stage one low pass(Lpf1) can only be: 450, 100, or 50 (Hz). Stage two low pass(Lpf2) can only be: 1700, 350, 160, or 100 (Hz). High pass(Hpf) can only be: 0.85, 1.2, 3.3, or 8.6 (Hz), Inputs[ anode(positive), cathode(negative) ]",
+    "TDSampleRate": 1000,
+	"TimeDomains": [
+	  {
+		"ch0": "STN",
+		"IsEnabled": false,
+		"Hpf": 0.85,
+		"Lpf1": 450,
+		"Lpf2": 1700,
+		"Inputs": [ 1, 3 ]
+	  },
+	  {
+		"ch1": "STN",
+		"IsEnabled": false,
+		"Hpf": 0.85,
+		"Lpf1": 450,
+		"Lpf2": 1700,
+		"Inputs": [ 1, 3 ]
+	  },
+	  {
+		"ch2": "M1",
+		"IsEnabled": true,
+		"Hpf": 0.85,
+		"Lpf1": 450,
+		"Lpf2": 1700,
+		"Inputs": [ 9, 11 ]
+	  },
+	  {
+		"ch3": "M1",
+		"IsEnabled": true,
+		"Hpf": 0.85,
+		"Lpf1": 450,
+		"Lpf2": 1700,
+		"Inputs": [ 9, 11 ]
+	  }
+	],
+    "FFT": {
+      "commentFFTParameters": "FFT Size can be: 64, 256, or 1024 samples, Hanning window load can be: 25, 50, or 100 (%), channel is for the fft channel must be between 0-3 and time domain must be enabled for that channel",
+      "Channel": 0,
+      "FftSize": 1024,
+      "FftInterval": 1000,
+      "WindowLoad": 100,
+      "StreamSizeBins": 0,
+      "StreamOffsetBins": 0,
+	  "WindowEnabled": true
+    },
+	"commentPower": "each power band can be set from 0-250hz, 2 pos bands per channel. Ex: ChNPowerBandN:[lower, upper]",
+    "PowerBands": [
+		{
+			"comment": "Channel: 0 PowerBand: 0",
+			"ChannelPowerBand": [ 18, 22 ],
+			"IsEnabled": true
+		},
+		{
+			"comment": "Channel: 0 PowerBand: 1",
+			"ChannelPowerBand": [ 4, 12 ],
+			"IsEnabled": true
+		},
+		{	
+			"comment": "Channel: 1 PowerBand: 0",
+			"ChannelPowerBand": [ 6, 7 ],
+			"IsEnabled": false
+		},
+		{
+			"comment": "Channel: 1 PowerBand: 1",
+			"ChannelPowerBand": [ 6, 7 ],
+			"IsEnabled": false
+		},
+		{
+			"comment": "Channel: 2 PowerBand: 0",
+			"ChannelPowerBand": [ 18, 22 ],
+			"IsEnabled": true
+		},
+		{
+			"comment": "Channel: 2 PowerBand: 1",
+			"ChannelPowerBand": [ 4, 12 ],
+			"IsEnabled": true
+		},
+		{
+			"comment": "Channel: 3 PowerBand: 0",
+			"ChannelPowerBand": [ 6, 7 ],
+			"IsEnabled": false
+		},
+		{
+			"comment": "Channel: 3 PowerBand: 1",
+			"ChannelPowerBand": [ 6, 7 ],
+			"IsEnabled": false
+		}
+    ],
+    "Accelerometer": {
+      "commentAcc": "Can be 4,8,16,32,64Hz or set SampleRateDisabled to true for disabled",
+      "SampleRateDisabled": false,
+      "SampleRate": 64
+    },
+	"Misc": {
+      "commentMiscParameters": "stream rate can be 30-100 by tens and is in ms; LoopRecordingTriggersState can be 0-8 or can be disabled by changing IsEnabled to false; Bridging can be 0 = None, 1 = Bridge 0-2 enabled, 2 = Bridge 1-3 enabled",
+      "StreamingRate": 50,
+      "LoopRecordingTriggersState": 0,
+	  "LoopRecordingTriggersIsEnabled": true,
+      "LoopRecordingPostBufferTime": 53,
+      "Bridging": 0
+    }
+  }
+}
+

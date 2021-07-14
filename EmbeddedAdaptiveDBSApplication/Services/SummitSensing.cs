@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿/********************
+Copyright Notice
+Copyright © 2019, The Regents of the University of California
+All rights reserved.
+
+Please see the file LICENSE in this distribution for license terms.
+**********************/
+using Caliburn.Micro;
 using EmbeddedAdaptiveDBSApplication.Models;
 using Medtronic.NeuroStim.Olympus.DataTypes.Sensing;
 using Medtronic.SummitAPI.Classes;
@@ -61,7 +68,7 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 GetTDSampleRate(localModel.Sense.TimeDomains[0].IsEnabled, localModel),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[0].Inputs[0]),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[0].Inputs[1]),
-                TdEvokedResponseEnable.Standard,
+                ConfigConversions.TdEvokedResponseEnableConvert(localModel.Sense.TimeDomains[0].TdEvokedResponseEnable),
                 ConfigConversions.TdLpfStage1Convert(localModel.Sense.TimeDomains[0].Lpf1),
                 ConfigConversions.TdLpfStage2Convert(localModel.Sense.TimeDomains[0].Lpf2),
                 ConfigConversions.TdHpfsConvert(localModel.Sense.TimeDomains[0].Hpf)));
@@ -71,7 +78,7 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 GetTDSampleRate(localModel.Sense.TimeDomains[1].IsEnabled, localModel),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[1].Inputs[0]),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[1].Inputs[1]),
-                TdEvokedResponseEnable.Standard,
+                ConfigConversions.TdEvokedResponseEnableConvert(localModel.Sense.TimeDomains[1].TdEvokedResponseEnable),
                 ConfigConversions.TdLpfStage1Convert(localModel.Sense.TimeDomains[1].Lpf1),
                 ConfigConversions.TdLpfStage2Convert(localModel.Sense.TimeDomains[1].Lpf2),
                 ConfigConversions.TdHpfsConvert(localModel.Sense.TimeDomains[1].Hpf)));
@@ -81,7 +88,7 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 GetTDSampleRate(localModel.Sense.TimeDomains[2].IsEnabled, localModel),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[2].Inputs[0]),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[2].Inputs[1]),
-                TdEvokedResponseEnable.Standard,
+                ConfigConversions.TdEvokedResponseEnableConvert(localModel.Sense.TimeDomains[2].TdEvokedResponseEnable),
                 ConfigConversions.TdLpfStage1Convert(localModel.Sense.TimeDomains[2].Lpf1),
                 ConfigConversions.TdLpfStage2Convert(localModel.Sense.TimeDomains[2].Lpf2),
                 ConfigConversions.TdHpfsConvert(localModel.Sense.TimeDomains[2].Hpf)));
@@ -91,7 +98,7 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 GetTDSampleRate(localModel.Sense.TimeDomains[3].IsEnabled, localModel),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[3].Inputs[0]),
                 ConfigConversions.TdMuxInputsConvert(localModel.Sense.TimeDomains[3].Inputs[1]),
-                TdEvokedResponseEnable.Standard,
+                ConfigConversions.TdEvokedResponseEnableConvert(localModel.Sense.TimeDomains[3].TdEvokedResponseEnable),
                 ConfigConversions.TdLpfStage1Convert(localModel.Sense.TimeDomains[3].Lpf1),
                 ConfigConversions.TdLpfStage2Convert(localModel.Sense.TimeDomains[3].Lpf2),
                 ConfigConversions.TdHpfsConvert(localModel.Sense.TimeDomains[3].Hpf)));
@@ -102,7 +109,7 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 localModel.Sense.FFT.FftInterval,
                 ConfigConversions.FftWindowAutoLoadsConvert(localModel.Sense.FFT.WindowLoad),
                 localModel.Sense.FFT.WindowEnabled,
-                FftWeightMultiplies.Shift7,
+                ConfigConversions.FftWeightMultipliesConvert(localModel.Sense.FFT.WeightMultiplies),
                 localModel.Sense.FFT.StreamSizeBins,
                 localModel.Sense.FFT.StreamOffsetBins);
             _log.Info("FFT Size: " + localModel.Sense.FFT.FftSize + ". FFT Interval: " + localModel.Sense.FFT.FftInterval);
@@ -361,7 +368,17 @@ namespace EmbeddedAdaptiveDBSApplication.Services
                 _log.Warn("Medtronic API return error during " + errorLocation + ". Reject code: " + info.RejectCode + ". Reject description: " + info.Descriptor);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show("Medtronic API return error during " + errorLocation + ". If sensing doesn't start then please check your sense settings and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        try
+                        {
+                            MessageBox.Show(Application.Current.MainWindow, "Medtronic API return error during " + errorLocation + ". If sensing doesn't start then please check your sense settings and try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Hand);
+                        }
+                        catch (Exception e)
+                        {
+                            _log.Error(e);
+                        }
+                    });
                 }
                 return false;
             }

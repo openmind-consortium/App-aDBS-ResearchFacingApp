@@ -58,8 +58,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoUpdater.NET, Version=1.6.0.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autoupdater.NET.Official.1.6.0\lib\net40\AutoUpdater.NET.dll</HintPath>
+    <Reference Include="AutoUpdater.NET, Version=1.6.4.0, Culture=neutral, PublicKeyToken=501435c91b35f4bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autoupdater.NET.Official.1.6.4\lib\net45\AutoUpdater.NET.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.Core.3.2.0\lib\net45\Caliburn.Micro.dll</HintPath>
@@ -73,20 +73,24 @@
     <Reference Include="FontAwesome.WPF, Version=4.7.0.37774, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.7.0.9\lib\net40\FontAwesome.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Medtronic.NeuroStim.Olympus, Version=1.0.4.0, Culture=neutral, PublicKeyToken=b0f605ed92483dd3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.NeuroStim.Olympus.dll</HintPath>
+      <HintPath>..\..\SummitRDK_1_6_0\SummitRDK_1_6_0\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.NeuroStim.Olympus.dll</HintPath>
     </Reference>
     <Reference Include="Medtronic.SummitAPI, Version=1.3.0.0, Culture=neutral, PublicKeyToken=b0f605ed92483dd3, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.SummitAPI.dll</HintPath>
+      <HintPath>..\..\SummitRDK_1_6_0\SummitRDK_1_6_0\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.SummitAPI.dll</HintPath>
     </Reference>
     <Reference Include="Medtronic.TelemetryM, Version=1.3.0.0, Culture=neutral, PublicKeyToken=b0f605ed92483dd3, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.TelemetryM.dll</HintPath>
+      <HintPath>..\..\SummitRDK_1_6_0\SummitRDK_1_6_0\SummitRDK_1_6_0\DLLs\AnyCPU\Medtronic.TelemetryM.dll</HintPath>
+    </Reference>
+    <Reference Include="MWArray, Version=2.20.1.0, Culture=neutral, PublicKeyToken=e1d84a0da19db86f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files\MATLAB\MATLAB Runtime\v99\toolbox\dotnetbuilder\bin\win64\v4.0\MWArray.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
@@ -95,7 +99,11 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json.Schema, Version=3.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.13\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.Schema.3.0.14\lib\net45\Newtonsoft.Json.Schema.dll</HintPath>
+    </Reference>
+    <Reference Include="PlotFigure_wFunctionsCom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\source\repos\netAssemblies-matlab\plotFigure_wFunctions\PlotFigure_wFunctionsCom\for_redistribution_files_only\PlotFigure_wFunctionsCom.dll</HintPath>
     </Reference>
     <Reference Include="SciChart.Charting, Version=5.3.0.11954, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,7 +122,10 @@
       <HintPath>..\..\..\..\..\..\AdaptiveDBS\AdaptiveDBS\SciChart.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Windows.Controls.DataVisualization.Toolkit.4.0.0.0\lib\net40-Client\System.Windows.Controls.DataVisualization.Toolkit.dll</HintPath>
     </Reference>
@@ -134,20 +145,20 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="ZeroMQ, Version=4.1.0.31, Culture=neutral, PublicKeyToken=4a9630883fd6c563, processorArchitecture=MSIL">
       <HintPath>..\packages\ZeroMQ.4.1.0.31\lib\net40\ZeroMQ.dll</HintPath>
@@ -173,12 +184,18 @@
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\SenseModel.cs" />
     <Compile Include="Models\SchemaModel.cs" />
+    <Compile Include="Models\SimpleDataPointEditModifier.cs" />
     <Compile Include="Models\StimParameterModel.cs" />
     <Compile Include="Models\StimSweepModel.cs" />
     <Compile Include="Models\StimulationData.cs" />
     <Compile Include="Models\SummitConnect.cs" />
     <Compile Include="Models\TherapyLimitsForGroupModel.cs" />
     <Compile Include="Services\BatteryLevel.cs" />
+    <Compile Include="Services\GetLineCoordinatesSample1.cs" />
+    <Compile Include="Services\HideFigureSample1.cs" />
+    <Compile Include="Services\InitFigureSample1.cs" />
+    <Compile Include="Services\PlotDataSample1.cs" />
+    <Compile Include="Services\ShowFigureSample1.cs" />
     <Compile Include="Services\SummitSensing.cs" />
     <Compile Include="ViewModels\LeadIntegrityViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -188,6 +205,7 @@
     <Compile Include="ViewModels\SenseSettingsViewModel.cs" />
     <Compile Include="ViewModels\StreamLogViewModel.cs" />
     <Compile Include="ViewModels\VisualizationSenseViewModel.cs" />
+    <Compile Include="ViewModels\VisualizationStateViewModel.cs" />
     <Compile Include="ViewModels\VisualizationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

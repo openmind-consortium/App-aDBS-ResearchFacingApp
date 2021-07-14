@@ -1,0 +1,25 @@
+{
+	"comment": "List of config files and times to run each one for Montage sweep",
+	"MontageFiles": [
+	  {
+		"Filename": "config1",
+		"TimeToRunInSeconds": 40
+	  },
+	  {
+		"Filename": "config2",
+		"TimeToRunInSeconds": 40
+	  },
+	  {
+		"Filename": "config3",
+		"TimeToRunInSeconds": 40
+	  },
+	  {
+		"Filename": "config4",
+		"TimeToRunInSeconds": 40
+	  },
+	  {
+		"Filename": "config5",
+		"TimeToRunInSeconds": 40
+	  },
+	]
+}

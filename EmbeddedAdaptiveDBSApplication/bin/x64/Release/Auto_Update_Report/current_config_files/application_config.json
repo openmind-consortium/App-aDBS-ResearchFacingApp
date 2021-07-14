@@ -1,0 +1,14 @@
+{
+	"comment": "BasePathToJSONFiles is where the files to the medtronic json files are stored. Must match the registry edit file.  CTMBeepEnables allows beeps to be turned on. If LogBeepEvent is true, an event will be logged when there is sound in the mic over a certain decibal. This allows an outside hardware device to send a beep in and sync to the INS",
+	"BasePathToJSONFiles": "C:\\ProgramData\\Medtronic ORCA",
+	"LogBeepEvent": false,
+	"CTMBeepEnables": {
+		"comment": "lets you choose what CTM Beeps you want enabled",
+		"None": true,	
+		"GeneralAlert": false,
+		"TelMCompleted": false,
+		"DeviceDiscovered": false,
+		"NoDeviceDiscovered": false,
+		"TelMLost": false
+	}
+}

@@ -39,13 +39,22 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         //IUpdateSuspender variables allow the scichart to be paused and started back up.
         //Used below for StartButton() and PauseButton()
         IUpdateSuspender suspenderPower = null;
+        IUpdateSuspender suspenderPowerTwo = null;
         IUpdateSuspender suspenderState = null;
-        IUpdateSuspender suspenderCurrent = null;
+        IUpdateSuspender suspenderCurrentProgram0 = null;
+        IUpdateSuspender suspenderCurrentProgram1 = null;
+        IUpdateSuspender suspenderCurrentProgram2 = null;
+        IUpdateSuspender suspenderCurrentProgram3 = null;
         IUpdateSuspender suspenderB1 = null;
         IUpdateSuspender suspenderB0 = null;
         IUpdateSuspender suspenderDetector = null;
+        IUpdateSuspender suspenderPowerLD1 = null;
+        IUpdateSuspender suspenderPowerTwoLD1 = null;
         //String to get number of data points for the graphs from user. Implemented below under DataPoints
         private string _dataPoints;
+        //Vars for the start stop button
+        private bool isChartPaused = false;
+        private string _startPauseButtonText = "Pause Chart";
         #endregion
 
         /// <summary>
@@ -60,6 +69,102 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 NotifyOfPropertyChange(() => PowerYAxisVisibleRange);
             }
         }
+
+        #region Drop Down Menu for Power Options LD1 Chart
+        /// <summary>
+        /// Binding to drop down menu for either Auto-Scale or Threshold for chart for Power/LD1
+        /// Allows user to select which view they want the chart have
+        /// </summary>
+        public BindableCollection<string> PowerLD1ScaleOptions
+        {
+            get { return _powerLD1ScaleOptions; }
+            set
+            {
+                _powerLD1ScaleOptions = value;
+                NotifyOfPropertyChange(() => PowerLD1ScaleOptions);
+            }
+        }
+
+        /// <summary>
+        /// Binding for the actual option selected in the drop down menu in PowerLD1ScaleOptions
+        /// </summary>
+        public string SelectedPowerLD1ScaleOption
+        {
+            get { return _selectedPowerLD1ScaleOption; }
+            set
+            {
+                _selectedPowerLD1ScaleOption = value;
+                NotifyOfPropertyChange(() => SelectedPowerLD1ScaleOption);
+            }
+        }
+
+        /// <summary>
+        /// Binding to drop down menu to that lists the power channel options available. 
+        /// This is implemented in MainPageViewModel and if power channel is disabled, it states disabled
+        /// </summary>
+        public BindableCollection<string> PowerLD1ChannelOptions
+        {
+            get { return _powerLD1ChannelOptions; }
+            set
+            {
+                _powerLD1ChannelOptions = value;
+                NotifyOfPropertyChange(() => PowerLD1ChannelOptions);
+            }
+        }
+
+        /// <summary>
+        /// This is the binding for the actual option selected in the drop down menu in PowerLD1ChannelOptions
+        /// </summary>
+        public string SelectedPowerLD1Channel
+        {
+            get { return _selectedPowerLD1Channel; }
+            set
+            {
+                _selectedPowerLD1Channel = value;
+                NotifyOfPropertyChange(() => SelectedPowerLD1Channel);
+            }
+        }
+
+        /// <summary>
+        /// Binding to drop down menu to that lists the power channel two options available. 
+        /// This is implemented in MainPageViewModel and if power channel is disabled, it states disabled
+        /// </summary>
+        public BindableCollection<string> PowerLD1ChannelOptionsTwo
+        {
+            get { return _powerLD1ChannelOptionsTwo; }
+            set
+            {
+                _powerLD1ChannelOptionsTwo = value;
+                NotifyOfPropertyChange(() => PowerLD1ChannelOptionsTwo);
+            }
+        }
+
+        /// <summary>
+        /// This is the binding for the actual option selected in the drop down menu in PowerChannelOptionsTwo
+        /// </summary>
+        public string SelectedPowerLD1ChannelTwo
+        {
+            get { return _selectedPowerLD1ChannelTwo; }
+            set
+            {
+                _selectedPowerLD1ChannelTwo = value;
+                NotifyOfPropertyChange(() => SelectedPowerLD1ChannelTwo);
+            }
+        }
+
+        /// <summary>
+        /// This is the binding for the Start pause button text
+        /// </summary>
+        public string StartPauseButtonText
+        {
+            get { return _startPauseButtonText; }
+            set
+            {
+                _startPauseButtonText = value;
+                NotifyOfPropertyChange(() => StartPauseButtonText);
+            }
+        }
+        #endregion
 
         #region Drop Down Menu for Power Options
         /// <summary>
@@ -116,6 +221,34 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 NotifyOfPropertyChange(() => SelectedPowerChannel);
             }
         }
+
+        /// <summary>
+        /// Binding to drop down menu to that lists the power channel two options available. 
+        /// This is implemented in MainPageViewModel and if power channel is disabled, it states disabled
+        /// </summary>
+        public BindableCollection<string> PowerChannelOptionsTwo
+        {
+            get { return _powerChannelOptionsTwo; }
+            set
+            {
+                _powerChannelOptionsTwo = value;
+                NotifyOfPropertyChange(() => PowerChannelOptionsTwo);
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[0];
+            }
+        }
+
+        /// <summary>
+        /// This is the binding for the actual option selected in the drop down menu in PowerChannelOptionsTwo
+        /// </summary>
+        public string SelectedPowerChannelTwo
+        {
+            get { return _selectedPowerChannelTwo; }
+            set
+            {
+                _selectedPowerChannelTwo = value;
+                NotifyOfPropertyChange(() => SelectedPowerChannelTwo);
+            }
+        }
         #endregion
 
         #region Set Data Points
@@ -170,11 +303,20 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             try
             {
                 _detectorLD0Chart.FifoCapacity = fifoCapacity;
+                _detectorLD1Chart.FifoCapacity = fifoCapacity;
                 _powerData.FifoCapacity = fifoCapacity;
+                _powerDataTwo.FifoCapacity = fifoCapacity;
+                //_powerLD1DataChart.FifoCapacity = fifoCapacity;
+                //_powerLD1DataChartTwo.FifoCapacity = fifoCapacity;
                 _b0ThresholdLine.FifoCapacity = fifoCapacity;
                 _b1ThresholdLine.FifoCapacity = fifoCapacity;
+                _b0LD1ThresholdLine.FifoCapacity = fifoCapacity;
+                _b1LD1ThresholdLine.FifoCapacity = fifoCapacity;
                 _adaptiveState.FifoCapacity = fifoCapacity;
-                _adaptiveCurrent.FifoCapacity = fifoCapacity;
+                _adaptiveCurrentProgram0Chart.FifoCapacity = fifoCapacity;
+                _adaptiveCurrentProgram1Chart.FifoCapacity = fifoCapacity;
+                _adaptiveCurrentProgram2Chart.FifoCapacity = fifoCapacity;
+                _adaptiveCurrentProgram3Chart.FifoCapacity = fifoCapacity;
             }
             catch
             {
@@ -186,57 +328,91 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
 
         #region Start/Stop Chart Buttons
         /// <summary>
-        /// Start Button that starts the charts after being paused by the user
-        /// This is scichart implementation on how to start the charts after being paused.
+        /// Button that starts and pauses the charts
+        /// This is scichart implementation on how to start/pause the charts.
         /// </summary>
-        public void StartButton()
+        public void StartPauseButton()
         {
-            try
+            if (isChartPaused)
             {
-                if (suspenderPower != null)
-                    suspenderPower.Dispose();
-                if (suspenderState != null)
-                    suspenderState.Dispose();
-                if (suspenderCurrent != null)
-                    suspenderCurrent.Dispose();
-                if (suspenderB0 != null)
-                    suspenderB0.Dispose();
-                if (suspenderB1 != null)
-                    suspenderB1.Dispose();
-                if (suspenderDetector != null)
-                    suspenderDetector.Dispose();
-            }
-            catch(Exception e)
-            {
-                Messages.Insert(0, DateTime.Now + ":: Could not start chart");
-                _log.Error(e);
-            }
-        }
+                try
+                {
+                    if (suspenderPower != null)
+                        suspenderPower.Dispose();
+                    if (suspenderPowerTwo != null)
+                        suspenderPowerTwo.Dispose();
+                    if (suspenderPowerLD1 != null)
+                        suspenderPowerLD1.Dispose();
+                    if (suspenderPowerTwoLD1 != null)
+                        suspenderPowerLD1.Dispose();
+                    if (suspenderState != null)
+                        suspenderState.Dispose();
+                    if (suspenderCurrentProgram0 != null)
+                        suspenderCurrentProgram0.Dispose();
+                    if (suspenderCurrentProgram1 != null)
+                        suspenderCurrentProgram1.Dispose();
+                    if (suspenderCurrentProgram2 != null)
+                        suspenderCurrentProgram2.Dispose();
+                    if (suspenderCurrentProgram3 != null)
+                        suspenderCurrentProgram3.Dispose();
+                    if (suspenderB0 != null)
+                        suspenderB0.Dispose();
+                    if (suspenderB1 != null)
+                        suspenderB1.Dispose();
+                    if (suspenderDetector != null)
+                        suspenderDetector.Dispose();
 
-        /// <summary>
-        /// Pause Button that pauses all charts after user presses this button.
-        /// This is scichart implementation on how to pause a chart
-        /// </summary>
-        public void PauseButton()
-        {
-            try
-            {
-                suspenderPower = _powerData.ParentSurface.SuspendUpdates();
-                suspenderState = _adaptiveState.ParentSurface.SuspendUpdates();
-                suspenderCurrent = _adaptiveCurrent.ParentSurface.SuspendUpdates();
-                suspenderB1 = _b1ThresholdLine.ParentSurface.SuspendUpdates();
-                suspenderB0 = _b0ThresholdLine.ParentSurface.SuspendUpdates();
-                suspenderDetector = _detectorLD0Chart.ParentSurface.SuspendUpdates();
+                    isChartPaused = false;
+                    StartPauseButtonText = "Pause Chart";
+                }
+                catch (Exception e)
+                {
+                    Messages.Insert(0, DateTime.Now + ":: Could not start chart");
+                    _log.Error(e);
+                }
             }
-            catch (Exception e)
+            else
             {
-                Messages.Insert(0, DateTime.Now + ":: Could not pause chart");
-                _log.Error(e);
+                try
+                {
+                    suspenderPower = _powerData.ParentSurface.SuspendUpdates();
+                    suspenderPowerTwo = _powerDataTwo.ParentSurface.SuspendUpdates();
+                    //suspenderPowerLD1 = PowerLD1DataChart.ParentSurface.SuspendUpdates();
+                    //suspenderPowerTwoLD1 = PowerLD1DataChartTwo.ParentSurface.SuspendUpdates();
+                    suspenderState = _adaptiveState.ParentSurface.SuspendUpdates();
+                    suspenderCurrentProgram0 = _adaptiveCurrentProgram0Chart.ParentSurface.SuspendUpdates();
+                    suspenderCurrentProgram1 = _adaptiveCurrentProgram1Chart.ParentSurface.SuspendUpdates();
+                    suspenderCurrentProgram2 = _adaptiveCurrentProgram2Chart.ParentSurface.SuspendUpdates();
+                    suspenderCurrentProgram3 = _adaptiveCurrentProgram3Chart.ParentSurface.SuspendUpdates();
+                    suspenderB1 = _b1ThresholdLine.ParentSurface.SuspendUpdates();
+                    suspenderB0 = _b0ThresholdLine.ParentSurface.SuspendUpdates();
+                    suspenderDetector = _detectorLD0Chart.ParentSurface.SuspendUpdates();
+
+                    isChartPaused = true;
+                    StartPauseButtonText = "Start Chart";
+                }
+                catch (Exception e)
+                {
+                    Messages.Insert(0, DateTime.Now + ":: Could not pause chart");
+                    _log.Error(e);
+                }
             }
         }
         #endregion
 
         #region Charts Binding
+        /// <summary>
+        /// Binding for the line chart for LD1 Detector. Actual input values added in MainPageViewModel under Detector Event for this chart
+        /// </summary>
+        public IDataSeries<double, double> DetectorLD1Chart
+        {
+            get { return _detectorLD1Chart; }
+            set
+            {
+                _detectorLD1Chart = value;
+                NotifyOfPropertyChange("DetectorLD1Chart");
+            }
+        }
         /// <summary>
         /// Binding for the line chart for LDO Detector. Actual input values added in MainPageViewModel under Detector Event for this chart
         /// </summary>
@@ -262,6 +438,45 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 NotifyOfPropertyChange("PowerDataChart");
             }
         }
+
+        /// <summary>
+        /// Binding for the line chart for Power. Actual input values added in MainPageViewModel under Power Event for this chart
+        /// </summary>
+        public IDataSeries<double, double> PowerDataChartTwo
+        {
+            get { return _powerDataTwo; }
+            set
+            {
+                _powerDataTwo = value;
+                NotifyOfPropertyChange("PowerDataChartTwo");
+            }
+        }
+
+        /// <summary>
+        /// Binding for the line chart for Power in ld1 chart. Actual input values added in MainPageViewModel under Power Event for this chart
+        /// </summary>
+        //public IDataSeries<double, double> PowerLD1DataChart
+        //{
+        //    get { return _powerLD1DataChart; }
+        //    set
+        //    {
+        //        _powerLD1DataChart = value;
+        //        NotifyOfPropertyChange("PowerLD1DataChart");
+        //    }
+        //}
+
+        /// <summary>
+        /// Binding for the line chart for Power in ld1 chart. Actual input values added in MainPageViewModel under Power Event for this chart
+        /// </summary>
+        //public IDataSeries<double, double> PowerLD1DataChartTwo
+        //{
+        //    get { return _powerLD1DataChartTwo; }
+        //    set
+        //    {
+        //        _powerLD1DataChartTwo = value;
+        //        NotifyOfPropertyChange("PowerLD1DataChartTwo");
+        //    }
+        //}
 
         /// <summary>
         /// Binding for the line chart for B1 Threshold. 
@@ -294,6 +509,36 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         }
 
         /// <summary>
+        /// Binding for the line chart for B1 LD1 Threshold. 
+        /// Usage in MainPageViewModel after user updates aDBS
+        /// B1 upper threshold value taken from config file and drawn as a line on power/LD1 chart to show upper threshold
+        /// </summary>
+        public IDataSeries<double, double> B1LD1ThresholdLine
+        {
+            get { return _b1LD1ThresholdLine; }
+            set
+            {
+                _b1LD1ThresholdLine = value;
+                NotifyOfPropertyChange("B1LD1ThresholdLine");
+            }
+        }
+
+        /// <summary>
+        /// Binding for the line chart for B0 LD1 Threshold. 
+        /// Usage in MainPageViewModel after user updates aDBS
+        /// B1 upper threshold value taken from config file and drawn as a line on power/LD1 chart to show upper threshold
+        /// </summary>
+        public IDataSeries<double, double> B0LD1ThresholdLine
+        {
+            get { return _b0LD1ThresholdLine; }
+            set
+            {
+                _b0LD1ThresholdLine = value;
+                NotifyOfPropertyChange("B0LD1ThresholdLine");
+            }
+        }
+
+        /// <summary>
         /// Binding for the line chart for Adaptive State. Actual input values added in MainPageViewModel under Detector Event for this chart
         /// </summary>
         public IDataSeries<double, double> AdaptiveStateChart
@@ -309,13 +554,50 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         /// <summary>
         /// Binding for the line chart for Current. Actual input values added in MainPageViewModel under Detector Event for this chart
         /// </summary>
-        public IDataSeries<double, double> AdaptiveCurrentChart
+        public IDataSeries<double, double> AdaptiveCurrentProgram0Chart
         {
-            get { return _adaptiveCurrent; }
+            get { return _adaptiveCurrentProgram0Chart; }
             set
             {
-                _adaptiveCurrent = value;
-                NotifyOfPropertyChange("AdaptiveCurrentChart");
+                _adaptiveCurrentProgram0Chart = value;
+                NotifyOfPropertyChange("AdaptiveCurrentProgram0Chart");
+            }
+        }
+
+        /// <summary>
+        /// Binding for the line chart for Current Program 1. Actual input values added in MainPageViewModel under Detector Event for this chart
+        /// </summary>
+        public IDataSeries<double, double> AdaptiveCurrentProgram1Chart
+        {
+            get { return _adaptiveCurrentProgram1Chart; }
+            set
+            {
+                _adaptiveCurrentProgram1Chart = value;
+                NotifyOfPropertyChange("AdaptiveCurrentProgram1Chart");
+            }
+        }
+        /// <summary>
+        /// Binding for the line chart for Current Program 2. Actual input values added in MainPageViewModel under Detector Event for this chart
+        /// </summary>
+        public IDataSeries<double, double> AdaptiveCurrentProgram2Chart
+        {
+            get { return _adaptiveCurrentProgram2Chart; }
+            set
+            {
+                _adaptiveCurrentProgram2Chart = value;
+                NotifyOfPropertyChange("AdaptiveCurrentProgram2Chart");
+            }
+        }
+        /// <summary>
+        /// Binding for the line chart for Current Program 3. Actual input values added in MainPageViewModel under Detector Event for this chart
+        /// </summary>
+        public IDataSeries<double, double> AdaptiveCurrentProgram3Chart
+        {
+            get { return _adaptiveCurrentProgram3Chart; }
+            set
+            {
+                _adaptiveCurrentProgram3Chart = value;
+                NotifyOfPropertyChange("AdaptiveCurrentProgram3Chart");
             }
         }
         #endregion

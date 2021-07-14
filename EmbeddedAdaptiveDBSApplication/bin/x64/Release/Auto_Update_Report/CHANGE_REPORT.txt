@@ -1,0 +1,21 @@
+3/26/2021 VERSION 2.1.4.3
+-Bug fix: added thread safe lock around SciChart data plotting for fft
+
+3/25/2021 VERSION 2.1.4.2
+-NEW SENSE CONFIG FILE!!!! *** See current_config_files directory for new sense_config.json file.
+-Added fft weight multiplies for shift 0-7.  Added tdEvokedResponse to config file.
+-Bug fix: added a check around plotting fft data in hopes of it fixing crash
+
+3/18/2021 VERSION 2.1.4.1
+-Combined LD0 and LD1 chart into one chart
+
+3/12/20201 VERSION 2.1.4.0
+
+-NEW ADAPTIVE CONFIG FILE!!! **See current_config_files directory for new adaptive_config.json file.  Old config file will still work retroactively.
+-Bug fixes
+-New error messages
+-Vis(Adaptive) now has LD1 visualization.  
+-Vis(Adaptive) pause/start button combined into one button
+-Vis(Space) chart added.  This allows user to visualize power 1 (power bands used from LD0 dropdown for power. It doesn't use LD0, but just those power bands in the dropdown) in the x axis and power 2 in the y axis.
+-Vis(Space) shows which LD's and power is overrange.  
+-Vis(Space) allows user to control the W1, W2, B0, B1, FFVP and Update rate with a GUI. Set Values does not update the aDBS on device, but just updates the config file.  Still need to click aDBS On/update.

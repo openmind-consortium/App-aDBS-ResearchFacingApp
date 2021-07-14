@@ -24,6 +24,71 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     public static class ConfigConversions
     {
         /// <summary>
+        /// Converts the tdEvokedResponseEnable to Medtronic enums
+        /// </summary>
+        /// <param name="TdEvokedResponseValue">Value of 0, 16 or 32 for standard, evoked 0 or evoked 1</param>
+        /// <returns>TdEvokedResponseEnable as Medtronic enum</returns>
+        public static TdEvokedResponseEnable TdEvokedResponseEnableConvert(uint TdEvokedResponseValue)
+        {
+            TdEvokedResponseEnable tdEvokedResponseEnable = TdEvokedResponseEnable.Standard;
+            switch (TdEvokedResponseValue)
+            {
+                case 0:
+                    tdEvokedResponseEnable = TdEvokedResponseEnable.Standard;
+                    break;
+                case 16:
+                    tdEvokedResponseEnable = TdEvokedResponseEnable.Evoked0Input;
+                    break;
+                case 32:
+                    tdEvokedResponseEnable = TdEvokedResponseEnable.Evoked1Input;
+                    break;
+                default:
+                    DisplayErrorMessageAndClose("Couldn't convert TdEvokedResponseEnable");
+                    break;
+            }
+            return tdEvokedResponseEnable;
+        }
+        /// <summary>
+        /// Converts the FftWeightMultiplies to Medtronic enum
+        /// </summary>
+        /// <param name="FftWeightMultipliesValue">Value from 0-7 based on shift 0-7</param>
+        /// <returns>FftWeightMultiplies as Medtronic enum shift 0-7</returns>
+        public static FftWeightMultiplies FftWeightMultipliesConvert(uint FftWeightMultipliesValue)
+        {
+            FftWeightMultiplies fftWeightMultiplies = FftWeightMultiplies.Shift7;
+            switch (FftWeightMultipliesValue)
+            {
+                case 0:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift0;
+                    break;
+                case 1:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift1;
+                    break;
+                case 2:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift2;
+                    break;
+                case 3:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift3;
+                    break;
+                case 4:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift4;
+                    break;
+                case 5:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift5;
+                    break;
+                case 6:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift6;
+                    break;
+                case 7:
+                    fftWeightMultiplies = FftWeightMultiplies.Shift7;
+                    break;
+                default:
+                    DisplayErrorMessageAndClose("Couldn't convert FftWeightMultiplies");
+                    break;
+            }
+            return fftWeightMultiplies;
+        }
+        /// <summary>
         /// Converts the beeps enables from the config file to the medtronic api
         /// </summary>
         /// <param name="appModel">Application model converted from config file</param>

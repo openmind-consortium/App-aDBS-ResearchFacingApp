@@ -1,0 +1,186 @@
+{
+	"Comment": "config file for the adaptive DBS configurations",
+	"Detection": {
+		"LD0": {
+			"Comment": "Detection settings for LD0",
+			"B0": 1000,
+			"B1": 5000,
+			"UpdateRate": 5,
+			"OnsetDuration": 0,
+			"TerminationDuration": 0,
+			"HoldOffOnStartupTime": 0,
+			"StateChangeBlankingUponStateChange": 0,
+			"FractionalFixedPointValue": 4,
+			"DualThreshold": true,
+			"BlankBothLD": false,
+			"Inputs": {
+				"Ch0Band0": true,
+				"Ch0Band1": false,
+				"Ch1Band0": false,
+				"Ch1Band1": false,
+				"Ch2Band0": false,
+				"Ch2Band1": false,
+				"Ch3Band0": false,
+				"Ch3Band1": false
+			},
+			"WeightVector": [
+				1.0,
+				0,
+				0,
+				0.0
+			],
+			"NormalizationMultiplyVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationSubtractVector": [
+				0,
+				0,
+				0,
+				0
+			]
+		},
+		"LD1": {
+			"Comment": "Detection settings for LD1",
+			"IsEnabled": false,
+			"B0": 0,
+			"B1": 2000,
+			"UpdateRate": 1,
+			"OnsetDuration": 0,
+			"TerminationDuration": 0,
+			"HoldOffOnStartupTime": 0,
+			"StateChangeBlankingUponStateChange": 0,
+			"FractionalFixedPointValue": 0,
+			"DualThreshold": false,
+			"BlankBothLD": false,
+			"Inputs": {
+				"Ch0Band0": true,
+				"Ch0Band1": false,
+				"Ch1Band0": false,
+				"Ch1Band1": false,
+				"Ch2Band0": false,
+				"Ch2Band1": false,
+				"Ch3Band0": false,
+				"Ch3Band1": false
+			},
+			"WeightVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationMultiplyVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationSubtractVector": [
+				0,
+				0,
+				0,
+				0
+			]
+		}
+	},
+	"Adaptive": {
+		"Program0": {
+			"Comment": "WARNING: use RateTargetInHz for retro-active. If using new version, use Rates object below.  Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 10000,
+			"FallTimes": 10000,
+			"RateTargetInHz": 100.0, 
+			"State0AmpInMilliamps": 0.0,
+			"State1AmpInMilliamps": 1.0,
+			"State2AmpInMilliamps": 2.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Program1": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Program2": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 1000,
+			"FallTimes": 1000,
+			"State0AmpInMilliamps": 2,
+			"State1AmpInMilliamps": 1.5,
+			"State2AmpInMilliamps": .5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Program3": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Rates": {
+			"Comment": "Rates can change for each state across all programs",
+			"State0": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State1": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State2": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State3": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State4": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State5": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State6": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State7": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State8": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			}
+		}
+	}
+}

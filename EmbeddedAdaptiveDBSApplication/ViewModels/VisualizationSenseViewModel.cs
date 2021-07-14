@@ -20,7 +20,8 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
     public partial class MainViewModel : Screen
     {
         private string _dataPointsForVisualizationSense;
-        private string _fFTMean, _fFTTimeDisplay, _fFTCurrentChannel, _fFTOverlapDisplay;
+        private string _fFTMean = "10";
+        private string _fFTTimeDisplay, _fFTCurrentChannel, _fFTOverlapDisplay;
         private int userInputForFFTMean = 10;
         private string _timeDomainM1ChartTitle, _timeDomainSTNChartTitle;
 
@@ -143,6 +144,18 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
         }
         /// <summary>
+        /// Binding for the drop down menu for fft log 10
+        /// </summary>
+        public BindableCollection<string> FFTLog10Options
+        {
+            get { return _fFTLog10Options; }
+            set
+            {
+                _fFTLog10Options = value;
+                NotifyOfPropertyChange(() => FFTLog10Options);
+            }
+        }
+        /// <summary>
         /// Binding for selected option for the drop down menu for M1 timedomain options
         /// </summary>
         public string SelectedTimeDomainM1
@@ -179,7 +192,18 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 NotifyOfPropertyChange(() => SelectedFFTScaleOption);
             }
         }
-
+        /// <summary>
+        /// Binding for selected option for the drop down menu for FFT log 10 options
+        /// </summary>
+        public string SelectedFFTLog10Option
+        {
+            get { return _selectedFFTLog10Option; }
+            set
+            {
+                _selectedFFTLog10Option = value;
+                NotifyOfPropertyChange(() => SelectedFFTLog10Option);
+            }
+        }
         /// <summary>
         /// Binding to change chart title for lead 2
         /// </summary>

@@ -118,25 +118,50 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         public ObservableCollection<IAxisViewModel> YAxesPower { get { return _yAxesPower; } }
         private ObservableCollection<IAxisViewModel> _yAxes = new ObservableCollection<IAxisViewModel>();
         private ObservableCollection<IAxisViewModel> _yAxesPower = new ObservableCollection<IAxisViewModel>();
+        /// <summary>
+        /// Y axes for the ld1 chart
+        /// </summary>
+        public ObservableCollection<IAxisViewModel> YAxesLD1 { get { return _yAxesLD1; } }
+        private ObservableCollection<IAxisViewModel> _yAxesLD1 = new ObservableCollection<IAxisViewModel>();
         //IDataSeris is the actual line chart for adding data to be plotted
         private IDataSeries<double, double> _powerData = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _powerDataTwo = new XyDataSeries<double, double>();
+        //private IDataSeries<double, double> _powerLD1DataChart = new XyDataSeries<double, double>();
+        //private IDataSeries<double, double> _powerLD1DataChartTwo = new XyDataSeries<double, double>();
         private IDataSeries<double, double> _b1ThresholdLine = new XyDataSeries<double, double>();
         private IDataSeries<double, double> _b0ThresholdLine = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _b1LD1ThresholdLine = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _b0LD1ThresholdLine = new XyDataSeries<double, double>();
         private IDataSeries<double, double> _detectorLD0Chart = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _detectorLD1Chart = new XyDataSeries<double, double>();
         private IDataSeries<double, double> _adaptiveState = new XyDataSeries<double, double>();
-        private IDataSeries<double, double> _adaptiveCurrent = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _adaptiveCurrentProgram0Chart = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _adaptiveCurrentProgram1Chart = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _adaptiveCurrentProgram2Chart = new XyDataSeries<double, double>();
+        private IDataSeries<double, double> _adaptiveCurrentProgram3Chart = new XyDataSeries<double, double>();
         //_powerChannelOptions and _powerScaleOption variables are Binded in VisualizationViewModel. This is actual variable
         private BindableCollection<string> _powerChannelOptions = new BindableCollection<string>();
+        private BindableCollection<string> _powerChannelOptionsTwo = new BindableCollection<string>();
         private BindableCollection<string> _powerScaleOptions = new BindableCollection<string>();
+        //power dropdown options and scale variables are Binded in VisualizationViewModel. This is actual variable
+        private BindableCollection<string> _powerLD1ChannelOptions = new BindableCollection<string>();
+        private BindableCollection<string> _powerLD1ChannelOptionsTwo = new BindableCollection<string>();
+        private BindableCollection<string> _powerLD1ScaleOptions = new BindableCollection<string>();
         //Gives the options for drop down menu for how to view the power/LD0 chart 
         private readonly string powerAutoScaleChartOption = "AutoScale";
         private readonly string powerThresholdScaleChartOption = "Threshold";
         private readonly string powerNoneScaleChartOption = "None";
         //All variables below are used in VisualizationViewModel.cs for binding to the front end
-        private string _selectedPowerChannel, _selectedPowerScaleOption;
+        private string _selectedPowerChannel, _selectedPowerChannelTwo, _selectedPowerScaleOption;
+        private string _selectedPowerLD1Channel, _selectedPowerLD1ChannelTwo, _selectedPowerLD1ScaleOption;
         //Variable for binding for the UI to set the visible range for the Y value for Power
         private IRange _powerYAxisVisibleRange;
         private int DEFAULT_DATA_POINTS_POWER_DETECTOR = 100;
+        private Brush _powerChannelOverrangeColor = Brushes.Green;
+        private Brush _lD0OverrangeTextColor = Brushes.Green;
+        private Brush _lD1OverrangeTextColor = Brushes.Green;
+        private string _powerChannelOverrangeText;
+        private string _lD0OverrangeText, _lD1OverrangeText;
         #endregion
 
         #region VisualizationSenseViewModel VARIABLES:
@@ -175,8 +200,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         private BindableCollection<string> _fftScaleOptions = new BindableCollection<string>();
         private string _selectedFFTScaleOption;
         private readonly string fftAutoScaleChartOption = "AutoScale";
-        private readonly string fftLog10ScaleChartOption = "Log10";
         private readonly string fftNoneScaleChartOption = "None";
+        private BindableCollection<string> _fFTLog10Options = new BindableCollection<string>();
+        private string _selectedFFTLog10Option;
+        private readonly string fftLog10ChartOption = "Log10";
+        private readonly string fftDoNotUseLog10ChartOption = "None";
 
         /// <summary>
         /// Y axis for FFT allows me to change it in code
@@ -184,6 +212,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         public ObservableCollection<IAxisViewModel> YAxesFFT { get { return _yAxesFFT; } }
         private ObservableCollection<IAxisViewModel> _yAxesFFT = new ObservableCollection<IAxisViewModel>();
         private IDataSeries<double, double> _fftChart = new XyDataSeries<double, double>();
+        #endregion
+
+        #region Visualization State VARIABLES
+        private static AdaptiveModel adaptiveConfigFromUI = null;
+        private static AdaptiveModel adaptiveConfig = null;
         #endregion
 
         #region MainPageViewModel VARIABLES:
@@ -196,6 +229,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         //Later we use this path to store config files in the same directory
         //sessionDisplay shows what number of session we are on or what number of times we have run updateDBS in MainPageViewModel
         private string deviceID, patientID, _sessionDisplay, leadLocation1, leadLocation2;
+
         #endregion
 
         #region ReportWindow VARIABLES:
@@ -230,20 +264,33 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
 
             #region Visualization Constructor
             //Give series a name so legend in each chart shows a name
-            _adaptiveCurrent.SeriesName = "Current";
+            _adaptiveCurrentProgram0Chart.SeriesName = "Current Prog0";
+            _adaptiveCurrentProgram1Chart.SeriesName = "Current Prog1";
+            _adaptiveCurrentProgram2Chart.SeriesName = "Current Prog2";
+            _adaptiveCurrentProgram3Chart.SeriesName = "Current Prog3";
             _adaptiveState.SeriesName = "State";
-            _powerData.SeriesName = "Power";
+            _powerData.SeriesName = "Power1";
+            _powerDataTwo.SeriesName = "Power2";
+            //_powerLD1DataChart.SeriesName = "Power1";
+            //_powerLD1DataChartTwo.SeriesName = "Power2";
             _detectorLD0Chart.SeriesName = "LDO";
+            _detectorLD1Chart.SeriesName = "LD1";
             _b0ThresholdLine.SeriesName = "B0";
             _b1ThresholdLine.SeriesName = "B1";
+            _b0LD1ThresholdLine.SeriesName = "B0";
+            _b1LD1ThresholdLine.SeriesName = "B1";
             //Fifo capacity sets the number of values in the x axis shown
             ChangeDataSeriesForChart(DEFAULT_DATA_POINTS_POWER_DETECTOR);
             //Add to dropdown menu the options for power/detector chart view
             _powerScaleOptions.Add(powerAutoScaleChartOption);
             _powerScaleOptions.Add(powerThresholdScaleChartOption);
             _powerScaleOptions.Add(powerNoneScaleChartOption);
+            _powerLD1ScaleOptions.Add(powerAutoScaleChartOption);
+            _powerLD1ScaleOptions.Add(powerThresholdScaleChartOption);
+            _powerLD1ScaleOptions.Add(powerNoneScaleChartOption);
             //Select the default option in power/detector dropdown menu
             _selectedPowerScaleOption = powerThresholdScaleChartOption;
+            _selectedPowerLD1ScaleOption = powerThresholdScaleChartOption;
             //Setup Y axis programatically for current/state and power/detector
             //This binds this y axis with the actual chart y axis. Makes it easier to change in code for MVVM
             YAxes.Add(new NumericAxisViewModel()
@@ -271,7 +318,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             YAxesPower.Add(new NumericAxisViewModel()
             {
                 AutoRange = AutoRange.Never,
-                AxisTitle = "Power",
+                AxisTitle = "Power1 / Power 2",
                 Id = "PowerAxisID",
                 FontSize = FONTSIZE,
                 VisibleRange = new DoubleRange(0, 2),
@@ -282,12 +329,33 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             YAxesPower.Add(new NumericAxisViewModel()
             {
                 AutoRange = AutoRange.Always,
-                AxisTitle = "Detector",
+                AxisTitle = "LD0 / LD1 / B0 / B1",
                 Id = "DetectorAxisID",
                 FontSize = FONTSIZE,
                 VisibleRange = new DoubleRange(0, 2),
                 GrowBy = new DoubleRange(0.1, 0.1),
                 AxisAlignment = AxisAlignment.Right,
+            });
+
+            YAxesLD1.Add(new NumericAxisViewModel()
+            {
+                AutoRange = AutoRange.Always,
+                AxisTitle = "LD1 Detector",
+                Id = "DetectorLD1AxisID",
+                FontSize = FONTSIZE,
+                VisibleRange = new DoubleRange(0, 2),
+                GrowBy = new DoubleRange(0.1, 0.1),
+                AxisAlignment = AxisAlignment.Right,
+            });
+            YAxesLD1.Add(new NumericAxisViewModel()
+            {
+                AutoRange = AutoRange.Always,
+                AxisTitle = "Power",
+                Id = "PowerLD1AxisID",
+                FontSize = FONTSIZE,
+                VisibleRange = new DoubleRange(0, 2),
+                GrowBy = new DoubleRange(0.1, 0.1),
+                AxisAlignment = AxisAlignment.Left,
             });
             #endregion
 
@@ -301,12 +369,14 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             _fftChart.SeriesName = "FFT";
             //Fifo capacity sets the number of values in the x axis shown
             ChangeDataSeriesForVisualizationSenseChart(DEFAULT_DATA_POINTS_TD);
-            //Add to the fft scale drop down menu
+            //Add to the fft scale and log drop down menu
             _fftScaleOptions.Add(fftNoneScaleChartOption);
             _fftScaleOptions.Add(fftAutoScaleChartOption);
-            _fftScaleOptions.Add(fftLog10ScaleChartOption);
-            //default Selected FFT Scale Option
-            _selectedFFTScaleOption = fftNoneScaleChartOption;
+            _fFTLog10Options.Add(fftLog10ChartOption);
+            _fFTLog10Options.Add(fftDoNotUseLog10ChartOption);
+            //default Selected FFT Scale and log Option
+            _selectedFFTScaleOption = fftAutoScaleChartOption;
+            _selectedFFTLog10Option = fftDoNotUseLog10ChartOption;
             //Setup Y axis programatically for visualization sense charts
             _yAxesTimeDomainSTN.Add(new NumericAxisViewModel()
             {
@@ -353,6 +423,25 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             });
             #endregion
 
+            #region Visualization State Constructor
+            PopulateStateSpaceTextBoxes();
+            //adaptiveConfigFromUI = Clone<AdaptiveModel>(adaptiveConfig);
+            StateSpaceChart.AcceptsUnsortedData = true;
+            StateSpaceChart.SeriesName = "State Space";
+            _b0StateThresholdLine.SeriesName = "Line";
+            //_b1StateThresholdLine.SeriesName = "B1";
+            YAxesState.Add(new NumericAxisViewModel()
+            {
+                AutoRange = AutoRange.Always,
+                VisibleRange = new DoubleRange(0, 0.5),
+                GrowBy = new DoubleRange(0.1, 0.1),
+                AxisTitle = "Power2",
+                Id = "StateSpaceID",
+                FontSize = FONTSIZE,
+                AxisAlignment = AxisAlignment.Left,
+            });
+            #endregion
+
             #region MainView Constructor
             senseConfig = jSONService.GetSenseModelFromFile(senseFileLocation);
             if (senseConfig == null)
@@ -363,7 +452,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             Assembly assem = Assembly.GetExecutingAssembly();
             AssemblyName assemName = assem.GetName();
             Version ver = assemName.Version;
-            TitleText = "UCSF Starr Lab Clinician Program. Version: " + ver;
+            TitleText = "UCSF Starr Lab Research-Facing Application. Version: " + ver;
             //Load the application model. This will determine what UI elements to show and if bilateral
             appConfigModel = jSONService?.GetApplicationModelFromFile(applicationFileLocation);
             //Application config if required. If user is missing it (hence null) then they can't move on
@@ -424,6 +513,78 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         }
 
         #region UI Bindings for buttons, textboxes, etc
+        /// <summary>
+        /// Text to change the Power overrange
+        /// </summary>
+        public string PowerChannelOverrangeText
+        {
+            get { return _powerChannelOverrangeText; }
+            set
+            {
+                _powerChannelOverrangeText = value;
+                NotifyOfPropertyChange(() => PowerChannelOverrangeText);
+            }
+        }
+        /// <summary>
+        /// Text color showing if a power channel is overrange
+        /// </summary>
+        public Brush PowerChannelOverrangeColor
+        {
+            get { return _powerChannelOverrangeColor; }
+            set
+            {
+                _powerChannelOverrangeColor = value;
+                NotifyOfPropertyChange(() => PowerChannelOverrangeColor);
+            }
+        }
+        /// <summary>
+        /// Text to change the LD0 overrange
+        /// </summary>
+        public string LD0OverrangeText
+        {
+            get { return _lD0OverrangeText; }
+            set
+            {
+                _lD0OverrangeText = value;
+                NotifyOfPropertyChange(() => LD0OverrangeText);
+            }
+        }
+        /// <summary>
+        /// Text to change the LD1 overrange
+        /// </summary>
+        public string LD1OverrangeText
+        {
+            get { return _lD1OverrangeText; }
+            set
+            {
+                _lD1OverrangeText = value;
+                NotifyOfPropertyChange(() => LD1OverrangeText);
+            }
+        }
+        /// <summary>
+        /// Text color showing if a LD0 is overrange
+        /// </summary>
+        public Brush LD0OverrangeTextColor
+        {
+            get { return _lD0OverrangeTextColor; }
+            set
+            {
+                _lD0OverrangeTextColor = value;
+                NotifyOfPropertyChange(() => LD0OverrangeTextColor);
+            }
+        }
+        /// <summary>
+        /// Text color showing if a LD1 is overrange
+        /// </summary>
+        public Brush LD1OverrangeTextColor
+        {
+            get { return _lD1OverrangeTextColor; }
+            set
+            {
+                _lD1OverrangeTextColor = value;
+                NotifyOfPropertyChange(() => LD1OverrangeTextColor);
+            }
+        }
         /// <summary>
         /// Binding for the INS battery level display
         /// </summary>

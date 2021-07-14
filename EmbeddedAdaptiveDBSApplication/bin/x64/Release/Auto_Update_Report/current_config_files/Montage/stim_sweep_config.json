@@ -1,0 +1,9 @@
+{
+	"comment": "Each index is one run. So the first index of each matrix contains the parameters for the first run and the second is the second run and so on. AmpInMa - is the amplitude in milliamps DBS will go to,  RateInHz is the frequency in Hz stimulate will be delivered at, PulseWidthInMicroSeconds is the pulse width for stimulation, GroupABCD is the group which will deliver stimulation, TimeToRunInSeconds is the time to run each stimulation frequency, and EvenMarkerTimeInSeconds is the duration after stimulation command has given that even marker is written. This is done to account for stimulation ramp up time that is set by RLP and to allow for easy data analysis.",
+	"AmpInmA": 					[0,		1,		.5,		1],
+	"RateInHz":					[30,	30,		30,	30],
+	"PulseWidthInMicroSeconds": [100,	100,	100,	100],
+	"TimeToRunInSeconds": 		[10, 	10, 	10,		10],
+	"GroupABCD": 				["A", 	"A", 	"A",	"A"],
+	"EventMarkerDelayTimeInSeconds": 5,
+}

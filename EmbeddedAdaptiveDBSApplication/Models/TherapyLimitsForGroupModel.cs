@@ -1,4 +1,11 @@
-﻿using System;
+﻿/********************
+Copyright Notice
+Copyright © 2019, The Regents of the University of California
+All rights reserved.
+
+Please see the file LICENSE in this distribution for license terms.
+**********************/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

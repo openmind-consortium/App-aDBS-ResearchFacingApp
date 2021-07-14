@@ -1,0 +1,41 @@
+{
+	"comment": "List of medications and symptoms for Report Window to user",
+	"Medications": [
+		"1x Sinemet CR 25:100 in Enteric capsule",
+		"0.5 25:100 IR",
+		"1 25:100 IR",
+		"1mg Azilect",
+		"100mmg Amantadine",
+		"0.5 x Sinemet 25:100"
+	],
+	"Symptoms": [
+		"Rest start",
+		"Rest end",
+		"Rest eyes closed start",
+		"Rest  eyes closed end",
+		"iPad start",
+		"iPad end",
+		"tremor distraction start",
+		"tremor distraction end",
+		"R finger tapping start",
+		"R finger tapping end",
+		"L finger tapping start",
+		"L finger tapping end",
+		"MM R finger tapping start",
+		"MM R finger tapping end",
+		"MM L finger tapping start",
+		"MM L finger tapping end",
+		"walking start",
+		"walking end",
+		"standing start",
+		"standing end",
+		"UPDRS start",
+		"UPDRS end",
+		"UDRS start",
+		"UDRS end",
+		"Kinesia One start",
+		"Kinesia One end",
+		"PGIC start",
+		"PGIC end"
+	]
+}

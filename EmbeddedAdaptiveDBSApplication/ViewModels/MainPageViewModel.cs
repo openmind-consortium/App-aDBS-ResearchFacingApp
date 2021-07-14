@@ -79,7 +79,6 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         private string _stimRate, _stimAmp, _stimPW, _stimActive, _activeGroup, _stimState, _stimElectrode, _activeRechargeStatus;
         private int _pWLowerLimit, _pWUpperLimit;
         private double _rateLowerLimit, _rateUpperLimit, _ampLowerLimit, _ampUpperLimit;
-        private static AdaptiveModel adaptiveConfig = null;
         private static Thread UpdateDBSThread;
         //This is used to check return values from medtronic api calls
         //Each return value is checked if reject code is an error. 
@@ -118,6 +117,20 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         //Time domain old way variables
         private double timeDomainSTNXvalue = 0;
         private double timeDomainM1Xvalue = 0;
+        //State space 
+        private static object _updateRateLockForPowerValues = new object();
+        private volatile static int updateRateForPowerValues = 0;
+        private static object _bufferXQueueLock = new object();
+        private static object _bufferYQueueLock = new object();
+        private static Queue<double> stateSpaceXValueQueue = new Queue<double>();
+        private static Queue<double> stateSpaceYValueQueue = new Queue<double>();
+        private static object _bufferXListLock = new object();
+        private static object _bufferYListLock = new object();
+        private static List<double> powerStateSpaceXValueList = new List<double>();
+        private static List<double> powerStateSpaceYValueList = new List<double>();
+        private static double minPowerXValueStateChart = 0;
+        private static double maxPowerXValueStateChart = 10000000000;
+        private volatile static bool plotDataForMatlabStateSpace = false;
         #endregion
 
         #region Stim Therapy On-Off Button Clicks
@@ -717,7 +730,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                     //set stim rate
                     if (pulseWidthToChangeTo != 0)
                     {
-                        bufferReturnInfo = await Task.Run(() => theSummit.StimChangeStepPW(0, pulseWidthToChangeTo, out currentValueForPW));
+                        bufferReturnInfo = await Task.Run(() => theSummit.StimChangeStepPW((byte)ProgramOptions.IndexOf(SelectedProgram), pulseWidthToChangeTo, out currentValueForPW));
                         Messages.Insert(0, DateTime.Now + ":: Change Pulse Width: " + bufferReturnInfo.Descriptor);
                         if (CheckForReturnError(bufferReturnInfo, "Change Stim Pulse Width", false))
                         {
@@ -1156,9 +1169,13 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                         theSummit.DataReceivedPowerHandler += TheSummit_PowerReceivedHandler;
                         theSummit.DataReceivedAccelHandler += TheSummit_DataReceivedAccelHandler;
                         //This sets the Channel options in drop down menu in visualization screen.
-                        SetPowerChannelOptionsInDropDownMenu();
+                        PowerChannelOptions = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerChannelOptionsTwo = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerLD1ChannelOptions = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerLD1ChannelOptionsTwo = SetPowerChannelOptionsInDropDownMenu(senseConfig);
                         SetSTNTimeDomainChannelOptionsInDropDownMenu(senseConfig);
                         SetM1TimeDomainChannelOptionsInDropDownMenu(senseConfig);
+                        SetPowerChannelSelectedOptionInDropDownMenu(senseConfig);
                         _log.Info("Turn sensing on button success");
 
                         //Log event that sense was turned on and check to make sure that event logging was successful
@@ -1816,31 +1833,38 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                     {
                         try
                         {
-                            if (SelectedFFTScaleOption != null)
+                            if(SelectedFFTLog10Option != null)
                             {
-                                if (SelectedFFTScaleOption.Equals(fftAutoScaleChartOption))
+                                if (SelectedFFTLog10Option.Equals(fftLog10ChartOption))
                                 {
-                                    YAxesFFT[0].AxisTitle = "µV^2/Hz";
-                                    YAxesFFT[0].AutoRange = AutoRange.Always;
-                                }
-                                else if (SelectedFFTScaleOption.Equals(fftNoneScaleChartOption))
-                                {
-                                    YAxesFFT[0].AxisTitle = "µV^2/Hz";
-                                    YAxesFFT[0].AutoRange = AutoRange.Never;
-                                }
-                                else if (SelectedFFTScaleOption.Equals(fftLog10ScaleChartOption))
-                                {
-                                    YAxesFFT[0].AxisTitle = "Log10µV^2/Hz";
-                                    YAxesFFT[0].AutoRange = AutoRange.Never;
+                                    YAxesFFT[0].AxisTitle = "Log10mV^2/Hz";
                                     //go through templist and change to log10 for each value
                                     for (int i = 0; i < tempList.Count; i++)
                                     {
                                         tempList[i] = Math.Log10(tempList[i]);
                                     }
                                 }
+                                else
+                                {
+                                    YAxesFFT[0].AxisTitle = "mV^2/Hz";
+                                }
                             }
-                            _fftChart.Clear();
-                            _fftChart.Append(fftBins, tempList);
+                            lock (_fftChart.SyncRoot)
+                            {
+                                _fftChart.Clear();
+                                _fftChart.Append(fftBins, tempList);
+                            }    
+                            if (SelectedFFTScaleOption != null)
+                            {
+                                if (SelectedFFTScaleOption.Equals(fftAutoScaleChartOption))
+                                {
+                                    YAxesFFT[0].AutoRange = AutoRange.Always;
+                                }
+                                else if (SelectedFFTScaleOption.Equals(fftNoneScaleChartOption))
+                                {
+                                    YAxesFFT[0].AutoRange = AutoRange.Never;
+                                }
+                            }
                         }
                         catch (Exception e)
                         {
@@ -1859,16 +1883,72 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
 
         }
-
+        
         //Power Event Handler
         private void TheSummit_PowerReceivedHandler(object sender, SensingEventPower newData)
         {
-            //newData.Header.SystemTick;
-            //newData.Header.Timestamp.Seconds;
-            //newData.Header.GlobalSequence
-
+            //Check if power is overrange
+            if (newData.IsPowerChannelOverrange)
+            {
+                PowerChannelOverrangeColor = Brushes.Red;
+                PowerChannelOverrangeText = "Power Saturated";
+            }
+            else
+            {
+                PowerChannelOverrangeColor = Brushes.Green;
+                PowerChannelOverrangeText = "Power In Range";
+            }
+            MaintainStateSpaceXQueueSize(stateChartBufferValue);
+            MaintainStateSpaceYQueueSize(stateChartBufferValue);
+            lock (_updateRateLockForPowerValues)
+            {
+                if (updateRateForPowerValues >= adaptiveConfig.Detection.LD0.UpdateRate || adaptiveConfig.Detection.LD0.UpdateRate == 0)
+                {
+                    updateRateForPowerValues = 1;
+                    lock (_bufferXListLock)
+                    {
+                        lock (_bufferYListLock)
+                        {
+                            if (powerStateSpaceXValueList.Count > 0 && powerStateSpaceYValueList.Count > 0)
+                            {
+                                if (plotDataForMatlabStateSpace)
+                                {
+                                    try
+                                    {
+                                        PlotDataSample1.PlotDataSample(powerStateSpaceXValueList.Average(), powerStateSpaceYValueList.Average());
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        _log.Error(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    lock (_bufferXListLock)
+                    {
+                        if(powerStateSpaceXValueList.Count > 0)
+                        {
+                            stateSpaceXValueQueue.Enqueue(powerStateSpaceXValueList.Average());
+                            powerStateSpaceXValueList.Clear();
+                        }
+                    }
+                    lock (_bufferYListLock)
+                    {
+                        if(powerStateSpaceYValueList.Count > 0)
+                        {
+                            stateSpaceYValueQueue.Enqueue(powerStateSpaceYValueList.Average());
+                            powerStateSpaceYValueList.Clear();
+                        }
+                    }
+                    StateSpaceChart.Clear();
+                    StateSpaceChart.Append(stateSpaceXValueQueue, stateSpaceYValueQueue);
+                }
+                updateRateForPowerValues++;
+            }
             //power variable is set to 0 just in case if/elseif statements never get called
             double power = 0;
+            double powerLD1 = 0;
             try
             {
                 //Make sure the selected power channel in the drop down menu is set to something
@@ -1911,11 +1991,195 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                     {
                         power = (double)newData.Bands[7];
                     }
+                    else
+                    {
+                        power = double.NaN;
+                    }
+                }
+                else
+                {
+                    power = double.NaN;
+                }
+                //LD1 Chart power channel 1
+                
+                if (SelectedPowerLD1Channel != null)
+                {
+                    //Check to see which selected power channel is selected in the drop down menu and make sure it isn't a disabled power channel
+                    //Disabled power channels are set when sense config file is read. 
+                    //If power channel is disabled in config file, the drop down menu will have a "Disabled" value instead of an actual value.
+                    //If user selected a non-Disabled channel, then get the data corresponding to the drop down menu value
+                    if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[0]))
+                    {
+                        powerLD1 = (double)newData.Bands[0];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[1]))
+                    {
+                        powerLD1 = (double)newData.Bands[1];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[2]))
+                    {
+                        powerLD1 = (double)newData.Bands[2];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[3]))
+                    {
+                        powerLD1 = (double)newData.Bands[3];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[4]))
+                    {
+                        powerLD1 = (double)newData.Bands[4];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[5]))
+                    {
+                        powerLD1 = (double)newData.Bands[5];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[6]))
+                    {
+                        powerLD1 = (double)newData.Bands[6];
+                    }
+                    else if (!SelectedPowerLD1Channel.Equals("Disabled") && SelectedPowerLD1Channel.Equals(PowerChannelOptions[7]))
+                    {
+                        powerLD1 = (double)newData.Bands[7];
+                    }
+                    else
+                    {
+                        powerLD1 = double.NaN;
+                    }
+                }
+                else
+                {
+                    powerLD1 = double.NaN;
                 }
             }
             catch (Exception e)
             {
+                power = double.NaN;
+                powerLD1 = double.NaN;
                 _log.Error(e);
+            }
+            lock (_bufferXListLock)
+            {
+                powerStateSpaceXValueList.Add(power);
+            }
+            if (power < maxPowerXValueStateChart)
+            {
+                maxPowerXValueStateChart = power;
+            }
+            if (power < minPowerXValueStateChart)
+            {
+                minPowerXValueStateChart = power;
+            }
+            double powerTwo = 0;
+            double powerTwoLD1 = 0;
+            try
+            {
+                //Make sure the selected power channel in the drop down menu is set to something
+                //Drop down menu is named PowerChannelOptionsTwo and SelectedPowerChannelTwo are both binded inside VisualizationViewModel.cs
+                if (SelectedPowerChannelTwo != null)
+                {
+                    //Check to see which selected power channel is selected in the drop down menu and make sure it isn't a disabled power channel
+                    //Disabled power channels are set when sense config file is read. 
+                    //If power channel is disabled in config file, the drop down menu will have a "Disabled" value instead of an actual value.
+                    //If user selected a non-Disabled channel, then get the data corresponding to the drop down menu value
+                    if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[0]))
+                    {
+                        powerTwo = (double)newData.Bands[0];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[1]))
+                    {
+                        powerTwo = (double)newData.Bands[1];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[2]))
+                    {
+                        powerTwo = (double)newData.Bands[2];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[3]))
+                    {
+                        powerTwo = (double)newData.Bands[3];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[4]))
+                    {
+                        powerTwo = (double)newData.Bands[4];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[5]))
+                    {
+                        powerTwo = (double)newData.Bands[5];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[6]))
+                    {
+                        powerTwo = (double)newData.Bands[6];
+                    }
+                    else if (!SelectedPowerChannelTwo.Equals("Disabled") && SelectedPowerChannelTwo.Equals(PowerChannelOptionsTwo[7]))
+                    {
+                        powerTwo = (double)newData.Bands[7];
+                    }
+                    else
+                    {
+                        powerTwo = double.NaN;
+                    }
+                }
+                else
+                {
+                    powerTwo = double.NaN;
+                }
+
+                //LD1 chart for power 2
+                if (SelectedPowerLD1ChannelTwo != null)
+                {
+                    //Check to see which selected power channel is selected in the drop down menu and make sure it isn't a disabled power channel
+                    //Disabled power channels are set when sense config file is read. 
+                    //If power channel is disabled in config file, the drop down menu will have a "Disabled" value instead of an actual value.
+                    //If user selected a non-Disabled channel, then get the data corresponding to the drop down menu value
+                    if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[0]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[0];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[1]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[1];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[2]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[2];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[3]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[3];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[4]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[4];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[5]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[5];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[6]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[6];
+                    }
+                    else if (!SelectedPowerLD1ChannelTwo.Equals("Disabled") && SelectedPowerLD1ChannelTwo.Equals(PowerChannelOptionsTwo[7]))
+                    {
+                        powerTwoLD1 = (double)newData.Bands[7];
+                    }
+                    else
+                    {
+                        powerTwoLD1 = double.NaN;
+                    }
+                }
+                else
+                {
+                    powerTwoLD1 = double.NaN;
+                }
+            }
+            catch (Exception e)
+            {
+                powerTwo = double.NaN;
+                powerTwoLD1 = double.NaN;
+                _log.Error(e);
+            }
+            lock (_bufferYListLock)
+            {
+                powerStateSpaceYValueList.Add(powerTwo);
             }
 
             try
@@ -1925,21 +2189,82 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 //If doing embedded then adaptive shouldn't be null, so use those values.  If not embedded and just sensing, just make 0
                 if (adaptiveConfig != null)
                 {
-
+                    //double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
                     _b1ThresholdLine.Append(powerAndDetectorXValue, adaptiveConfig.Detection.LD0.B1);
                     _b0ThresholdLine.Append(powerAndDetectorXValue, adaptiveConfig.Detection.LD0.B0);
+                    _b1LD1ThresholdLine.Append(powerAndDetectorXValue, adaptiveConfig.Detection.LD1.B1);
+                    _b0LD1ThresholdLine.Append(powerAndDetectorXValue, adaptiveConfig.Detection.LD1.B0);
                 }
                 else
                 {
                     _b1ThresholdLine.Append(powerAndDetectorXValue, 0);
                     _b0ThresholdLine.Append(powerAndDetectorXValue, 0);
+                    _b1LD1ThresholdLine.Append(powerAndDetectorXValue, 0);
+                    _b0LD1ThresholdLine.Append(powerAndDetectorXValue, 0);
                 }
                 _powerData.Append(powerAndDetectorXValue, power);
+                _powerDataTwo.Append(powerAndDetectorXValue, powerTwo);
+                //PowerLD1DataChart.Append(powerAndDetectorXValue, powerLD1);
+                //PowerLD1DataChartTwo.Append(powerAndDetectorXValue, powerTwoLD1);
             }
             catch (Exception e)
             {
                 _log.Error(e);
             }
+
+            //Chart the lower threshold
+            try
+            {
+                //B0s is B0/2^ffpv
+                //double B0s = adaptiveConfig.Detection.LD0.B0 / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                //Wx is W0/2^(ffpv)
+                //double Wx = adaptiveConfig.Detection.LD0.WeightVector[0] / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                //Wy is set W1/2^(ffpv)
+                //double Wy = adaptiveConfig.Detection.LD0.WeightVector[1] / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                ////Get the intercept
+                //double xStartValue = 0;
+                //double yIntercept = B0s / Wy;
+                ////Add value for y intercept
+                //_b0StateThresholdLine.Clear();
+                //_b0StateThresholdLine.Append(0, yIntercept);
+                //for (int i = 0; i < _b0B1Length; i++)
+                //{
+                //    xStartValue += Wy;
+                //    yIntercept -= Wx;
+                //}
+                //_b0StateThresholdLine.Append(xStartValue, yIntercept);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+            //Chart the upperthreshold
+            try
+            {
+                //B1s is B1/2^ffpv
+                //double B1s = adaptiveConfig.Detection.LD0.B1 / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                //Wx is W0/2^(ffpv)
+                //double Wx = adaptiveConfig.Detection.LD0.WeightVector[0] / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                //Wy is set W1/2^(ffpv)
+                //double Wy = adaptiveConfig.Detection.LD0.WeightVector[1] / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                ////Get the intercept
+                //double xStartValue = 0;
+                //double yIntercept = B1s / Wy;
+                ////Add value for y intercept
+                //_b1StateThresholdLine.Clear();
+                //_b1StateThresholdLine.Append(0, yIntercept);
+                //for (int i = 0; i < _b0B1Length; i++)
+                //{
+                //    xStartValue += Wy;
+                //    yIntercept -= Wx;
+                //}
+                //_b1StateThresholdLine.Append(xStartValue, yIntercept);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+            //_b1StateThresholdLine.Append(powerAndDetectorXValue, 100);
 
             try
             {
@@ -1956,12 +2281,56 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                     YAxesPower[0].AutoRange = AutoRange.Never;
                     if (adaptiveConfig != null)
                     {
-                        YAxesPower[0].VisibleRange = new DoubleRange(adaptiveConfig.Detection.LD0.B0 - adaptiveConfig.Detection.LD0.B1 * .4, adaptiveConfig.Detection.LD0.B1 + adaptiveConfig.Detection.LD0.B1 * .4);
+                        //double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                        if ((adaptiveConfig.Detection.LD0.B0 ) < 0 && (adaptiveConfig.Detection.LD0.B1 ) < 0)
+                        {
+                            YAxesPower[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0 ) + (adaptiveConfig.Detection.LD0.B1 ) * .4, (adaptiveConfig.Detection.LD0.B1 ) - (adaptiveConfig.Detection.LD0.B1 ) * .4);
+                        }
+                        else if ((adaptiveConfig.Detection.LD0.B0 ) < 0 && (adaptiveConfig.Detection.LD0.B1 ) >= 0)
+                        {
+                            YAxesPower[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0 ) - (adaptiveConfig.Detection.LD0.B1 ) * .4, (adaptiveConfig.Detection.LD0.B1 ) + (adaptiveConfig.Detection.LD0.B1 ) * .4);
+                        }
+                        else
+                        {
+                            YAxesPower[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0 ) - (adaptiveConfig.Detection.LD0.B1 ) * .4, (adaptiveConfig.Detection.LD0.B1 ) + (adaptiveConfig.Detection.LD0.B1 ) * .4);
+                        }
                     }
                 }
                 else if (SelectedPowerScaleOption.Equals(powerNoneScaleChartOption))
                 {
                     YAxesPower[0].AutoRange = AutoRange.Never;
+                }
+
+                //Power on chart for LD1
+                if (SelectedPowerLD1ScaleOption.Equals(powerAutoScaleChartOption))
+                {
+                    YAxesLD1[1].AutoRange = AutoRange.Always;
+                }
+                else if (SelectedPowerLD1ScaleOption.Equals(powerThresholdScaleChartOption))
+                {
+                    //If the drop down menu for the SelectedPowerLD1ScaleOption is equal to Threshold, then snap to the lower and upper threshold values given and multiply upper limit by .4 to give buffer.
+                    //Also, turn off auto-range
+                    YAxesLD1[1].AutoRange = AutoRange.Never;
+                    if (adaptiveConfig != null)
+                    {
+                        //double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD1.FractionalFixedPointValue);
+                        if ((adaptiveConfig.Detection.LD1.B0) < 0 && (adaptiveConfig.Detection.LD1.B1) < 0)
+                        {
+                            YAxesLD1[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) + (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) - (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                        else if ((adaptiveConfig.Detection.LD1.B0) < 0 && (adaptiveConfig.Detection.LD1.B1) >= 0)
+                        {
+                            YAxesLD1[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) - (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) + (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                        else
+                        {
+                            YAxesLD1[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) - (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) + (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                    }
+                }
+                else if (SelectedPowerLD1ScaleOption.Equals(powerNoneScaleChartOption))
+                {
+                    YAxesLD1[1].AutoRange = AutoRange.Never;
                 }
             }
             catch (Exception e)
@@ -1972,12 +2341,49 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         //Detector Event Handler
         private void TheSummit_dataReceivedDetector(object sender, AdaptiveDetectEvent newData)
         {
+            DetectionOutputStatus flag = DetectionOutputStatus.OutputOverRange;
+            bool isLD0OverRange = newData.Ld0DetectionStatus.HasFlag(flag);
+            bool isLD1OverRange = newData.Ld1DetectionStatus.HasFlag(flag);
+            if (isLD0OverRange)
+            {
+                LD0OverrangeTextColor = Brushes.Red;
+                LD0OverrangeText = "LD0 Saturated";
+            }
+            else
+            {
+                LD0OverrangeTextColor = Brushes.Green;
+                LD0OverrangeText = "LD0 In Range";
+            }
+            if (isLD1OverRange)
+            {
+                LD1OverrangeTextColor = Brushes.Red;
+                LD1OverrangeText = "LD1 Saturated";
+            }
+            else
+            {
+                LD1OverrangeTextColor = Brushes.Green;
+                LD1OverrangeText = "LD1 In Range";
+            }
             try
             {
                 powerAndDetectorXValue = sw.ElapsedMilliseconds;
                 //get the detector for LD0 and append to chart. Increment z for x axis
-                uint detectorData = newData.Ld0Status.Output;
+                int detectorData = (int)newData.Ld0Status.Output;
+                detectorData = Convert.ToInt32(detectorData / Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue));
                 _detectorLD0Chart.Append(powerAndDetectorXValue, detectorData);
+            }
+            catch (Exception e)
+            {
+                _log.Error(e);
+            }
+
+            try
+            {
+                powerAndDetectorXValue = sw.ElapsedMilliseconds;
+                //get the detector for LD1 and append to chart. Increment z for x axis
+                int detectorData = (int)newData.Ld1Status.Output;
+                detectorData = Convert.ToInt32(detectorData / Math.Pow(2, adaptiveConfig.Detection.LD1.FractionalFixedPointValue));
+                _detectorLD1Chart.Append(powerAndDetectorXValue, detectorData);
             }
             catch (Exception e)
             {
@@ -1994,8 +2400,23 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 }
                 else if (SelectedPowerScaleOption.Equals(powerThresholdScaleChartOption))
                 {
-                    YAxesPower[1].AutoRange = AutoRange.Never;
-                    YAxesPower[1].VisibleRange = new DoubleRange(adaptiveConfig.Detection.LD0.B0 - adaptiveConfig.Detection.LD0.B1 * .4, adaptiveConfig.Detection.LD0.B1 + adaptiveConfig.Detection.LD0.B1 * .4);
+                    if(adaptiveConfig != null)
+                    {
+                        //double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                        YAxesPower[1].AutoRange = AutoRange.Never;
+                        if((adaptiveConfig.Detection.LD0.B0)< 0 && (adaptiveConfig.Detection.LD0.B1) < 0)
+                        {
+                            YAxesPower[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0) + (adaptiveConfig.Detection.LD0.B1) * .4, (adaptiveConfig.Detection.LD0.B1) - (adaptiveConfig.Detection.LD0.B1) * .4);
+                        }
+                        else if ((adaptiveConfig.Detection.LD0.B0) < 0 && (adaptiveConfig.Detection.LD0.B1) >= 0)
+                        {
+                            YAxesPower[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0) - (adaptiveConfig.Detection.LD0.B1) * .4, (adaptiveConfig.Detection.LD0.B1) + (adaptiveConfig.Detection.LD0.B1) * .4);
+                        }
+                        else
+                        {
+                            YAxesPower[1].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD0.B0) - (adaptiveConfig.Detection.LD0.B1) * .4, (adaptiveConfig.Detection.LD0.B1) + (adaptiveConfig.Detection.LD0.B1) * .4);
+                        }
+                    }
 
                 }
                 else if (SelectedPowerScaleOption.Equals(powerNoneScaleChartOption))
@@ -2003,15 +2424,50 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                     YAxesPower[0].AutoRange = AutoRange.Never;
                 }
 
+                if (SelectedPowerLD1ScaleOption.Equals(powerAutoScaleChartOption))
+                {
+                    YAxesLD1[0].AutoRange = AutoRange.Always;
+                }
+                else if (SelectedPowerLD1ScaleOption.Equals(powerThresholdScaleChartOption))
+                {
+                    if (adaptiveConfig != null)
+                    {
+                        //double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD1.FractionalFixedPointValue);
+                        YAxesLD1[0].AutoRange = AutoRange.Never;
+                        if ((adaptiveConfig.Detection.LD1.B0) < 0 && (adaptiveConfig.Detection.LD1.B1) < 0)
+                        {
+                            YAxesLD1[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) + (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) - (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                        else if ((adaptiveConfig.Detection.LD1.B0) < 0 && (adaptiveConfig.Detection.LD1.B1) >= 0)
+                        {
+                            YAxesLD1[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) - (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) + (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                        else
+                        {
+                            YAxesLD1[0].VisibleRange = new DoubleRange((adaptiveConfig.Detection.LD1.B0) - (adaptiveConfig.Detection.LD1.B1) * .4, (adaptiveConfig.Detection.LD1.B1) + (adaptiveConfig.Detection.LD1.B1) * .4);
+                        }
+                    }
+
+                }
+                else if (SelectedPowerLD1ScaleOption.Equals(powerNoneScaleChartOption))
+                {
+                    YAxesLD1[0].AutoRange = AutoRange.Never;
+                }
+
                 //Get adaptive state and add to chart. Update value in display to show new value change
                 byte adaptiveState = newData.CurrentAdaptiveState;
                 StimStateDisplay = adaptiveState.ToString();
                 _adaptiveState.Append(y_coordinateForCurrState, adaptiveState);
+                YAxes[0].AutoRange = AutoRange.Always;
+                YAxes[1].AutoRange = AutoRange.Always;
 
                 //Get adaptive amp and add to chart. Update value in display to show new value change
-                double current = newData.CurrentProgramAmplitudesInMilliamps[0];
-                StimAmpDisplay = current.ToString();
-                _adaptiveCurrent.Append(y_coordinateForCurrState, current);
+                AdaptiveCurrentProgram0Chart.Append(y_coordinateForCurrState, newData.CurrentProgramAmplitudesInMilliamps[0]);
+                AdaptiveCurrentProgram1Chart.Append(y_coordinateForCurrState, newData.CurrentProgramAmplitudesInMilliamps[1]);
+                AdaptiveCurrentProgram2Chart.Append(y_coordinateForCurrState, newData.CurrentProgramAmplitudesInMilliamps[2]);
+                AdaptiveCurrentProgram3Chart.Append(y_coordinateForCurrState, newData.CurrentProgramAmplitudesInMilliamps[3]);
+                StimAmpDisplay = newData.CurrentProgramAmplitudesInMilliamps[ProgramOptions.IndexOf(SelectedProgram)].ToString();
+
 
                 //increment y value for x axis
                 y_coordinateForCurrState += 0.2;
@@ -2111,7 +2567,17 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 string caption = "ERROR";
                 MessageBoxButton button = MessageBoxButton.OK;
                 MessageBoxImage icon = MessageBoxImage.Error;
-                MessageBox.Show(messageBoxText, caption, button, icon);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    try
+                    {
+                        MessageBox.Show(Application.Current.MainWindow, messageBoxText, caption, button, icon);
+                    }
+                    catch (Exception e)
+                    {
+                        _log.Error(e);
+                    }
+                });
                 return true;
             }
             return false;
@@ -2301,9 +2767,30 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                         // Deltas - 0.1mA/second
                         AdaptiveDeltas[] embeddedDeltas = new AdaptiveDeltas[4];
                         embeddedDeltas[0] = new AdaptiveDeltas(adaptiveConfig.Adaptive.Program0.RiseTimes, adaptiveConfig.Adaptive.Program0.FallTimes);
-                        embeddedDeltas[1] = new AdaptiveDeltas(0, 0);
-                        embeddedDeltas[2] = new AdaptiveDeltas(0, 0);
-                        embeddedDeltas[3] = new AdaptiveDeltas(0, 0);
+                        if(adaptiveConfig.Adaptive.Program1 != null)
+                        {
+                            embeddedDeltas[1] = new AdaptiveDeltas(adaptiveConfig.Adaptive.Program1.RiseTimes, adaptiveConfig.Adaptive.Program1.FallTimes);
+                        }
+                        else
+                        {
+                            embeddedDeltas[1] = new AdaptiveDeltas(0, 0);
+                        }
+                        if (adaptiveConfig.Adaptive.Program2 != null)
+                        {
+                            embeddedDeltas[2] = new AdaptiveDeltas(adaptiveConfig.Adaptive.Program2.RiseTimes, adaptiveConfig.Adaptive.Program2.FallTimes);
+                        }
+                        else
+                        {
+                            embeddedDeltas[2] = new AdaptiveDeltas(0, 0);
+                        }
+                        if (adaptiveConfig.Adaptive.Program3 != null)
+                        {
+                            embeddedDeltas[3] = new AdaptiveDeltas(adaptiveConfig.Adaptive.Program3.RiseTimes, adaptiveConfig.Adaptive.Program3.FallTimes);
+                        }
+                        else
+                        {
+                            embeddedDeltas[3] = new AdaptiveDeltas(0, 0);
+                        }
                         bufferReturnInfo = theSummit.WriteAdaptiveDeltas(embeddedDeltas);
                         Messages.Insert(0, DateTime.Now + ":: Writing Adaptive Deltas (Rise/Fall times): " + bufferReturnInfo.Descriptor);
                         if (CheckForReturnError(bufferReturnInfo, "Write Adaptive Deltas", true))
@@ -2328,7 +2815,10 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                             return;
                         }
                         _log.Info("Change to group D success in update DBS button click");
-
+                        if(!senseConfig.SenseOptions.LD1 && adaptiveConfig.Detection.LD1.IsEnabled)
+                        {
+                            ShowMessageBox("LD1 is off in Sense and is turned on in Adaptive config. If you meant to run LD1, please turn it on in Sense and run adaptive again. Otherwise proceed with it off.", "WARNING!");
+                        }
                         if (!summitSensing.StartSensing(theSummit, senseConfig, true))
                         {
                             _log.Warn("Could not start sensingin update DBS button click");
@@ -2398,17 +2888,6 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                         Thread.Sleep(1000);
                         //Update all stim display settings to user
                         UpdateStimStatusGroup(true, true, true);
-                        //Set y axis for current/state from config file
-                        //This checks to see if either state 0 or state 2 is bigger.
-                        //If one is bigger than the other, then the bigger one will have the upper limit on y axis
-                        if (adaptiveConfig.Adaptive.Program0.State2AmpInMilliamps > adaptiveConfig.Adaptive.Program0.State0AmpInMilliamps)
-                        {
-                            YAxes[1].VisibleRange = new DoubleRange(0, adaptiveConfig.Adaptive.Program0.State2AmpInMilliamps);
-                        }
-                        else
-                        {
-                            YAxes[1].VisibleRange = new DoubleRange(0, adaptiveConfig.Adaptive.Program0.State0AmpInMilliamps);
-                        }
                         //Calculate fft bins for FFT x values
                         CalculatePowerBins calculatePowerBins = new CalculatePowerBins(_log);
                         fftBins = calculatePowerBins.CalculateFFTBins(ConfigConversions.FftSizesConvert(senseConfig.Sense.FFT.FftSize), ConfigConversions.TDSampleRateConvert(senseConfig.Sense.TDSampleRate));
@@ -2426,11 +2905,15 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                         //Display current FFT Channel
                         FFTCurrentChannel = "Ch. " + senseConfig.Sense.FFT.Channel.ToString();
                         //This sets the Channel options in drop down menu in visualization screen.
-                        SetPowerChannelOptionsInDropDownMenu();
+                        PowerChannelOptions = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerChannelOptionsTwo = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerLD1ChannelOptions = SetPowerChannelOptionsInDropDownMenu(senseConfig);
+                        PowerLD1ChannelOptionsTwo = SetPowerChannelOptionsInDropDownMenu(senseConfig);
                         SetSTNTimeDomainChannelOptionsInDropDownMenu(senseConfig);
                         SetM1TimeDomainChannelOptionsInDropDownMenu(senseConfig);
                         //This sets the selected option to whichever power value is set to true in adaptive config file
-                        SetPowerChannelSelectedOptionInDropDownMenu();
+                        SetPowerChannelSelectedOptionInDropDownMenu(adaptiveConfig);
+                        PopulateStateSpaceTextBoxes();
                         Messages.Insert(0, DateTime.Now + ":: --Update embedded aDBS successful--");
                         _log.Info("Success updating DBS button click");
                     }
@@ -2484,66 +2967,174 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         /// <returns>true if successfully write adaptive states or false if unsuccessful</returns>
         private bool WriteAdaptiveStates()
         {
-            try
+            //This is the retroactive case where there is only program 0. Else case covers all programs
+            if (adaptiveConfig.Adaptive.Program1 == null || adaptiveConfig.Adaptive.Rates == null)
             {
-                //For now, this just sets up state 0-2 and sets the other states at 25.5 which is the value to hold the current
-                AdaptiveState aState = new AdaptiveState();
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State0AmpInMilliamps;
-                aState.Prog1AmpInMilliamps = 0;
-                aState.Prog2AmpInMilliamps = 0;
-                aState.Prog3AmpInMilliamps = 0;
-                aState.RateTargetInHz = adaptiveConfig.Adaptive.Program0.RateTargetInHz; // Hold Rate
-                bufferReturnInfo = theSummit.WriteAdaptiveState(0, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 0: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                try
+                {
+                    //For now, this just sets up state 0-2 and sets the other states at 25.5 which is the value to hold the current
+                    AdaptiveState aState = new AdaptiveState();
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State0AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = 0;
+                    aState.Prog2AmpInMilliamps = 0;
+                    aState.Prog3AmpInMilliamps = 0;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Program0.RateTargetInHz; // Hold Rate
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(0, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 0: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State1AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(1, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 1: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State2AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(2, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 2: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State3AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(3, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 3: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State4AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(4, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 4: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State5AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(5, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 5: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State6AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(6, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 6: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State7AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(7, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 7: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State8AmpInMilliamps;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(8, aState);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 8: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    _log.Info("Write Adaptive States success");
+                }
+                catch (Exception e)
+                {
+                    Messages.Insert(0, DateTime.Now + ":: --ERROR: Writing Adaptive States-- Please check the adaptive config file is correct");
+                    _log.Error(e);
                     return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State1AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(1, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 1: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State2AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(2, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 2: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State3AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(3, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 3: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State4AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(4, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 4: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State5AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(5, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 5: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State6AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(6, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 6: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State7AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(7, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 7: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State8AmpInMilliamps;
-                bufferReturnInfo = theSummit.WriteAdaptiveState(8, aState);
-                Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 8: " + bufferReturnInfo.Descriptor);
-                if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
-                    return false;
-                _log.Info("Write Adaptive States success");
+                }
             }
-            catch (Exception e)
+            else
             {
-                Messages.Insert(0, DateTime.Now + ":: --ERROR: Writing Adaptive States-- Please check the adaptive config file is correct");
-                _log.Error(e);
-                return false;
+                try
+                {
+                    AdaptiveState aState = new AdaptiveState();
+                    //State 0
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State0AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State0AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State0AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State0AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State0.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(0, aState, adaptiveConfig.Adaptive.Rates.State0.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 0: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 1
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State1AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State1AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State1AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State1AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State1.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(1, aState, adaptiveConfig.Adaptive.Rates.State1.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 1: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 2
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State2AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State2AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State2AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State2AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State2.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(2, aState, adaptiveConfig.Adaptive.Rates.State2.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 2: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 3
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State3AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State3AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State3AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State3AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State3.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(3, aState, adaptiveConfig.Adaptive.Rates.State3.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 3: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 4
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State4AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State4AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State4AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State4AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State4.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(4, aState, adaptiveConfig.Adaptive.Rates.State4.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 4: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 5
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State5AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State5AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State5AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State5AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State5.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(5, aState, adaptiveConfig.Adaptive.Rates.State5.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 5: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 6
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State6AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State6AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State6AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State6AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State6.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(6, aState, adaptiveConfig.Adaptive.Rates.State6.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 6: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 7
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State7AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State7AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State7AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State7AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State7.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(7, aState, adaptiveConfig.Adaptive.Rates.State7.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 7: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    //State 8
+                    aState.Prog0AmpInMilliamps = adaptiveConfig.Adaptive.Program0.State8AmpInMilliamps;
+                    aState.Prog1AmpInMilliamps = adaptiveConfig.Adaptive.Program1.State8AmpInMilliamps;
+                    aState.Prog2AmpInMilliamps = adaptiveConfig.Adaptive.Program2.State8AmpInMilliamps;
+                    aState.Prog3AmpInMilliamps = adaptiveConfig.Adaptive.Program3.State8AmpInMilliamps;
+                    aState.RateTargetInHz = adaptiveConfig.Adaptive.Rates.State8.RateTargetInHz;
+                    bufferReturnInfo = theSummit.WriteAdaptiveState(8, aState, adaptiveConfig.Adaptive.Rates.State8.SenseFriendly);
+                    Messages.Insert(0, DateTime.Now + ":: Writing Adaptive State 8: " + bufferReturnInfo.Descriptor);
+                    if (CheckForReturnError(bufferReturnInfo, "Error Writing adaptive state", true))
+                        return false;
+                    _log.Info("Write Adaptive States success");
+                }
+                catch (Exception e)
+                {
+                    Messages.Insert(0, DateTime.Now + ":: --ERROR: Writing Adaptive States-- Please check the adaptive config file is correct");
+                    _log.Error(e);
+                    return false;
+                }
             }
             return true;
         }
@@ -2598,25 +3189,29 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 configLd.BlankingDurationUponStateChange = adaptiveConfig.Detection.LD0.StateChangeBlankingUponStateChange;
                 // Set the fixed point value
                 configLd.FractionalFixedPointValue = adaptiveConfig.Detection.LD0.FractionalFixedPointValue;
-                double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
-                // Set the weight vectors for the power inputs, since only one channel is used rest can be zero.
-                configLd.Features[0].WeightVector = (uint) (adaptiveConfig.Detection.LD0.WeightVector[0] * FFVP);
-                configLd.Features[1].WeightVector = (uint) (adaptiveConfig.Detection.LD0.WeightVector[1] * FFVP);
-                configLd.Features[2].WeightVector = (uint) (adaptiveConfig.Detection.LD0.WeightVector[2] * FFVP);
-                configLd.Features[3].WeightVector = (uint) (adaptiveConfig.Detection.LD0.WeightVector[3] * FFVP);
-                // Set the normalization vectors for the power inputs, since only one channel is used rest can be zero. 
-                configLd.Features[0].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[0] * FFVP);
-                configLd.Features[1].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[1] * FFVP);
-                configLd.Features[2].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[2] * FFVP);
-                configLd.Features[3].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[3] * FFVP);
-                // Set the normalization subtract vectors for the power inputs
-                configLd.Features[0].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[0];
-                configLd.Features[1].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[1];
-                configLd.Features[2].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[2];
-                configLd.Features[3].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[3];
-                // Set the thresholds
-                configLd.BiasTerm[0] = adaptiveConfig.Detection.LD0.B0;
-                configLd.BiasTerm[1] = adaptiveConfig.Detection.LD0.B1;
+                unchecked
+                {
+                    double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD0.FractionalFixedPointValue);
+                    // Set the weight vectors for the power inputs, since only one channel is used rest can be zero.
+                    configLd.Features[0].WeightVector = (uint)(adaptiveConfig.Detection.LD0.WeightVector[0] * FFVP);
+                    configLd.Features[1].WeightVector = (uint)(adaptiveConfig.Detection.LD0.WeightVector[1] * FFVP);
+                    configLd.Features[2].WeightVector = (uint)(adaptiveConfig.Detection.LD0.WeightVector[2] * FFVP);
+                    configLd.Features[3].WeightVector = (uint)(adaptiveConfig.Detection.LD0.WeightVector[3] * FFVP);
+                    // Set the normalization vectors for the power inputs, since only one channel is used rest can be zero. 
+                    configLd.Features[0].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[0] * FFVP);
+                    configLd.Features[1].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[1] * FFVP);
+                    configLd.Features[2].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[2] * FFVP);
+                    configLd.Features[3].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD0.NormalizationMultiplyVector[3] * FFVP);
+                    // Set the normalization subtract vectors for the power inputs
+                    configLd.Features[0].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[0];
+                    configLd.Features[1].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[1];
+                    configLd.Features[2].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[2];
+                    configLd.Features[3].NormalizationSubtractVector = adaptiveConfig.Detection.LD0.NormalizationSubtractVector[3];
+                    // Set the thresholds
+                    configLd.BiasTerm[0] = (uint)(adaptiveConfig.Detection.LD0.B0 * FFVP);
+                    configLd.BiasTerm[1] = (uint)(adaptiveConfig.Detection.LD0.B1 * FFVP);
+                }
+                
                 
             }
             catch
@@ -2688,26 +3283,30 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 configLd.TerminationDuration = adaptiveConfig.Detection.LD1.TerminationDuration;
                 configLd.HoldoffTime = adaptiveConfig.Detection.LD1.HoldOffOnStartupTime;
                 configLd.BlankingDurationUponStateChange = adaptiveConfig.Detection.LD1.StateChangeBlankingUponStateChange;
-                // Set the weight vectors for the power inputs, since only one channel is used rest can be zero.
-                configLd.Features[0].WeightVector = adaptiveConfig.Detection.LD1.WeightVector[0];
-                configLd.Features[1].WeightVector = adaptiveConfig.Detection.LD1.WeightVector[1];
-                configLd.Features[2].WeightVector = adaptiveConfig.Detection.LD1.WeightVector[2];
-                configLd.Features[3].WeightVector = adaptiveConfig.Detection.LD1.WeightVector[3];
-                // Set the normalization vectors for the power inputs, since only one channel is used rest can be zero. 
-                configLd.Features[0].NormalizationMultiplyVector = adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[0];
-                configLd.Features[1].NormalizationMultiplyVector = adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[1];
-                configLd.Features[2].NormalizationMultiplyVector = adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[2];
-                configLd.Features[3].NormalizationMultiplyVector = adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[3];
-                // Set the normalization subtract vectors for the power inputs
-                configLd.Features[0].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[0];
-                configLd.Features[1].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[1];
-                configLd.Features[2].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[2];
-                configLd.Features[3].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[3];
-                // Set the thresholds
-                configLd.BiasTerm[0] = adaptiveConfig.Detection.LD1.B0;
-                configLd.BiasTerm[1] = adaptiveConfig.Detection.LD1.B1;
                 // Set the fixed point value
                 configLd.FractionalFixedPointValue = adaptiveConfig.Detection.LD1.FractionalFixedPointValue;
+                unchecked
+                {
+                    double FFVP = Math.Pow(2, adaptiveConfig.Detection.LD1.FractionalFixedPointValue);
+                    // Set the weight vectors for the power inputs, since only one channel is used rest can be zero.
+                    configLd.Features[0].WeightVector = (uint)(adaptiveConfig.Detection.LD1.WeightVector[0] * FFVP);
+                    configLd.Features[1].WeightVector = (uint)(adaptiveConfig.Detection.LD1.WeightVector[1] * FFVP);
+                    configLd.Features[2].WeightVector = (uint)(adaptiveConfig.Detection.LD1.WeightVector[2] * FFVP);
+                    configLd.Features[3].WeightVector = (uint)(adaptiveConfig.Detection.LD1.WeightVector[3] * FFVP);
+                    // Set the normalization vectors for the power inputs, since only one channel is used rest can be zero. 
+                    configLd.Features[0].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[0] * FFVP);
+                    configLd.Features[1].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[1] * FFVP);
+                    configLd.Features[2].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[2] * FFVP);
+                    configLd.Features[3].NormalizationMultiplyVector = (uint)(adaptiveConfig.Detection.LD1.NormalizationMultiplyVector[3] * FFVP);
+                    // Set the normalization subtract vectors for the power inputs
+                    configLd.Features[0].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[0];
+                    configLd.Features[1].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[1];
+                    configLd.Features[2].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[2];
+                    configLd.Features[3].NormalizationSubtractVector = adaptiveConfig.Detection.LD1.NormalizationSubtractVector[3];
+                    // Set the thresholds
+                    configLd.BiasTerm[0] = (uint)(adaptiveConfig.Detection.LD1.B0 * FFVP);
+                    configLd.BiasTerm[1] = (uint)(adaptiveConfig.Detection.LD1.B1 * FFVP);
+                }
             }
             catch
             {
@@ -2737,7 +3336,8 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         /// Method to set all availabe power options in the drop down menu in Visualization Tab
         /// This sets the variable PowerChannelOptions drop down menu collection in the VisualizationViewModel
         /// </summary>
-        private void SetPowerChannelOptionsInDropDownMenu()
+        
+        private BindableCollection<string> SetPowerChannelOptionsInDropDownMenu(SenseModel localSense)
         {
             //Set the power channel options to show the time domain inputs and power channel values
             //Time domain Channel must be enabled for Power Band to be enabled
@@ -2746,73 +3346,137 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //Check if power band enabled in config file AND time domain channel enabled in config file
             //If so, add it to collection else set to "Disabled"
             //Do for all power bands
-            if (senseConfig.Sense.PowerBands[0].IsEnabled && senseConfig.Sense.TimeDomains[0].IsEnabled)
+            if (localSense.Sense.PowerBands[0].IsEnabled && localSense.Sense.TimeDomains[0].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[0].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[0].Inputs[1] + " " + lowerPowerBinActualValues[0] + "-" + upperPowerBinActualValues[0] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[0].Inputs[0] + "-" + localSense.Sense.TimeDomains[0].Inputs[1] + " " + lowerPowerBinActualValues[0] + "-" + upperPowerBinActualValues[0] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[1].IsEnabled && senseConfig.Sense.TimeDomains[0].IsEnabled)
+            if (localSense.Sense.PowerBands[1].IsEnabled && localSense.Sense.TimeDomains[0].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[0].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[0].Inputs[1] + " " + lowerPowerBinActualValues[1] + "-" + upperPowerBinActualValues[1] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[0].Inputs[0] + "-" + localSense.Sense.TimeDomains[0].Inputs[1] + " " + lowerPowerBinActualValues[1] + "-" + upperPowerBinActualValues[1] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[2].IsEnabled && senseConfig.Sense.TimeDomains[1].IsEnabled)
+            if (localSense.Sense.PowerBands[2].IsEnabled && localSense.Sense.TimeDomains[1].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[1].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[1].Inputs[1] + " " + lowerPowerBinActualValues[2] + "-" + upperPowerBinActualValues[2] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[1].Inputs[0] + "-" + localSense.Sense.TimeDomains[1].Inputs[1] + " " + lowerPowerBinActualValues[2] + "-" + upperPowerBinActualValues[2] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[3].IsEnabled && senseConfig.Sense.TimeDomains[1].IsEnabled)
+            if (localSense.Sense.PowerBands[3].IsEnabled && localSense.Sense.TimeDomains[1].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[1].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[1].Inputs[1] + " " + lowerPowerBinActualValues[3] + "-" + upperPowerBinActualValues[3] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[1].Inputs[0] + "-" + localSense.Sense.TimeDomains[1].Inputs[1] + " " + lowerPowerBinActualValues[3] + "-" + upperPowerBinActualValues[3] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[4].IsEnabled && senseConfig.Sense.TimeDomains[2].IsEnabled)
+            if (localSense.Sense.PowerBands[4].IsEnabled && localSense.Sense.TimeDomains[2].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[2].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[2].Inputs[1] + " " + lowerPowerBinActualValues[4] + "-" + upperPowerBinActualValues[4] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[2].Inputs[0] + "-" + localSense.Sense.TimeDomains[2].Inputs[1] + " " + lowerPowerBinActualValues[4] + "-" + upperPowerBinActualValues[4] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[5].IsEnabled && senseConfig.Sense.TimeDomains[2].IsEnabled)
+            if (localSense.Sense.PowerBands[5].IsEnabled && localSense.Sense.TimeDomains[2].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[2].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[2].Inputs[1] + " " + lowerPowerBinActualValues[5] + "-" + upperPowerBinActualValues[5] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[2].Inputs[0] + "-" + localSense.Sense.TimeDomains[2].Inputs[1] + " " + lowerPowerBinActualValues[5] + "-" + upperPowerBinActualValues[5] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[6].IsEnabled && senseConfig.Sense.TimeDomains[3].IsEnabled)
+            if (localSense.Sense.PowerBands[6].IsEnabled && localSense.Sense.TimeDomains[3].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[3].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[3].Inputs[1] + " " + lowerPowerBinActualValues[6] + "-" + upperPowerBinActualValues[6] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[3].Inputs[0] + "-" + localSense.Sense.TimeDomains[3].Inputs[1] + " " + lowerPowerBinActualValues[6] + "-" + upperPowerBinActualValues[6] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            if (senseConfig.Sense.PowerBands[7].IsEnabled && senseConfig.Sense.TimeDomains[3].IsEnabled)
+            if (localSense.Sense.PowerBands[7].IsEnabled && localSense.Sense.TimeDomains[3].IsEnabled)
             {
-                temp.Add("+" + senseConfig.Sense.TimeDomains[3].Inputs[0] + "-" + senseConfig.Sense.TimeDomains[3].Inputs[1] + " " + lowerPowerBinActualValues[7] + "-" + upperPowerBinActualValues[7] + "Hz");
+                temp.Add("+" + localSense.Sense.TimeDomains[3].Inputs[0] + "-" + localSense.Sense.TimeDomains[3].Inputs[1] + " " + lowerPowerBinActualValues[7] + "-" + upperPowerBinActualValues[7] + "Hz");
             }
             else
             {
                 temp.Add(DISABLED);
             }
-            //PowerChannelOptions is set in VisualizationVieModel.cs. 
-            //Set temp to PowerChannelOptions
-            PowerChannelOptions = temp;
+            return temp;
+        }
+
+        /// <summary>
+        /// This sets the PowerChannelOption to whichever power band is enabled in Sense config file
+        /// If mulitple are enabled, then the first one is selected.
+        /// Makes it so that user doesn't have to keep reselecting proper power from drop down menu
+        /// SelectedPowerChannel is the variable set and is found in VisualizationViewModel
+        /// </summary>
+        private void SetPowerChannelSelectedOptionInDropDownMenu(SenseModel localSense)
+        {
+            if (localSense.Sense.PowerBands[0].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[0];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[1];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[0];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[1];
+            }
+            else if (localSense.Sense.PowerBands[1].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[1];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[2];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[1];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[2];
+            }
+            else if (localSense.Sense.PowerBands[2].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[2];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[3];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[2];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[3];
+            }
+            else if (localSense.Sense.PowerBands[3].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[3];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[4];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[3];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[4];
+            }
+            else if (localSense.Sense.PowerBands[4].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[4];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[5];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[4];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[5];
+            }
+            else if (localSense.Sense.PowerBands[5].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[5];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[6];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[5];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[6];
+            }
+            else if (localSense.Sense.PowerBands[6].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[6];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[7];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[6];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[7];
+            }
+            else if (localSense.Sense.PowerBands[7].IsEnabled)
+            {
+                SelectedPowerChannel = PowerChannelOptions[7];
+                SelectedPowerChannelTwo = PowerChannelOptionsTwo[0];
+                SelectedPowerLD1Channel = PowerLD1ChannelOptions[7];
+                SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[0];
+            }
         }
 
         /// <summary>
@@ -2821,39 +3485,174 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         /// Makes it so that user doesn't have to keep reselecting proper power from drop down menu
         /// SelectedPowerChannel is the variable set and is found in VisualizationViewModel
         /// </summary>
-        private void SetPowerChannelSelectedOptionInDropDownMenu()
+        private void SetPowerChannelSelectedOptionInDropDownMenu(AdaptiveModel localModel)
         {
-            if (adaptiveConfig.Detection.LD0.Inputs.Ch0Band0)
+            int channelOneIsUsed = 0;
+            if(localModel != null && localModel.Detection != null)
             {
-                SelectedPowerChannel = PowerChannelOptions[0];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch0Band1)
-            {
-                SelectedPowerChannel = PowerChannelOptions[1];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch1Band0)
-            {
-                SelectedPowerChannel = PowerChannelOptions[2];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch1Band1)
-            {
-                SelectedPowerChannel = PowerChannelOptions[3];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch2Band0)
-            {
-                SelectedPowerChannel = PowerChannelOptions[4];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch2Band1)
-            {
-                SelectedPowerChannel = PowerChannelOptions[5];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch3Band0)
-            {
-                SelectedPowerChannel = PowerChannelOptions[6];
-            }
-            else if (adaptiveConfig.Detection.LD0.Inputs.Ch3Band1)
-            {
-                SelectedPowerChannel = PowerChannelOptions[7];
+                if(localModel.Detection.LD0 != null && localModel.Detection.LD0.Inputs != null)
+                {
+                    if (localModel.Detection.LD0.Inputs.Ch0Band0)
+                    {
+                        channelOneIsUsed = 0;
+                        SelectedPowerChannel = PowerChannelOptions[0];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch0Band1)
+                    {
+                        channelOneIsUsed = 1;
+                        SelectedPowerChannel = PowerChannelOptions[1];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch1Band0)
+                    {
+                        channelOneIsUsed = 2;
+                        SelectedPowerChannel = PowerChannelOptions[2];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch1Band1)
+                    {
+                        channelOneIsUsed = 3;
+                        SelectedPowerChannel = PowerChannelOptions[3];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch2Band0)
+                    {
+                        channelOneIsUsed = 4;
+                        SelectedPowerChannel = PowerChannelOptions[4];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch2Band1)
+                    {
+                        channelOneIsUsed = 5;
+                        SelectedPowerChannel = PowerChannelOptions[5];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch3Band0)
+                    {
+                        channelOneIsUsed = 6;
+                        SelectedPowerChannel = PowerChannelOptions[6];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch3Band1)
+                    {
+                        channelOneIsUsed = 7;
+                        SelectedPowerChannel = PowerChannelOptions[7];
+                    }
+                    //power channel two
+                    if (localModel.Detection.LD0.Inputs.Ch0Band1 && channelOneIsUsed < 1)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[1];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch1Band0 && channelOneIsUsed < 2)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[2];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch1Band1 && channelOneIsUsed < 3)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[3];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch2Band0 && channelOneIsUsed < 4)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[4];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch2Band1 && channelOneIsUsed < 5)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[5];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch3Band0 && channelOneIsUsed < 6)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[6];
+                    }
+                    else if (localModel.Detection.LD0.Inputs.Ch3Band1 && channelOneIsUsed < 7)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[7];
+                    }
+                    else if(localModel.Detection.LD0.Inputs.Ch0Band0 && channelOneIsUsed < 1)
+                    {
+                        SelectedPowerChannelTwo = PowerChannelOptionsTwo[0];
+                    }
+                    else
+                    {
+                        SelectedPowerChannelTwo = SelectedPowerChannel;
+                    }
+                }
+
+                //LD1 Chart power options
+                channelOneIsUsed = 0;
+                if (localModel.Detection.LD1 != null && localModel.Detection.LD1.Inputs != null)
+                {
+                    if (localModel.Detection.LD1.Inputs.Ch0Band0)
+                    {
+                        channelOneIsUsed = 0;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[0];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch0Band1)
+                    {
+                        channelOneIsUsed = 1;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[1];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch1Band0)
+                    {
+                        channelOneIsUsed = 2;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[2];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch1Band1)
+                    {
+                        channelOneIsUsed = 3;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[3];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch2Band0)
+                    {
+                        channelOneIsUsed = 4;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[4];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch2Band1)
+                    {
+                        channelOneIsUsed = 5;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[5];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch3Band0)
+                    {
+                        channelOneIsUsed = 6;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[6];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch3Band1)
+                    {
+                        channelOneIsUsed = 7;
+                        SelectedPowerLD1Channel = PowerLD1ChannelOptions[7];
+                    }
+                    //power channel two
+                    if (localModel.Detection.LD1.Inputs.Ch0Band1 && channelOneIsUsed < 1)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[1];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch1Band0 && channelOneIsUsed < 2)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[2];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch1Band1 && channelOneIsUsed < 3)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[3];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch2Band0 && channelOneIsUsed < 4)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[4];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch2Band1 && channelOneIsUsed < 5)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[5];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch3Band0 && channelOneIsUsed < 6)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[6];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch3Band1 && channelOneIsUsed < 7)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[7];
+                    }
+                    else if (localModel.Detection.LD1.Inputs.Ch0Band0 && channelOneIsUsed < 1)
+                    {
+                        SelectedPowerLD1ChannelTwo = PowerLD1ChannelOptionsTwo[0];
+                    }
+                    else
+                    {
+                        SelectedPowerLD1ChannelTwo = SelectedPowerLD1Channel;
+                    }
+                }
             }
         }
 
@@ -3163,6 +3962,28 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         #endregion
 
         #region Helper Methods: Check packet loss, CheckForNegativeInfinity, resetPOR, Calculate FFT overlap/time
+        private void MaintainStateSpaceXQueueSize(uint maxSize)
+        {
+            lock (_bufferXQueueLock)
+            {
+                while (stateSpaceXValueQueue.Count() >= maxSize)
+                {
+                    stateSpaceXValueQueue.Dequeue();
+                    Console.WriteLine("dequeue X");
+                }
+            }
+        }
+        private void MaintainStateSpaceYQueueSize(uint maxSize)
+        {
+            lock (_bufferYQueueLock)
+            {
+                while (stateSpaceYValueQueue.Count() >= maxSize)
+                {
+                    stateSpaceYValueQueue.Dequeue();
+                    Console.WriteLine("dequeue Y");
+                }
+            }
+        }
         /// <summary>
         /// Checks the packet loss.
         /// </summary>
@@ -3419,7 +4240,18 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             string caption = title;
             MessageBoxButton button = MessageBoxButton.OK;
             MessageBoxImage icon = MessageBoxImage.Information;
-            MessageBox.Show(messageBoxText, caption, button, icon);
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    MessageBox.Show(Application.Current.MainWindow, messageBoxText, caption, button, icon);
+                }
+                catch (Exception e)
+                {
+                    _log.Error(e);
+                }
+            });
+            
         }
         #endregion
     }

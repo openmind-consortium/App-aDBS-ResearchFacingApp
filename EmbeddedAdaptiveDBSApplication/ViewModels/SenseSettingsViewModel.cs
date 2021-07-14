@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿/********************
+Copyright Notice
+Copyright © 2019, The Regents of the University of California
+All rights reserved.
+
+Please see the file LICENSE in this distribution for license terms.
+**********************/
+using Caliburn.Micro;
 using EmbeddedAdaptiveDBSApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -45,7 +52,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 _tDCh1LPF1InputCBBorder, _tDCh1PB0LowerInputCBBorder, _tDCh1PB1LowerInputCBBorder, _tDCh1NegInputCBBorder,
                 _tDCh1LPF2InputCBBorder, _tDCh1PB0UpperInputCBBorder, _tDCh1PB1UpperInputCBBorder, _tDCh2PosInputCBBorder,
                 _tDCh02HPF1InputCBBorder, _tDCh2LPF1InputCBBorder, _tDCh2PB0LowerInputCBBorder, _tDCh2PB1LowerInputCBBorder,
-                _fFTChannelCBBorder, _tDCh2NegInputCBBorder, _tDCh2LPF2InputCBBorder, _tDCh2PB0UpperInputCBBorder,
+                _fFTShiftCBBorder, _fFTChannelCBBorder, _tDCh2NegInputCBBorder, _tDCh2LPF2InputCBBorder, _tDCh2PB0UpperInputCBBorder,
                 _tDCh2PB1UpperInputCBBorder, _fFTSizeCBBorder, _miscSampleRateCBBorder, _fFTWindowLoadCBBorder, _accSampleRateCBBorder,
                 _tDCh3PosInputCBBorder, _tDCh3HPF1InputCBBorder, _tDCh3LPF1InputCBBorder, _tDCh3PB0LowerInputCBBorder,
                 _tDCh3PB1LowerInputCBBorder, _tDCh3NegInputCBBorder, _tDCh3LPF2InputCBBorder, _tDCh3PB0UpperInputCBBorder,
@@ -53,7 +60,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         //Int and double for combobox selected items
         private int _selectedTDRate, _selectedTDCh0PosInput, _selectedTDCh0LPF1Input, _selectedTDCh0NegInput,
                 _selectedTDCh0LPF2Input, _selectedTDCh1PosInput, _selectedTDCh1LPF1Input, _selectedTDCh1NegInput,
-                _selectedTDCh1LPF2Input, _selectedTDCh2PosInput, _selectedTDCh2LPF1Input, _selectedFFTChannel,
+                _selectedTDCh1LPF2Input, _selectedTDCh2PosInput, _selectedTDCh2LPF1Input, _selectedFFTChannel, 
                 _selectedTDCh2NegInput, _selectedTDCh2LPF2Input, _selectedFFTSize, _selectedMiscSampleRate, _selectedFFTWindowLoad,
                 _selectedAccSampleRate, _selectedTDCh3PosInput, _selectedTDCh3LPF1Input, _selectedTDCh3NegInput,
                 _selectedTDCh3LPF2Input;
@@ -63,6 +70,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
                 _selectedTDCh3PB0LowerInput, _selectedTDCh3PB1LowerInput, _selectedTDCh3PB0UpperInput, _selectedTDCh3PB1UpperInput,
                 _selectedTDCh0HPF1Input, _selectedTDCh1HPF1Input, _selectedTDCh2HPF1Input, _selectedTDCh3HPF1Input,
                 _selectedFFTLowerInput, _selectedFFTUpperInput;
+        private uint _selectedFFTShift;
         //Combobox collections
         private BindableCollection<double> _tDCh0PB0LowerInputCB = new BindableCollection<double>();
         private BindableCollection<double> _tDCh0PB1LowerInputCB = new BindableCollection<double>();
@@ -97,6 +105,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         private BindableCollection<int> _tDCh1LPF2InputCB = new BindableCollection<int>();
         private BindableCollection<int> _tDCh2PosInputCB = new BindableCollection<int>();
         private BindableCollection<int> _tDCh2LPF1InputCB = new BindableCollection<int>();
+        private BindableCollection<uint> _fFTShiftMultipliesCB = new BindableCollection<uint>();
         private BindableCollection<int> _fFTChannelCB = new BindableCollection<int>();
         private BindableCollection<int> _tDCh2NegInputCB = new BindableCollection<int>();
         private BindableCollection<int> _tDCh2LPF2InputCB = new BindableCollection<int>();
@@ -129,7 +138,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh0SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh0SenseButtonColor = Brushes.Gray;
+                TDCh0SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.TimeDomains[0].IsEnabled = true;
             }
             else
@@ -173,11 +182,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh0PB0SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh0PB0SenseButtonColor = Brushes.Gray;
+                TDCh0PB0SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[0].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[0].IsEnabled)
                 {                   
-                    TDCh0SenseButtonColor = Brushes.Gray;
+                    TDCh0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[0].IsEnabled = true;
                 }
             }
@@ -210,11 +219,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh0PB1SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh0PB1SenseButtonColor = Brushes.Gray;
+                TDCh0PB1SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[1].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[0].IsEnabled)
                 {
-                    TDCh0SenseButtonColor = Brushes.Gray;
+                    TDCh0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[0].IsEnabled = true;
                 }
             }
@@ -247,7 +256,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDSenseButtonColor.Equals(Brushes.White))
             {
-                TDSenseButtonColor = Brushes.Gray;
+                TDSenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.TimeDomain = true;
             }
             else
@@ -321,11 +330,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDStreamButtonColor.Equals(Brushes.White))
             {
-                TDStreamButtonColor = Brushes.Gray;
+                TDStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.TimeDomain = true;
                 if (!senseConfigFromUI.SenseOptions.TimeDomain)
                 {
-                    TDSenseButtonColor = Brushes.Gray;
+                    TDSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.TimeDomain = true;
                 }
             }
@@ -358,11 +367,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (FFTSenseButtonColor.Equals(Brushes.White))
             {
-                FFTSenseButtonColor = Brushes.Gray;
+                FFTSenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.FFT = true;
                 if (!senseConfigFromUI.SenseOptions.TimeDomain)
                 {
-                    TDSenseButtonColor = Brushes.Gray;
+                    TDSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.TimeDomain = true;
                 }
             }
@@ -425,16 +434,16 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (FFTStreamButtonColor.Equals(Brushes.White))
             {
-                FFTStreamButtonColor = Brushes.Gray;
+                FFTStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.FFT = true;
                 if (!senseConfigFromUI.SenseOptions.FFT)
                 {
-                    FFTSenseButtonColor = Brushes.Gray;
+                    FFTSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.FFT = true;
                 }
                 if (!senseConfigFromUI.SenseOptions.TimeDomain)
                 {
-                    TDSenseButtonColor = Brushes.Gray;
+                    TDSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.TimeDomain = true;
                 }
             }
@@ -475,16 +484,16 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (PowerSenseButtonColor.Equals(Brushes.White))
             {
-                PowerSenseButtonColor = Brushes.Gray;
+                PowerSenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.Power = true;
                 if (!senseConfigFromUI.SenseOptions.FFT)
                 {
-                    FFTSenseButtonColor = Brushes.Gray;
+                    FFTSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.FFT = true;
                 }
                 if (!senseConfigFromUI.SenseOptions.TimeDomain)
                 {
-                    TDSenseButtonColor = Brushes.Gray;
+                    TDSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.TimeDomain = true;
                 }
             }
@@ -535,21 +544,21 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (PowerStreamButtonColor.Equals(Brushes.White))
             {
-                PowerStreamButtonColor = Brushes.Gray;
+                PowerStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.Power = true;
                 if (!senseConfigFromUI.SenseOptions.Power)
                 {
-                    PowerSenseButtonColor = Brushes.Gray;
+                    PowerSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.Power = true;
                 }
                 if (!senseConfigFromUI.SenseOptions.FFT)
                 {
-                    FFTSenseButtonColor = Brushes.Gray;
+                    FFTSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.FFT = true;
                 }
                 if (!senseConfigFromUI.SenseOptions.TimeDomain)
                 {
-                    TDSenseButtonColor = Brushes.Gray;
+                    TDSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.TimeDomain = true;
                 }
             }
@@ -598,7 +607,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh1SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh1SenseButtonColor = Brushes.Gray;
+                TDCh1SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.TimeDomains[1].IsEnabled = true;
             }
             else
@@ -642,7 +651,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (LD0SenseButtonColor.Equals(Brushes.White))
             {
-                LD0SenseButtonColor = Brushes.Gray;
+                LD0SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.LD0 = true;
             }
             else
@@ -706,7 +715,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (AccStreamButtonColor.Equals(Brushes.White))
             {
-                AccStreamButtonColor = Brushes.Gray;
+                AccStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.Accelerometry = true;
             }
             else
@@ -730,11 +739,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (Ch1PB0SenseButtonColor.Equals(Brushes.White))
             {
-                Ch1PB0SenseButtonColor = Brushes.Gray;
+                Ch1PB0SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[2].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[1].IsEnabled)
                 {
-                    TDCh1SenseButtonColor = Brushes.Gray;
+                    TDCh1SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[1].IsEnabled = true;
                 }
             }
@@ -767,11 +776,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (Ch1PB1SenseButtonColor.Equals(Brushes.White))
             {
-                Ch1PB1SenseButtonColor = Brushes.Gray;
+                Ch1PB1SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[3].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[1].IsEnabled)
                 {
-                    TDCh1SenseButtonColor = Brushes.Gray;
+                    TDCh1SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[1].IsEnabled = true;
                 }
             }
@@ -804,11 +813,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (LD1SenseButtonColor.Equals(Brushes.White))
             {
-                LD1SenseButtonColor = Brushes.Gray;
+                LD1SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.LD1 = true;
                 if (!senseConfigFromUI.SenseOptions.LD0)
                 {
-                    LD0SenseButtonColor = Brushes.Gray;
+                    LD0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.LD0 = true;
                 }
             }
@@ -841,11 +850,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (AdaptherapyStreamButtonColor.Equals(Brushes.White))
             {
-                AdaptherapyStreamButtonColor = Brushes.Gray;
+                AdaptherapyStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.AdaptiveTherapy = true;
                 if (!senseConfigFromUI.SenseOptions.LD0)
                 {
-                    LD0SenseButtonColor = Brushes.Gray;
+                    LD0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.LD0 = true;
                 }
             }
@@ -878,11 +887,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (AdaptiveStateSenseButtonColor.Equals(Brushes.White))
             {
-                AdaptiveStateSenseButtonColor = Brushes.Gray;
+                AdaptiveStateSenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.AdaptiveState = true;
                 if (!senseConfigFromUI.SenseOptions.LD0)
                 {
-                    LD0SenseButtonColor = Brushes.Gray;
+                    LD0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.LD0 = true;
                 }
             }
@@ -925,16 +934,16 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (AdaptiveStateStreamButtonColor.Equals(Brushes.White))
             {
-                AdaptiveStateStreamButtonColor = Brushes.Gray;
+                AdaptiveStateStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.AdaptiveState = true;
                 if (!senseConfigFromUI.SenseOptions.AdaptiveState)
                 {
-                    AdaptiveStateSenseButtonColor = Brushes.Gray;
+                    AdaptiveStateSenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.AdaptiveState = true;
                 }
                 if (!senseConfigFromUI.SenseOptions.LD0)
                 {
-                    LD0SenseButtonColor = Brushes.Gray;
+                    LD0SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.SenseOptions.LD0 = true;
                 }
             }
@@ -975,7 +984,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (LoopRecSenseButtonColor.Equals(Brushes.White))
             {
-                LoopRecSenseButtonColor = Brushes.Gray;
+                LoopRecSenseButtonColor = Brushes.Green;
                 senseConfigFromUI.SenseOptions.LoopRecording = true;
             }
             else
@@ -999,7 +1008,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (EventStreamButtonColor.Equals(Brushes.White))
             {
-                EventStreamButtonColor = Brushes.Gray;
+                EventStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.EventMarker = true;
             }
             else
@@ -1023,7 +1032,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TimeStampStreamButtonColor.Equals(Brushes.White))
             {
-                TimeStampStreamButtonColor = Brushes.Gray;
+                TimeStampStreamButtonColor = Brushes.Green;
                 senseConfigFromUI.StreamEnables.TimeStamp = true;
             }
             else
@@ -1047,7 +1056,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh2SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh2SenseButtonColor = Brushes.Gray;
+                TDCh2SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.TimeDomains[2].IsEnabled = true;
             }
             else
@@ -1091,11 +1100,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh2PB0ButtonColor.Equals(Brushes.White))
             {
-                TDCh2PB0ButtonColor = Brushes.Gray;
+                TDCh2PB0ButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[4].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[2].IsEnabled)
                 {
-                    TDCh2SenseButtonColor = Brushes.Gray;
+                    TDCh2SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[2].IsEnabled = true;
                 }
             }
@@ -1128,11 +1137,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh2PB1ButtonColor.Equals(Brushes.White))
             {
-                TDCh2PB1ButtonColor = Brushes.Gray;
+                TDCh2PB1ButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[5].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[2].IsEnabled)
                 {
-                    TDCh2SenseButtonColor = Brushes.Gray;
+                    TDCh2SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[2].IsEnabled = true;
                 }
             }
@@ -1165,7 +1174,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (AccelOnOffButtonColor.Equals(Brushes.White))
             {
-                AccelOnOffButtonColor = Brushes.Gray;
+                AccelOnOffButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.Accelerometer.SampleRateDisabled = false;
             }
             else
@@ -1189,7 +1198,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh3SenseButtonColor.Equals(Brushes.White))
             {
-                TDCh3SenseButtonColor = Brushes.Gray;
+                TDCh3SenseButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.TimeDomains[3].IsEnabled = true;
             }
             else
@@ -1233,11 +1242,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh3PB0ButtonColor.Equals(Brushes.White))
             {
-                TDCh3PB0ButtonColor = Brushes.Gray;
+                TDCh3PB0ButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[6].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[3].IsEnabled)
                 {
-                    TDCh3SenseButtonColor = Brushes.Gray;
+                    TDCh3SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[3].IsEnabled = true;
                 }
             }
@@ -1270,11 +1279,11 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (TDCh3PB1ButtonColor.Equals(Brushes.White))
             {
-                TDCh3PB1ButtonColor = Brushes.Gray;
+                TDCh3PB1ButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.PowerBands[7].IsEnabled = true;
                 if (!senseConfigFromUI.Sense.TimeDomains[3].IsEnabled)
                 {
-                    TDCh3SenseButtonColor = Brushes.Gray;
+                    TDCh3SenseButtonColor = Brushes.Green;
                     senseConfigFromUI.Sense.TimeDomains[3].IsEnabled = true;
                 }
             }
@@ -1307,7 +1316,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
         {
             if (WindowEnabledButtonColor.Equals(Brushes.White))
             {
-                WindowEnabledButtonColor = Brushes.Gray;
+                WindowEnabledButtonColor = Brushes.Green;
                 senseConfigFromUI.Sense.FFT.WindowEnabled = true;
             }
             else
@@ -2920,6 +2929,39 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
         }
         /// <summary>
+        /// Combo box drop down list for sense settings for FFTShiftMultipliesCB
+        /// </summary>
+        public BindableCollection<uint> FFTShiftMultipliesCB
+        {
+            get { return _fFTShiftMultipliesCB; }
+            set
+            {
+                _fFTShiftMultipliesCB = value;
+                NotifyOfPropertyChange(() => FFTShiftMultipliesCB);
+            }
+        }
+        /// <summary>
+        /// Binding for the actual option selected in the drop down menu for FFTShiftMultipliesCB
+        /// </summary>
+        public uint SelectedFFTShift
+        {
+            get { return _selectedFFTShift; }
+            set
+            {
+                _selectedFFTShift = value;
+                NotifyOfPropertyChange(() => SelectedFFTShift);
+                senseConfigFromUI.Sense.FFT.WeightMultiplies = SelectedFFTShift;
+                if (SelectedFFTShift != senseConfig.Sense.FFT.WeightMultiplies)
+                {
+                    FFTShiftCBBorder = comboboxChangedBrush;
+                }
+                else
+                {
+                    FFTShiftCBBorder = comboboxNotChangedBrush;
+                }
+            }
+        }
+        /// <summary>
         /// Combo box drop down list for sense settings for FFTChannelCB
         /// </summary>
         public BindableCollection<int> FFTChannelCB
@@ -3895,6 +3937,18 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
         }
         /// <summary>
+        /// Changes border color for FFTShiftCBBorder so that user knows when a change from normal settings has occurred. 
+        /// </summary>
+        public Brush FFTShiftCBBorder
+        {
+            get { return _fFTShiftCBBorder ?? (_fFTShiftCBBorder = comboboxNotChangedBrush); }
+            set
+            {
+                _fFTShiftCBBorder = value;
+                NotifyOfPropertyChange(() => FFTShiftCBBorder);
+            }
+        }
+        /// <summary>
         /// Changes border color for FFTChannelCB so that user knows when a change from normal settings has occurred. 
         /// </summary>
         public Brush FFTChannelCBBorder
@@ -4344,6 +4398,15 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             TDCh2LPF2InputCB.Add(1700);
             TDCh3LPF2InputCB.Add(1700);
             //fft channel
+            FFTShiftMultipliesCB.Add(0);
+            FFTShiftMultipliesCB.Add(1);
+            FFTShiftMultipliesCB.Add(2);
+            FFTShiftMultipliesCB.Add(3);
+            FFTShiftMultipliesCB.Add(4);
+            FFTShiftMultipliesCB.Add(5);
+            FFTShiftMultipliesCB.Add(6);
+            FFTShiftMultipliesCB.Add(7);
+            //fft channel
             FFTChannelCB.Add(0);
             FFTChannelCB.Add(1);
             FFTChannelCB.Add(2);
@@ -4516,6 +4579,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             SelectedTDCh2HPF1Input = localSense.Sense.TimeDomains[2].Hpf;
             SelectedTDCh3HPF1Input = localSense.Sense.TimeDomains[3].Hpf;
             //FFT
+            SelectedFFTShift = localSense.Sense.FFT.WeightMultiplies;
             SelectedFFTChannel = localSense.Sense.FFT.Channel;
             SelectedFFTSize = localSense.Sense.FFT.FftSize;
             SelectedFFTWindowLoad = localSense.Sense.FFT.WindowLoad;
@@ -4554,7 +4618,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //Sense Buttons
             if (localSense.SenseOptions.TimeDomain)
             {
-                TDSenseButtonColor = Brushes.Gray;
+                TDSenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4562,7 +4626,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.FFT)
             {
-                FFTSenseButtonColor = Brushes.Gray;
+                FFTSenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4570,7 +4634,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.Power)
             {
-                PowerSenseButtonColor = Brushes.Gray;
+                PowerSenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4578,7 +4642,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.LD0)
             {
-                LD0SenseButtonColor = Brushes.Gray;
+                LD0SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4586,7 +4650,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.LD1)
             {
-                LD1SenseButtonColor = Brushes.Gray;
+                LD1SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4594,7 +4658,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.AdaptiveState)
             {
-                AdaptiveStateSenseButtonColor = Brushes.Gray;
+                AdaptiveStateSenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4602,7 +4666,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.SenseOptions.LoopRecording)
             {
-                LoopRecSenseButtonColor = Brushes.Gray;
+                LoopRecSenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4611,7 +4675,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //Stream Buttons
             if (localSense.StreamEnables.TimeDomain)
             {
-                TDStreamButtonColor = Brushes.Gray;
+                TDStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4619,7 +4683,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.FFT)
             {
-                FFTStreamButtonColor = Brushes.Gray;
+                FFTStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4627,7 +4691,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.Power)
             {
-                PowerStreamButtonColor = Brushes.Gray;
+                PowerStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4635,7 +4699,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.Accelerometry)
             {
-                AccStreamButtonColor = Brushes.Gray;
+                AccStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4643,7 +4707,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.AdaptiveTherapy)
             {
-                AdaptherapyStreamButtonColor = Brushes.Gray;
+                AdaptherapyStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4651,7 +4715,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.AdaptiveState)
             {
-                AdaptiveStateStreamButtonColor = Brushes.Gray;
+                AdaptiveStateStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4659,7 +4723,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.EventMarker)
             {
-                EventStreamButtonColor = Brushes.Gray;
+                EventStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4667,7 +4731,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.StreamEnables.TimeStamp)
             {
-                TimeStampStreamButtonColor = Brushes.Gray;
+                TimeStampStreamButtonColor = Brushes.Green;
             }
             else
             {
@@ -4677,7 +4741,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //Power Band buttons
             if (localSense.Sense.PowerBands[0].IsEnabled)
             {
-                TDCh0PB0SenseButtonColor = Brushes.Gray;
+                TDCh0PB0SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4685,7 +4749,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[1].IsEnabled)
             {
-                TDCh0PB1SenseButtonColor = Brushes.Gray;
+                TDCh0PB1SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4693,7 +4757,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[2].IsEnabled)
             {
-                Ch1PB0SenseButtonColor = Brushes.Gray;
+                Ch1PB0SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4702,7 +4766,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
 
             if (localSense.Sense.PowerBands[3].IsEnabled)
             {
-                Ch1PB1SenseButtonColor = Brushes.Gray;
+                Ch1PB1SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4710,7 +4774,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[4].IsEnabled)
             {
-                TDCh2PB0ButtonColor = Brushes.Gray;
+                TDCh2PB0ButtonColor = Brushes.Green;
             }
             else
             {
@@ -4718,7 +4782,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[5].IsEnabled)
             {
-                TDCh2PB1ButtonColor = Brushes.Gray;
+                TDCh2PB1ButtonColor = Brushes.Green;
             }
             else
             {
@@ -4726,7 +4790,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[6].IsEnabled)
             {
-                TDCh3PB0ButtonColor = Brushes.Gray;
+                TDCh3PB0ButtonColor = Brushes.Green;
             }
             else
             {
@@ -4734,7 +4798,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.PowerBands[7].IsEnabled)
             {
-                TDCh3PB1ButtonColor = Brushes.Gray;
+                TDCh3PB1ButtonColor = Brushes.Green;
             }
             else
             {
@@ -4743,7 +4807,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //TD Channel Buttons
             if (localSense.Sense.TimeDomains[0].IsEnabled)
             {
-                TDCh0SenseButtonColor = Brushes.Gray;
+                TDCh0SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4751,7 +4815,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.TimeDomains[1].IsEnabled)
             {
-                TDCh1SenseButtonColor = Brushes.Gray;
+                TDCh1SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4759,7 +4823,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.TimeDomains[2].IsEnabled)
             {
-                TDCh2SenseButtonColor = Brushes.Gray;
+                TDCh2SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4767,7 +4831,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.TimeDomains[3].IsEnabled)
             {
-                TDCh3SenseButtonColor = Brushes.Gray;
+                TDCh3SenseButtonColor = Brushes.Green;
             }
             else
             {
@@ -4776,7 +4840,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             //Other buttons
             if (!localSense.Sense.Accelerometer.SampleRateDisabled)
             {
-                AccelOnOffButtonColor = Brushes.Gray;
+                AccelOnOffButtonColor = Brushes.Green;
             }
             else
             {
@@ -4784,7 +4848,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             }
             if (localSense.Sense.FFT.WindowEnabled)
             {
-                WindowEnabledButtonColor = Brushes.Gray;
+                WindowEnabledButtonColor = Brushes.Green;
             }
             else
             {
@@ -4871,6 +4935,7 @@ namespace EmbeddedAdaptiveDBSApplication.ViewModels
             TDCh2PB0LowerInputCBBorder = buttonNotChangedBrush;
             TDCh2PB1LowerInputCBBorder = buttonNotChangedBrush;
             FFTChannelCBBorder = buttonNotChangedBrush;
+            FFTShiftCBBorder = buttonNotChangedBrush;
             TDCh2NegInputCBBorder = buttonNotChangedBrush;
             TDCh2LPF2InputCBBorder = buttonNotChangedBrush;
             TDCh2PB0UpperInputCBBorder = buttonNotChangedBrush;

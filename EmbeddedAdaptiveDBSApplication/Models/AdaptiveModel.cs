@@ -17,6 +17,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// Model for Adaptive Config JSON File
     /// This class is used to convert the json file into class data
     /// </summary>
+    [Serializable]
     public class AdaptiveModel
     {
         /// <summary>
@@ -35,6 +36,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// <summary>
     /// Detection Object
     /// </summary>
+    [Serializable]
     public class Detection
     {
         /// <summary>
@@ -49,6 +51,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// <summary>
     /// LD0 Object
     /// </summary>
+    [Serializable]
     public class LD0
     {
         /// <summary>
@@ -58,11 +61,11 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// <summary>
         /// B0 threshold
         /// </summary>
-        public uint B0 { get; set; }
+        public int B0 { get; set; }
         /// <summary>
         /// B1 threshold
         /// </summary>
-        public uint B1 { get; set; }
+        public int B1 { get; set; }
         /// <summary>
         /// Update rate in Hz
         /// </summary>
@@ -102,11 +105,11 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// <summary>
         /// Weight Vector for each channel 0-3
         /// </summary>
-        public List<uint> WeightVector { get; set; }
+        public List<double> WeightVector { get; set; }
         /// <summary>
         /// Normalization Mulitply Vector for each channel 0-3
         /// </summary>
-        public List<uint> NormalizationMultiplyVector { get; set; }
+        public List<double> NormalizationMultiplyVector { get; set; }
         /// <summary>
         /// Normalization Subtract Vector for each channel 0-3
         /// </summary>
@@ -115,6 +118,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// <summary>
     /// LD1 object
     /// </summary>
+    [Serializable]
     public class LD1
     {
         /// <summary>
@@ -128,11 +132,11 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// <summary>
         /// B0 threshold
         /// </summary>
-        public uint B0 { get; set; }
+        public int B0 { get; set; }
         /// <summary>
         /// B1 threshold
         /// </summary>
-        public uint B1 { get; set; }
+        public int B1 { get; set; }
         /// <summary>
         /// Update rate in Hz
         /// </summary>
@@ -172,11 +176,11 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// <summary>
         /// Weight Vector for each channel 0-3
         /// </summary>
-        public List<uint> WeightVector { get; set; }
+        public List<double> WeightVector { get; set; }
         /// <summary>
         /// Normalization Mulitply Vector for each channel 0-3
         /// </summary>
-        public List<uint> NormalizationMultiplyVector { get; set; }
+        public List<double> NormalizationMultiplyVector { get; set; }
         /// <summary>
         /// Normalization Subtract Vector for each channel 0-3
         /// </summary>
@@ -185,6 +189,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// <summary>
     /// Inputs Object
     /// </summary>
+    [Serializable]
     public class Inputs
     {
         /// <summary>
@@ -223,16 +228,34 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     /// <summary>
     /// Adaptive Object
     /// </summary>
+    [Serializable]
     public class Adaptive
     {
         /// <summary>
         /// Program Object
         /// </summary>
         public Program0 Program0 { get; set; }
+        /// <summary>
+        /// Program Object
+        /// </summary>
+        public Program Program1 { get; set; }
+        /// <summary>
+        /// Program Object
+        /// </summary>
+        public Program Program2 { get; set; }
+        /// <summary>
+        /// Program Object
+        /// </summary>
+        public Program Program3 { get; set; }
+        /// <summary>
+        /// Rates Object
+        /// </summary>
+        public Rates Rates { get; set; }
     }
     /// <summary>
     /// Program Object
     /// </summary>
+    [Serializable]
     public class Program0
     {
         /// <summary>
@@ -287,5 +310,122 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// State 8 in mA, set to 25.5 to hold
         /// </summary>
         public double State8AmpInMilliamps { get; set; }
+    }
+    /// <summary>
+    /// Program Object
+    /// </summary>
+    [Serializable]
+    public class Program
+    {
+        /// <summary>
+        /// Comment explaining object
+        /// </summary>
+        public string Comment { get; set; }
+        /// <summary>
+        /// Delta rise time
+        /// </summary>
+        public uint RiseTimes { get; set; }
+        /// <summary>
+        /// Delta fall time
+        /// </summary>
+        public uint FallTimes { get; set; }
+        /// <summary>
+        /// State 0 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State0AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 1 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State1AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 2 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State2AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 3 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State3AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 4 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State4AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 5 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State5AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 6 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State6AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 7 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State7AmpInMilliamps { get; set; }
+        /// <summary>
+        /// State 8 in mA, set to 25.5 to hold
+        /// </summary>
+        public double State8AmpInMilliamps { get; set; }
+    }
+    /// <summary>
+    /// Rates Object
+    /// </summary>
+    [Serializable]
+    public class Rates
+    {
+        /// <summary>
+        /// Comment explaining object
+        /// </summary>
+        public string Comment { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State0 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State1 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State2 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State3 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State4 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State5 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State6 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State7 { get; set; }
+        /// <summary>
+        /// State Object
+        /// </summary>
+        public State State8 { get; set; }
+    }
+    /// <summary>
+    /// Rates Object
+    /// </summary>
+    [Serializable]
+    public class State
+    {
+        /// <summary>
+        /// Target Rate in Hz
+        /// </summary>
+        public double RateTargetInHz { get; set; }
+        /// <summary>
+        /// Sense Friendly
+        /// </summary>
+        public bool SenseFriendly { get; set; }
     }
 }

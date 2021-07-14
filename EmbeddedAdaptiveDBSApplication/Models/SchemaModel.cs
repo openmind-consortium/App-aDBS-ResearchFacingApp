@@ -21,251 +21,494 @@ namespace EmbeddedAdaptiveDBSApplication.Models
     public class SchemaModel
     {
         private string adaptiveSchema = @"{
-                              'type': 'object',
-                              'required': [],
-                              'properties': {
-                                'eventType': {
                                   'type': 'object',
                                   'required': [],
                                   'properties': {
-                                    'comment': {
-                                      'type': 'string'
-                                    }
-                                  }
-                                },
-                                'Detection': {
-                                  'type': 'object',
-                                  'required': [],
-                                  'properties': {
-                                    'LD0': {
+                                    'eventType': {
                                       'type': 'object',
                                       'required': [],
                                       'properties': {
                                         'comment': {
                                           'type': 'string'
-                                        },
-                                        'B0': {
-                                          'type': 'number'
-                                        },
-                                        'B1': {
-                                          'type': 'number'
-                                        },
-                                        'UpdateRate': {
-                                          'type': 'number'
-                                        },
-                                        'OnsetDuration': {
-                                          'type': 'number'
-                                        },
-                                        'TerminationDuration': {
-                                          'type': 'number'
-                                        },
-                                        'HoldOffOnStartupTime': {
-                                          'type': 'number'
-                                        },
-                                        'StateChangeBlankingUponStateChange': {
-                                          'type': 'number'
-                                        },
-                                        'FractionalFixedPointValue': {
-                                          'type': 'number'
-                                        },
-                                        'DualThreshold': {
-                                          'type': 'boolean'
-                                        },
-                                        'BlankBothLD': {
-                                          'type': 'boolean'
-                                        },
-                                        'Inputs': {
+                                        }
+                                      }
+                                    },
+                                    'Detection': {
+                                      'type': 'object',
+                                      'required': [],
+                                      'properties': {
+                                        'LD0': {
                                           'type': 'object',
                                           'required': [],
                                           'properties': {
-                                            'Ch0Band0': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'B0': {
+                                              'type': 'number'
+                                            },
+                                            'B1': {
+                                              'type': 'number'
+                                            },
+                                            'UpdateRate': {
+                                              'type': 'number'
+                                            },
+                                            'OnsetDuration': {
+                                              'type': 'number'
+                                            },
+                                            'TerminationDuration': {
+                                              'type': 'number'
+                                            },
+                                            'HoldOffOnStartupTime': {
+                                              'type': 'number'
+                                            },
+                                            'StateChangeBlankingUponStateChange': {
+                                              'type': 'number'
+                                            },
+                                            'FractionalFixedPointValue': {
+                                              'type': 'number'
+                                            },
+                                            'DualThreshold': {
                                               'type': 'boolean'
                                             },
-                                            'Ch0Band1': {
+                                            'BlankBothLD': {
                                               'type': 'boolean'
                                             },
-                                            'Ch1Band0': {
-                                              'type': 'boolean'
+                                            'Inputs': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'Ch0Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch0Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch1Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch1Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch2Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch2Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch3Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch3Band1': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
                                             },
-                                            'Ch1Band1': {
-                                              'type': 'boolean'
+                                            'WeightVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
                                             },
-                                            'Ch2Band0': {
-                                              'type': 'boolean'
+                                            'NormalizationMultiplyVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
                                             },
-                                            'Ch2Band1': {
-                                              'type': 'boolean'
-                                            },
-                                            'Ch3Band0': {
-                                              'type': 'boolean'
-                                            },
-                                            'Ch3Band1': {
-                                              'type': 'boolean'
+                                            'NormalizationSubtractVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
                                             }
                                           }
                                         },
-                                        'WeightVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
-                                          }
-                                        },
-                                        'NormalizationMultiplyVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
-                                          }
-                                        },
-                                        'NormalizationSubtractVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
+                                        'LD1': {
+                                          'type': 'object',
+                                          'required': [],
+                                          'properties': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'B0': {
+                                              'type': 'number'
+                                            },
+                                            'B1': {
+                                              'type': 'number'
+                                            },
+                                            'UpdateRate': {
+                                              'type': 'number'
+                                            },
+                                            'OnsetDuration': {
+                                              'type': 'number'
+                                            },
+                                            'TerminationDuration': {
+                                              'type': 'number'
+                                            },
+                                            'HoldOffOnStartupTime': {
+                                              'type': 'number'
+                                            },
+                                            'StateChangeBlankingUponStateChange': {
+                                              'type': 'number'
+                                            },
+                                            'FractionalFixedPointValue': {
+                                              'type': 'number'
+                                            },
+                                            'DualThreshold': {
+                                              'type': 'boolean'
+                                            },
+                                            'BlankBothLD': {
+                                              'type': 'boolean'
+                                            },
+                                            'Inputs': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'Ch0Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch0Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch1Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch1Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch2Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch2Band1': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch3Band0': {
+                                                  'type': 'boolean'
+                                                },
+                                                'Ch3Band1': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'WeightVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
+                                            },
+                                            'NormalizationMultiplyVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
+                                            },
+                                            'NormalizationSubtractVector': {
+                                              'type': 'array',
+                                              'items': {
+                                                'type': 'number'
+                                              }
+                                            }
                                           }
                                         }
                                       }
                                     },
-                                    'LD1': {
+                                    'Adaptive': {
                                       'type': 'object',
                                       'required': [],
                                       'properties': {
-                                        'comment': {
-                                          'type': 'string'
-                                        },
-                                        'B0': {
-                                          'type': 'number'
-                                        },
-                                        'B1': {
-                                          'type': 'number'
-                                        },
-                                        'UpdateRate': {
-                                          'type': 'number'
-                                        },
-                                        'OnsetDuration': {
-                                          'type': 'number'
-                                        },
-                                        'TerminationDuration': {
-                                          'type': 'number'
-                                        },
-                                        'HoldOffOnStartupTime': {
-                                          'type': 'number'
-                                        },
-                                        'StateChangeBlankingUponStateChange': {
-                                          'type': 'number'
-                                        },
-                                        'FractionalFixedPointValue': {
-                                          'type': 'number'
-                                        },
-                                        'DualThreshold': {
-                                          'type': 'boolean'
-                                        },
-                                        'BlankBothLD': {
-                                          'type': 'boolean'
-                                        },
-                                        'Inputs': {
+                                        'Program0': {
                                           'type': 'object',
                                           'required': [],
                                           'properties': {
-                                            'Ch0Band0': {
-                                              'type': 'boolean'
+                                            'comment': {
+                                              'type': 'string'
                                             },
-                                            'Ch0Band1': {
-                                              'type': 'boolean'
+                                            'RiseTimes': {
+                                              'type': 'number'
                                             },
-                                            'Ch1Band0': {
-                                              'type': 'boolean'
+                                            'FallTimes': {
+                                              'type': 'number'
                                             },
-                                            'Ch1Band1': {
-                                              'type': 'boolean'
+                                            'RateTargetInHz': {
+                                              'type': 'number'
                                             },
-                                            'Ch2Band0': {
-                                              'type': 'boolean'
+                                            'State0AmpInMilliamps': {
+                                              'type': 'number'
                                             },
-                                            'Ch2Band1': {
-                                              'type': 'boolean'
+                                            'State1AmpInMilliamps': {
+                                              'type': 'number'
                                             },
-                                            'Ch3Band0': {
-                                              'type': 'boolean'
+                                            'State2AmpInMilliamps': {
+                                              'type': 'number'
                                             },
-                                            'Ch3Band1': {
-                                              'type': 'boolean'
+                                            'State3AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State4AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State5AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State6AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State7AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State8AmpInMilliamps': {
+                                              'type': 'number'
                                             }
                                           }
                                         },
-                                        'WeightVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
+                                        'Program1': {
+                                          'type': 'object',
+                                          'required': [],
+                                          'properties': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'RiseTimes': {
+                                              'type': 'number'
+                                            },
+                                            'FallTimes': {
+                                              'type': 'number'
+                                            },
+                                            'State0AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State1AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State2AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State3AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State4AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State5AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State6AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State7AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State8AmpInMilliamps': {
+                                              'type': 'number'
+                                            }
                                           }
                                         },
-                                        'NormalizationMultiplyVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
+                                        'Program2': {
+                                          'type': 'object',
+                                          'required': [],
+                                          'properties': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'RiseTimes': {
+                                              'type': 'number'
+                                            },
+                                            'FallTimes': {
+                                              'type': 'number'
+                                            },
+                                            'State0AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State1AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State2AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State3AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State4AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State5AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State6AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State7AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State8AmpInMilliamps': {
+                                              'type': 'number'
+                                            }
                                           }
                                         },
-                                        'NormalizationSubtractVector': {
-                                          'type': 'array',
-                                          'items': {
-                                            'type': 'number'
+                                        'Program3': {
+                                          'type': 'object',
+                                          'required': [],
+                                          'properties': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'RiseTimes': {
+                                              'type': 'number'
+                                            },
+                                            'FallTimes': {
+                                              'type': 'number'
+                                            },
+                                            'State0AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State1AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State2AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State3AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State4AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State5AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State6AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State7AmpInMilliamps': {
+                                              'type': 'number'
+                                            },
+                                            'State8AmpInMilliamps': {
+                                              'type': 'number'
+                                            }
+                                          }
+                                        },
+                                        'Rates': {
+                                          'type': 'object',
+                                          'required': [],
+                                          'properties': {
+                                            'comment': {
+                                              'type': 'string'
+                                            },
+                                            'State0': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State1': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State2': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State3': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State4': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State5': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State6': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State7': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            },
+                                            'State8': {
+                                              'type': 'object',
+                                              'required': [],
+                                              'properties': {
+                                                'RateTargetInHz': {
+                                                  'type': 'number'
+                                                },
+                                                'SenseFriendly': {
+                                                  'type': 'boolean'
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       }
                                     }
                                   }
-                                },
-                                'Adaptive': {
-                                  'type': 'object',
-                                  'required': [],
-                                  'properties': {
-                                    'Program0': {
-                                      'type': 'object',
-                                      'required': [],
-                                      'properties': {
-		                              'comment': {
-                                          'type': 'string'
-                                        },
-                                        'RiseTimes': {
-                                          'type': 'number'
-                                        },
-                                        'FallTimes': {
-                                          'type': 'number'
-                                        },
-                                        'RateTargetInHz': {
-                                          'type': 'number'
-                                        },
-                                        'State0AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State1AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State2AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                          'State3AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State4AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State5AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                          'State6AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State7AmpInMilliamps': {
-                                          'type': 'number'
-                                        },
-                                        'State8AmpInMilliamps': {
-                                          'type': 'number'
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }";
+                                }";
         private string senseSchema = @"{
                       'type': 'object',
                       'required': [],
@@ -393,6 +636,9 @@ namespace EmbeddedAdaptiveDBSApplication.Models
                                     'items': {
                                       'type': 'number'
                                     }
+                                  },
+                                  'TdEvokedResponseEnable': {
+                                    'type': 'number'
                                   }
                                 }
                               }
@@ -424,6 +670,9 @@ namespace EmbeddedAdaptiveDBSApplication.Models
                                 },
                                 'WindowEnabled': {
                                   'type': 'boolean'
+                                },
+                                'StreamOffsetBins': {
+                                  'type': 'number'
                                 }
                               }
                             },

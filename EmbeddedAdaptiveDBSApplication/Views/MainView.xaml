@@ -9,6 +9,7 @@
         xmlns:wpfTool="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:model="clr-namespace:EmbeddedAdaptiveDBSApplication.Models"
         mc:Ignorable="d" WindowState="Maximized"
         Title="{Binding TitleText}" Height="600" Width="1200" FontSize="20">
 
@@ -183,7 +184,7 @@
                     <ComboBox Grid.Column="2" Grid.Row="5" x:Name="ProgramOptions" SelectedItem="{Binding Path=SelectedProgram, Mode=TwoWay}" Margin="5, 10, 5, 0"/>
                     <StackPanel Grid.Column="6" Grid.Row ="5" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="0,2">
                         <TextBlock Text="aDBS State: " HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        <TextBlock x:Name ="StimStateDisplay" FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding StimStateDisplay}" FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock Text="aDBS Session: " HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock x:Name ="SessionDisplay" FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
@@ -327,7 +328,7 @@
                     <Button x:Name="TDCh0PowerBand1SenseButton" BorderBrush="{Binding TDCh0PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="PowerBand1" Background="{Binding TDCh0PB1SenseButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="1" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
 
                     <!--Row 2-->
-                    <Border x:Name="border_sense" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row ="2" Grid.RowSpan="10" Background="LightGray" CornerRadius="20" Margin="5, 5, 5, 25"/>
+                    <Border x:Name="border_sense" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row ="2" Grid.RowSpan="9" Background="LightGray" CornerRadius="20" Margin="5, 5, 5, 25"/>
                     <Border x:Name="border_stream" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row ="2" Grid.RowSpan="11" Background="LightGray" CornerRadius="20" Margin="5, 5, 5, 25"/>
                     <TextBlock Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3" Text="Sense Options" FontSize="12" FontWeight="Bold" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
                     <TextBlock Grid.Column="3" Grid.Row="2"  Grid.ColumnSpan="3" Text="Stream Options" FontSize="12" FontWeight="Bold" Background="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
@@ -479,12 +480,13 @@
                     <Button x:Name="EventMarkerStreamButton" BorderBrush="{Binding EventMarkerStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Event Marker" Background="{Binding EventStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="9" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
 
                     <!--Row 10-->
+                    <Border x:Name="border_fft" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row ="10" Grid.RowSpan="11" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
                     <Button x:Name="TimeStampStreamButton" BorderBrush="{Binding TimeStampStreamBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False"  Content="Time Stamp" Background="{Binding TimeStampStreamButtonColor}" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="10" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="10, 0, 10, 0"/>
                     <Border x:Name="border_tdch2" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row ="10" Grid.RowSpan="5" Background="LightGray" CornerRadius="0, 0, 20 , 20" Margin="5, 5, 5, 0"/>
                     <Button x:Name="TimeDomainCh2SenseButton" BorderBrush="{Binding TimeDomainCh2SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="{Binding TimeDomainCh2SenseText}" Background="{Binding TDCh2SenseButtonColor}" Grid.Column="6" Grid.ColumnSpan="8" Grid.Row="10" Margin="5, 0, 5, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
 
                     <!--Row 11-->
-                    <Border x:Name="border_fft" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row ="11" Grid.RowSpan="10" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
+                    <TextBlock Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" Text="FFT" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
                     <TextBlock Grid.Column="6" Grid.Row="11" Text="+"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <Border BorderBrush="{Binding TDCh2PosInputCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="7" Grid.Row="11" Margin="5, 0, 5, 0">
                         <ComboBox x:Name="TDCh2PosInputCB" SelectedItem="{Binding Path=SelectedTDCh2PosInput, Mode=TwoWay}" FontSize="20"/>
@@ -497,7 +499,10 @@
                     <Button x:Name="TDCh2PowerBand1SenseButton" BorderBrush="{Binding TDCh2PowerBand1SenseBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Focusable="False" Content="PowerBand1" Background="{Binding TDCh2PB1ButtonColor}" Grid.Column="12" Grid.ColumnSpan="2" Grid.Row="11" Margin="10, 0, 10, 0" VerticalAlignment="Center" HorizontalContentAlignment="Center"/>
                     
                     <!--Row 12-->
-                    <TextBlock Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2" Text="FFT" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,20,0"/>
+                    <TextBlock Grid.Column="0" Grid.Row="12" Text="Shift" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" ToolTipService.ToolTip="Weight Multiplies shift option" ToolTipService.Placement="Mouse"/>
+                    <Border BorderBrush="{Binding FFTShiftCBBorder}" BorderThickness="{Binding BorderThicknessForAllCB}" Grid.Column="1" Grid.Row="12" Margin="0, 5, 10, 0" ToolTipService.ToolTip="Weight Multiplies shift option" ToolTipService.Placement="Mouse">
+                        <ComboBox x:Name="FFTShiftMultipliesCB" SelectedItem="{Binding Path=SelectedFFTShift, Mode=TwoWay}"/>
+                    </Border>
                     <Border x:Name="border_accelerometry" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row ="12" Grid.RowSpan="7" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
                     <Border x:Name="border_misc" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row ="12" Grid.RowSpan="9" Background="LightGray" CornerRadius="20" Margin="5, 25, 5, 25"/>
                     <TextBlock Grid.Column="8" Grid.Row="12" Text="LPF1"  HorizontalAlignment="Right" VerticalAlignment="Center"/>
@@ -688,35 +693,67 @@
 
                     <!--  Row 0 and Row 1-->
                     <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="top">
-                        <Button Content="Start Chart" Margin="2" x:Name="StartButton"/>
-                        <Button Content="Pause Chart" Margin="2" x:Name="PauseButton"/>
-                        <ComboBox Margin="2" Height="30" x:Name="PowerChannelOptions" SelectedItem="{Binding Path=SelectedPowerChannel, Mode=TwoWay}"/>
+                        <Button Content="{Binding StartPauseButtonText}" Margin="2" x:Name="StartPauseButton" ToolTipService.ToolTip="Pause/Start the chart. This does not pause the data coming in." ToolTipService.Placement="Mouse"/>
+                        <Border BorderBrush="LightPink" BorderThickness="2" Margin="2" >
+                            <ComboBox Height="30" x:Name="PowerChannelOptions" SelectedItem="{Binding Path=SelectedPowerChannel, Mode=TwoWay}"/>
+                        </Border>
+                        <Border BorderBrush="LightGoldenrodYellow" BorderThickness="2" Margin="2" >
+                            <ComboBox Height="30" x:Name="PowerChannelOptionsTwo" SelectedItem="{Binding Path=SelectedPowerChannelTwo, Mode=TwoWay}"/>
+                        </Border>
                         <ComboBox Margin="2" Height="30" x:Name="PowerScaleOptions" SelectedItem="{Binding Path=SelectedPowerScaleOption, Mode=TwoWay}"/>
+                        <Grid Margin="0, 3, 0, 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Ellipse Grid.Column="0" Width="25" Height="25" Fill="{Binding PowerChannelOverrangeColor}" Canvas.Left="135" Canvas.Top="25"  ToolTipService.ToolTip="Power Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                            <Ellipse Grid.Column="1" Width="25" Height="25" Fill="{Binding LD0OverrangeTextColor}" Canvas.Left="135" Canvas.Top="25" ToolTipService.ToolTip="LD0 Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                            <Ellipse Grid.Column="2" Width="25" Height="25" Fill="{Binding LD1OverrangeTextColor}" Canvas.Left="135" Canvas.Top="25" ToolTipService.ToolTip="LD1 Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                        </Grid>
                     </StackPanel>
+                    
                     <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
+                        
+                        <!--<Border BorderBrush="LightPink" BorderThickness="2" Margin="2" >
+                            <ComboBox Height="30" x:Name="PowerLD1ChannelOptions" SelectedItem="{Binding Path=SelectedPowerLD1Channel, Mode=TwoWay}"/>
+                        </Border>
+                        <Border BorderBrush="LightGoldenrodYellow" BorderThickness="2" Margin="2" >
+                            <ComboBox Height="30" x:Name="PowerLD1ChannelOptionsTwo" SelectedItem="{Binding Path=SelectedPowerLD1ChannelTwo, Mode=TwoWay}"/>
+                        </Border>
+                        <ComboBox Margin="2" Height="30" x:Name="PowerLD1ScaleOptions" SelectedItem="{Binding Path=SelectedPowerLD1ScaleOption, Mode=TwoWay}"/>-->
                         <TextBlock Text="Data Points (x):" Margin="2"/>
-                        <TextBox x:Name="DataPoints" Margin="2"/>
-                        <Button Content="Set Data Points" Margin="2" x:Name="SetDataPointsButton"/>
-                        <Button Margin="0, 20, 0, 0" Content="aDBS On/update" HorizontalContentAlignment="Center">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <cal:ActionMessage MethodName="UpdateDBSButtonClick" />
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </Button>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="DataPoints"  Grid.Column="0"/>
+                            <Button Content="Set"  x:Name="SetDataPointsButton" Grid.Column="1"/>
+                        </Grid>
+
+
                     </StackPanel>
 
                     <s:SciChartSurface x:Name="PowerChart"
-                                       ChartTitle="Power/Detector"
+                                       ChartTitle="Power/LD0"
                                        Grid.Row="0"
-                                       Grid.Column="1"
                                        Grid.RowSpan="2"
+                                       Grid.Column="1"
                                        Grid.ColumnSpan="2" 
                                        YAxes="{s:AxesBinding YAxesPower}">
 
                         <s:SciChartSurface.RenderableSeries>
                             <s:FastLineRenderableSeries DataSeries="{Binding PowerDataChart}" YAxisId="PowerAxisID" Stroke="LightPink" StrokeThickness="5" />
+                            <s:FastLineRenderableSeries DataSeries="{Binding PowerDataChartTwo}" YAxisId="PowerAxisID" Stroke="LightGoldenrodYellow" StrokeThickness="5" />
                             <s:FastLineRenderableSeries DataSeries="{Binding DetectorLD0Chart}" YAxisId="DetectorAxisID" Stroke="PowderBlue" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding DetectorLD1Chart}" YAxisId="DetectorAxisID" Stroke="White" StrokeThickness="5"/>
                             <s:FastLineRenderableSeries DataSeries="{Binding B1ThresholdLine}" YAxisId="DetectorAxisID" Stroke="Orange" StrokeDashArray="3,3"/>
                             <s:FastLineRenderableSeries DataSeries="{Binding B0ThresholdLine}" YAxisId="DetectorAxisID" Stroke="Orange" StrokeDashArray="3,3" />
                         </s:SciChartSurface.RenderableSeries>
@@ -755,9 +792,68 @@
 
                     </s:SciChartSurface>
 
+                    <!--<s:SciChartSurface x:Name="Power2Chart"
+                                       ChartTitle="Power/LD1"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       Grid.ColumnSpan="2" 
+                                       YAxes="{s:AxesBinding YAxesLD1}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:FastLineRenderableSeries DataSeries="{Binding PowerLD1DataChart}" YAxisId="PowerLD1AxisID" Stroke="LightPink" StrokeThickness="5" />
+                            <s:FastLineRenderableSeries DataSeries="{Binding PowerLD1DataChartTwo}" YAxisId="PowerLD1AxisID" Stroke="LightGoldenrodYellow" StrokeThickness="5" />
+                            <s:FastLineRenderableSeries DataSeries="{Binding DetectorLD1Chart}" YAxisId="DetectorLD1AxisID" Stroke="PowderBlue" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding B1LD1ThresholdLine}" YAxisId="DetectorLD1AxisID" Stroke="Orange" StrokeDashArray="3,3"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding B0LD1ThresholdLine}" YAxisId="DetectorLD1AxisID" Stroke="Orange" StrokeDashArray="3,3" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    --><!-- The default height is 16. You can set it to any value --><!--
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+
+                        <s:SciChartSurface.YAxis>
+                            <s:NumericAxis AxisTitle="Power" GrowBy="0.1, 0.1" VisibleRange="{Binding PowerYAxisVisibleRange, Mode=TwoWay}">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.YAxis>
+
+                        <s:SciChartSurface.ChartModifier>
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="true"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                                <s:LegendModifier ShowLegend="True" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </s:ModifierGroup>
+
+                        </s:SciChartSurface.ChartModifier>
+
+                    </s:SciChartSurface>-->
+
                     <!--  Row 2  -->
                     <StackPanel Grid.Row="2" Grid.Column="0">
-                        <TextBlock Text="Connection:"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="aDBS State: " FontStyle="Oblique" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding StimStateDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <Button Margin="0, 0, 0, 0" Content="aDBS On/update" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="UpdateDBSButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
                         <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
 
                         <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
@@ -765,7 +861,7 @@
                         </StackPanel>
 
                         <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
-                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}"  ToolTipService.ToolTip="Current based on selected Program in Main tab" ToolTipService.Placement="Mouse">
                             <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
                             <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -786,8 +882,11 @@
                                             Grid.ColumnSpan="2" YAxes="{s:AxesBinding YAxes}">
 
                         <s:SciChartSurface.RenderableSeries>
-                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentChart}" YAxisId="CurrentAxisID" Stroke="LimeGreen" StrokeThickness="5"/>
-                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveStateChart}" YAxisId="StateAxisID" Stroke="Yellow" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentProgram0Chart}" YAxisId="CurrentAxisID" Stroke="Green" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentProgram1Chart}" YAxisId="CurrentAxisID" Stroke="Red" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentProgram2Chart}" YAxisId="CurrentAxisID" Stroke="Blue" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveCurrentProgram3Chart}" YAxisId="CurrentAxisID" Stroke="Yellow" StrokeThickness="5"/>
+                            <s:FastLineRenderableSeries DataSeries="{Binding AdaptiveStateChart}" YAxisId="StateAxisID" Stroke="White" StrokeThickness="5"/>
                         </s:SciChartSurface.RenderableSeries>
 
                         <s:SciChartSurface.XAxis>
@@ -816,6 +915,190 @@
                 </Grid>
             </TabItem>
 
+            <!--Visualization Page For sense space-->
+            <TabItem Header="Vis(Space)">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="top">
+                        <Button Content="Start Chart" Margin="2" x:Name="StartStateChartButton"/>
+                        <Button Content="Pause Chart" Margin="2" x:Name="PauseStateChartButton"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="25" Height="25" Fill="{Binding PowerChannelOverrangeColor}" Margin="5, 5, 0, 0" Canvas.Left="135" Canvas.Top="25"  ToolTipService.ToolTip="Power Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                            <TextBlock Text="{Binding PowerChannelOverrangeText}" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="25" Height="25" Fill="{Binding LD0OverrangeTextColor}" Margin="5, 5, 0, 0" Canvas.Left="135" Canvas.Top="25" ToolTipService.ToolTip="LD0 Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                            <TextBlock Text="{Binding LD0OverrangeText}" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Width="25" Height="25" Fill="{Binding LD1OverrangeTextColor}" Margin="5, 5, 0, 0" Canvas.Left="135" Canvas.Top="25" ToolTipService.ToolTip="LD1 Over Range Alert. GREEN is in range and RED is over range" ToolTipService.Placement="Mouse"/>
+                            <TextBlock Text="{Binding LD1OverrangeText}" Margin="2"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" VerticalAlignment="Top">
+                        <TextBlock Text="Set Buffer:" Margin="2"/>
+                        <TextBox x:Name="SetStateChartBufferTB" Margin="2"/>
+                        <Button Content="Set Buffer" Margin="2" x:Name="SetStateChartBufferButton"/>
+                        <!--<TextBlock Text="B0/B1 Length:" Margin="2"/>
+                        <TextBox x:Name="SetB0B1LengthTB" Margin="2"/>
+                        <Button Content="Set Length" Margin="2" x:Name="SetB0B1LengthButton"/>-->
+                        <Button Margin="0, 20, 0, 0" Content="aDBS On/update" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="UpdateDBSButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.Column="0">
+                        <TextBlock Text="Connection:"/>
+                        <TextBlock Text="{Binding ConnectButtonText}" Background="{Binding ConnectButtonColor}"/>
+
+                        <StackPanel Orientation="Vertical" Grid.Column="5" Grid.Row="3" Grid.RowSpan="4">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+
+                        <TextBlock Text ="{Binding StimActiveDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding TherapyStatusBackground}"/>
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Horizontal" Background="{Binding TherapyStatusBackground}">
+                            <TextBlock Text ="{Binding StimAmpDisplay}" Margin="0, 0, 10, 0" HorizontalAlignment="Center"/>
+                            <TextBlock Text="mA" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button x:Name="TurnStimOffStateVis" IsEnabled="{Binding StimOffButtonEnabled}" Grid.Column="1" Grid.Row="6" Margin="20, 0, 20, 20" Content="Stim Off" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <cal:ActionMessage MethodName="StimOffButtonClick" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </StackPanel>
+
+                    <s:SciChartSurface x:Name="StateSpaceChart"
+                                       ChartTitle="State Space"
+                                       Margin="20, 0 , 0 ,0"
+                                       Grid.Row="0"
+                                       Grid.Column="1" 
+                                       Grid.ColumnSpan="2"
+                                       Grid.RowSpan="4"
+                                       YAxes="{s:AxesBinding YAxesState}">
+
+                        <s:SciChartSurface.RenderableSeries>
+                            <s:XyScatterRenderableSeries DataSeries="{Binding StateSpaceChart}" YAxisId="StateSpaceID" >
+                                <s:XyScatterRenderableSeries.PointMarker>
+                                    <s:EllipsePointMarker Width="9"
+                                              Height="9"
+                                              Fill="SteelBlue"
+                                              Stroke="LightSteelBlue"
+                                              StrokeThickness="2" />
+                                </s:XyScatterRenderableSeries.PointMarker>
+
+                                <s:XyScatterRenderableSeries.SeriesAnimation>
+                                    <s:ScaleAnimation AnimationDelay="0:0:1" Duration="0:0:2"/>
+                                </s:XyScatterRenderableSeries.SeriesAnimation>
+
+                            </s:XyScatterRenderableSeries>
+                            <!--<s:FastLineRenderableSeries DataSeries="{Binding B1StateThresholdLine}" YAxisId="StateSpaceID" Stroke="Orange" StrokeDashArray="3,3"/>-->
+                            <s:FastLineRenderableSeries DataSeries="{Binding B0StateThresholdLine}" YAxisId="StateSpaceID" Stroke="Orange" StrokeDashArray="3,3" />
+                        </s:SciChartSurface.RenderableSeries>
+
+                        <s:SciChartSurface.YAxis>
+                            <s:NumericAxis AxisTitle="Power2" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.YAxis>
+
+                        <s:SciChartSurface.XAxis>
+                            <s:NumericAxis AutoRange="Always" AxisTitle="Power1" FontSize="20">
+                                <s:NumericAxis.Scrollbar>
+                                    <s:SciChartScrollbar Height="16"/>
+                                </s:NumericAxis.Scrollbar>
+                            </s:NumericAxis>
+                        </s:SciChartSurface.XAxis>
+                        <s:SciChartSurface.ChartModifier>
+                            
+                            <s:ModifierGroup>
+                                <s:RubberBandXyZoomModifier IsXAxisOnly="False" ZoomExtentsY="True"/>
+                                <s:ZoomPanModifier ExecuteOn="MouseRightButton" />
+                                <s:ZoomExtentsModifier ExecuteOn="MouseDoubleClick" />
+                                <s:YAxisDragModifier/>
+                                <s:XAxisDragModifier/>
+                                <s:RubberBandXyZoomModifier IsEnabled="true" />
+                                <s:ZoomPanModifier IsEnabled="true" ClipModeX="None" />
+                                <s:ZoomExtentsModifier/>
+                                <s:LegendModifier ShowLegend="True" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                            </s:ModifierGroup>
+
+                        </s:SciChartSurface.ChartModifier>
+
+                    </s:SciChartSurface>
+                    <StackPanel Orientation="Vertical" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="10, 0, 0, 0" >
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for the first value in the WeightVector for adaptive config file (WeightVector[x, 0, 0, 0])" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="W1" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for the second value in the WeightVector for adaptive config file (WeightVector[0, x, 0, 0])" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="W2" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for the BiasTerm 0 in the adaptive config file (ie: B0)" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="B0" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for the BiasTerm 1 in the adaptive config file (ie: B1)" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="B1" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for the FractionalFixedPointValue in the adaptive config file" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="FFPV" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="The input for Update Rate in the adaptive config file" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="Up.Rate" Margin="2"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" >
+                        <TextBox x:Name="WeightOneTB" Margin="0, 1, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the first value in the WeightVector for adaptive config file (WeightVector[x, 0, 0, 0])" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="WeightTwoTB" Margin="0, 1, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the second value in the WeightVector for adaptive config file (WeightVector[0, x, 0, 0])" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="BiasTerm0TB" Margin="0, 2, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the BiasTerm 0 in the adaptive config file (ie: B0)" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="BiasTerm1TB" Margin="0, 1, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the BiasTerm 1 in the adaptive config file (ie: B1)" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="FFPVTB" Margin="0, 2, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the FractionalFixedPointValue in the adaptive config file" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="UpdateRateTB" Margin="0, 2, 0, 0" MinWidth="100" ToolTipService.ToolTip="The input for the Update Rate in the adaptive config file" ToolTipService.Placement="Mouse"/>
+                        <Button Grid.ColumnSpan="2" Margin="0, 5, 0, 0" x:Name="SetAdaptiveValueInputButton" Content="Set Values" VerticalAlignment="Center" HorizontalContentAlignment="Left" ToolTipService.ToolTip="Sets the values above to the adaptiveConfig.json file" ToolTipService.Placement="Mouse"/>
+                    </StackPanel>
+                    
+                    <!--<StackPanel Orientation="Vertical" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2" Margin="10, 0, 0, 0" >
+                        <TextBlock Text="Matlab Chart:" Margin="0, 5, 0, 0"/>
+                        <Button Grid.ColumnSpan="2" Margin="0, 5, 0, 0" x:Name="StartMatlabChartButton" Content="Start Chart" VerticalAlignment="Center" HorizontalContentAlignment="Left" ToolTipService.ToolTip="Start the Matlab Chart Window" ToolTipService.Placement="Mouse"/>
+                        <Button Grid.ColumnSpan="2" Margin="0, 5, 0, 0" x:Name="HideMatlabChartGetDrawValuesButton" Content="Get Values/&#x0d;Hide Chart" VerticalAlignment="Center" HorizontalContentAlignment="Left" ToolTipService.ToolTip="Get values from drawing the line in the Matlab chart. Hide the Matlab chart window so that it doesn't keep popping up" ToolTipService.Placement="Mouse"/>
+                        <Button Grid.ColumnSpan="2" Margin="0, 5, 0, 0" x:Name="ShowMatlabChartButton" Content="Show Chart" VerticalAlignment="Center" HorizontalContentAlignment="Left" ToolTipService.ToolTip="Show the Matlab chart window" ToolTipService.Placement="Mouse"/>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="X and Y values for the first point in the draw line from Matlab" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="x1: " Margin="2"/>
+                            <TextBlock Text="{Binding X1ValueFromLineDrawStateSpaceText}" Margin="2"/>
+                            <TextBlock Text="y1: " Margin="2"/>
+                            <TextBlock Text="{Binding Y1ValueFromLineDrawStateSpaceText}" Margin="2"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="X and Y values for the second point in the draw line from Matlab" ToolTipService.Placement="Mouse">
+                            <TextBlock Text="x2: " Margin="2"/>
+                            <TextBlock Text="{Binding X2ValueFromLineDrawStateSpaceText}" Margin="2"/>
+                            <TextBlock Text="y2: " Margin="2"/>
+                            <TextBlock Text="{Binding Y2ValueFromLineDrawStateSpaceText}" Margin="2"/>
+                        </StackPanel>
+                    </StackPanel>-->
+                </Grid>
+            </TabItem>
+            
             <!--Visualization Page For sense for TimeDomain and Accelerometry-->
             <TabItem Header="Vis(TD/Acc)">
                 <Grid>
@@ -989,10 +1272,11 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Grid.Column="0" Grid.Row="0">
-                        <ComboBox Margin="2" Height="30" x:Name="FFTScaleOptions" SelectedItem="{Binding Path=SelectedFFTScaleOption, Mode=TwoWay}"/>
-                        <TextBlock Text="Mean:" Margin="2"/>
-                        <TextBox x:Name="FFTMean" Margin="2"/>
-                        <Button Content="Set" Margin="2" x:Name="FFTMeanButton"/>
+                        <ComboBox Margin="2" Height="30" x:Name="FFTScaleOptions" SelectedItem="{Binding Path=SelectedFFTScaleOption, Mode=TwoWay}"   ToolTipService.ToolTip="This option allows you to visualize the data auto-scaled or None which allows you to adjust the data view with the mouse" ToolTipService.Placement="Mouse"/>
+                        <ComboBox Margin="2" Height="30" x:Name="FFTLog10Options" SelectedItem="{Binding Path=SelectedFFTLog10Option, Mode=TwoWay}"   ToolTipService.ToolTip="This option takes the log10 of the data points before charting them. You may choose None to see actual data. Set Auto-scale to None and select part of the chart with the mouse to view the data." ToolTipService.Placement="Mouse"/>
+                        <TextBlock Text="Mean:" Margin="2" ToolTipService.ToolTip="This takes the mean of each set of FFT data coming in. Set to 1 to see real time data coming in" ToolTipService.Placement="Mouse"/>
+                        <TextBox x:Name="FFTMean" Margin="2" ToolTipService.ToolTip="This is the mean of each set of FFT data coming in. Set to 1 to see real time data coming in" ToolTipService.Placement="Mouse"/>
+                        <Button Content="Set" Margin="2" x:Name="FFTMeanButton" ToolTipService.ToolTip="This sets the mean of each set of FFT data coming in. Set to 1 to see real time data coming in" ToolTipService.Placement="Mouse"/>
                         <TextBlock Text="Overlap:" Margin="2"/>
                         <TextBlock x:Name ="FFTOverlapDisplay" Margin="2" HorizontalAlignment="Center"/>
                         <TextBlock Text="Time:" Margin="2"/>

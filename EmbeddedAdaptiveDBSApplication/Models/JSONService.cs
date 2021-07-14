@@ -487,7 +487,7 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         }
 
         /// <summary>
-        /// Writes the Sense Model to a json config file in the medtronic directory path for the current session
+        /// Writes the adaptive Model to a json config file in the medtronic directory path for the current session
         /// </summary>
         /// <param name="adaptiveModel">Model to be written to json file</param>
         /// <param name="version">version number to be prepended to front of filename</param>
@@ -519,6 +519,34 @@ namespace EmbeddedAdaptiveDBSApplication.Models
             }
             return success;
         }
+        /// <summary>
+        /// Writes the Adaptive Model to a json config file in the medtronic directory path for the current session
+        /// </summary>
+        /// <param name="adaptiveModel">Model to be written to json file</param>
+        /// <param name="path">filepath to where to write the file</param>
+        /// <returns>true if success and false if unsuccessful</returns>
+        public bool WriteAdaptiveConfigToFile(AdaptiveModel adaptiveModel, string path)
+        {
+            bool success = false;
+            try
+            {
+                using (StreamWriter file = File.CreateText(path))
+                {
+                    //write the file to path and set success
+                    JsonSerializer serializer = new JsonSerializer();
+                    serializer.Serialize(file, adaptiveModel);
+                    success = true;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Could not write adaptive config to file. Please be sure the adaptive_config.json is located in C:\\AdaptiveDBS\\adaptive_config.json", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _log.Error(e);
+                success = false;
+            }
+            return success;
+        }
+
         #endregion
 
         #region Helper Methods for Getting directory path, Checking if path exists or creating it

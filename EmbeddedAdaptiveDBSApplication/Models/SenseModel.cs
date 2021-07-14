@@ -215,6 +215,10 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// Anode and Cathode Inputs for the channel
         /// </summary>
         public List<int> Inputs { get; set; }
+        /// <summary>
+        /// Sets the TdEvokedResponseEnable to standard, evoked 0 or evoked 1
+        /// </summary>
+        public uint TdEvokedResponseEnable { get; set; }
     }
     /// <summary>
     /// FFT Object
@@ -254,6 +258,10 @@ namespace EmbeddedAdaptiveDBSApplication.Models
         /// Window enabled or not
         /// </summary>
         public bool WindowEnabled { get; set; }
+        /// <summary>
+        /// WeightMultiplies shift 0-7
+        /// </summary>
+        public uint WeightMultiplies { get; set; }
     }
     /// <summary>
     /// Power Object
