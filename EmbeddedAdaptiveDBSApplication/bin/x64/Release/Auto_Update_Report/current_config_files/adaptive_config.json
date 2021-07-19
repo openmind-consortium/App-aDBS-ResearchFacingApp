@@ -87,13 +87,12 @@
 	},
 	"Adaptive": {
 		"Program0": {
-			"Comment": "WARNING: use RateTargetInHz for retro-active. If using new version, use Rates object below.  Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
-			"RiseTimes": 10000,
-			"FallTimes": 10000,
-			"RateTargetInHz": 100.0, 
+			"Comment": "Rise_fall times how long it takes to ramp up or down (set both to 0 if program is not being used). If state is unused, set to 25.5",
+			"RiseTimes": 1000,
+			"FallTimes": 1000, 
 			"State0AmpInMilliamps": 0.0,
-			"State1AmpInMilliamps": 1.0,
-			"State2AmpInMilliamps": 2.5,
+			"State1AmpInMilliamps": 0.0,
+			"State2AmpInMilliamps": 0.0,
 			"State3AmpInMilliamps": 25.5,
 			"State4AmpInMilliamps": 25.5,
 			"State5AmpInMilliamps": 25.5,
@@ -102,7 +101,7 @@
 			"State8AmpInMilliamps": 25.5
 		},
 		"Program1": {
-			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"Comment": "Rise_fall times how long it takes to ramp up or down (set both to 0 if program is not being used). If state is unused, set to 25.5",
 			"RiseTimes": 0,
 			"FallTimes": 0,
 			"State0AmpInMilliamps": 25.5,
@@ -116,12 +115,12 @@
 			"State8AmpInMilliamps": 25.5
 		},
 		"Program2": {
-			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
-			"RiseTimes": 1000,
-			"FallTimes": 1000,
-			"State0AmpInMilliamps": 2,
-			"State1AmpInMilliamps": 1.5,
-			"State2AmpInMilliamps": .5,
+			"Comment": "Rise_fall times how long it takes to ramp up or down (set both to 0 if program is not being used). If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
 			"State3AmpInMilliamps": 25.5,
 			"State4AmpInMilliamps": 25.5,
 			"State5AmpInMilliamps": 25.5,
@@ -130,7 +129,7 @@
 			"State8AmpInMilliamps": 25.5
 		},
 		"Program3": {
-			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"Comment": "Rise_fall times how long it takes to ramp up or down (set both to 0 if program is not being used). If state is unused, set to 25.5",
 			"RiseTimes": 0,
 			"FallTimes": 0,
 			"State0AmpInMilliamps": 25.5,
@@ -146,39 +145,39 @@
 		"Rates": {
 			"Comment": "Rates can change for each state across all programs",
 			"State0": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State1": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State2": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State3": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State4": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State5": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State6": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State7": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			},
 			"State8": {
-				"RateTargetInHz": 120,
+				"RateTargetInHz": 130.2,
 				"SenseFriendly": true
 			}
 		}

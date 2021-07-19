@@ -9,28 +9,28 @@
 		"comment": "lets you set what to sense",
 		"TimeDomain": true,
 		"FFT": true,
-		"Power": false,
-		"LD0": false,
+		"Power": true,
+		"LD0": true,
 		"LD1": false,
-		"AdaptiveState": false,
+		"AdaptiveState": true,
 		"LoopRecording": false,
 		"Unused": false
 	},
 	"StreamEnables": {
-		"comment": "lets you set what to stream",
+		"comment": "lets you set what to stream. AdaptiveTherapy is LD detector events, TimeStamp is  Time-Sync and EventMarker is LoopRecordMarkerEcho in Medtronic API Docs",
 		"TimeDomain": true,
-		"FFT": true,
-		"Power": false,
+		"FFT": false,
+		"Power": true,
 		"Accelerometry": true,
-		"AdaptiveTherapy": false,
-		"AdaptiveState": false,
+		"AdaptiveTherapy": true,
+		"AdaptiveState": true,
 		"EventMarker": true,
 		"TimeStamp": true
 	},
 	"Sense": {
 		"commentTDChannelDefinitions": "No more than two channels can be on a single bore. When configuring, channels on first bore will always be first. Can only have sampling rates of: 250, 500, and 1000 (Hz) or disable it by setting IsDisabled to true",
 		"commentFilters": "Stage one low pass(Lpf1) can only be: 450, 100, or 50 (Hz). Stage two low pass(Lpf2) can only be: 1700, 350, 160, or 100 (Hz). High pass(Hpf) can only be: 0.85, 1.2, 3.3, or 8.6 (Hz), Inputs[ anode(positive), cathode(negative) ], tdEvokedResponseEnable can either be 0 for standard, 16 for evoked 0 or 32 for evoked 1",
-		"TDSampleRate": 250,
+		"TDSampleRate": 500,
 		"TimeDomains": [
 			{
 				"IsEnabled": true,
@@ -49,8 +49,8 @@
 				"Lpf1": 100,
 				"Lpf2": 100,
 				"Inputs": [
-					2,
-					3
+					0,
+					2
 				],
 				"TdEvokedResponseEnable": 0
 			},
@@ -78,7 +78,7 @@
 			}
 		],
 		"FFT": {
-			"commentFFTParameters": "FFT Size can be: 64, 256, or 1024 samples, Hanning window load can be: 25, 50, or 100 (%), channel is for the fft channel must be between 0-3 and time domain must be enabled for that channel, WeightMultiplies can be shift: 0-7",
+			"commentFFTParameters": "FFT Size can be: 64, 256, or 1024 samples, Hanning window load can be: 25, 50, or 100 (%), channel is for the fft channel must be between 0-3 and VERY IMPORTANT the time domain channel must be enabled for the same fft channel, WeightMultiplies is the BandFormation and can be shift: 0-7",
 			"Channel": 0,
 			"FftSize": 256,
 			"FftInterval": 100,
@@ -93,64 +93,64 @@
 			{
 				"comment": "Channel: 0 PowerBand: 0",
 				"ChannelPowerBand": [
-					17.09,
-					22.95
+					16.6,
+					22.46
 				],
-				"IsEnabled": false
+				"IsEnabled": true
 			},
 			{
 				"comment": "Channel: 0 PowerBand: 1",
 				"ChannelPowerBand": [
-					117.68,
-					121.58
+					118.16,
+					122.07
 				],
-				"IsEnabled": false
+				"IsEnabled": true
 			},
 			{
 				"comment": "Channel: 1 PowerBand: 0",
 				"ChannelPowerBand": [
-					5.37,
-					36.62
+					131.84,
+					133.79
 				],
-				"IsEnabled": false
+				"IsEnabled": true
 			},
 			{
 				"comment": "Channel: 1 PowerBand: 1",
 				"ChannelPowerBand": [
-					0.0,
-					5.37
+					127.93,
+					129.88
 				],
-				"IsEnabled": false
+				"IsEnabled": true
 			},
 			{
 				"comment": "Channel: 2 PowerBand: 0",
 				"ChannelPowerBand": [
-					0.0,
-					5.37
+					8.79,
+					12.7
 				],
 				"IsEnabled": false
 			},
 			{
 				"comment": "Channel: 2 PowerBand: 1",
 				"ChannelPowerBand": [
-					0.0,
-					5.37
+					16.6,
+					22.46
 				],
 				"IsEnabled": false
 			},
 			{
 				"comment": "Channel: 3 PowerBand: 0",
 				"ChannelPowerBand": [
-					5.37,
-					26.86
+					8.79,
+					12.7
 				],
 				"IsEnabled": false
 			},
 			{
 				"comment": "Channel: 3 PowerBand: 1",
 				"ChannelPowerBand": [
-					0.0,
-					5.37
+					16.6,
+					22.46
 				],
 				"IsEnabled": false
 			}
