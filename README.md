@@ -5,8 +5,8 @@ This research application is built for connection with RC+S and is intended for 
 
 ## Key Features: 
 
-	* Configure sensing electrodes, filters and all other sensing parameters for time domain, built in FFT and built in power domain signals.
-	* Real time visualization of time domain, power domain and FFT signal 
+	* Configure sensing parameters for time domain, built in FFT and built in power domain signals.
+	* Real time visualization of time domain, power domain, FFT signal, and Linear detectors
 	* Change stimulation parameters (via GUI) for all programs (within pre-defined limits): amplitude, rate, pulse width. Turn stimulation on/off, change groups etc. 
 	* Via an easily configure text file, control a "report" that will send down events into RC+S.
 	* Mechanisms for syncing external sensors via pre-configured stimulation trains or external inputs. 
@@ -37,12 +37,14 @@ Sense Settings screen allows you to adjust the sense parameters. When making a c
 ![](photos/SenseSetup.PNG)
 
 ### Adaptive Visualization
-Adaptive Vis screen allows you to visualize the power/detector together along with the upper and lower thresholds. The detector is on a y axis with the thresholds and the power is on its own y axis. The state and current visualization is each on their own y axes and will set to the limits set by the adaptive configurations. You may choose the powerband to visualize power from with the drop down menu. You may also change the visualization of the power/detector visualization using dropdown menu to make them auto-scale, view the thresholds(sets the thresholds inside the screen as shown in image) and none (which will allow the user to adjust themselves by pulling the side axes bars). You can also change the amount of data points shown.
+Adaptive Vis screen allows you to visualize 2 different power bands along with linear detector 0 and 1 and the upper and lower thresholds. The detectors are on a y axis together(right side) with the thresholds and the both power bands are on thier own y axis (left side). Choose which powerband to visualize from with the drop down menu. Pink is Power 1 and yellow is Power 2. 
+The state and current visualization are each on their own y axes and show all 4 programs at once. You may choose to turn off any chart series that you are not using. 
+You can change the visualization of the power/detector visualization using dropdown menu to make them auto-scale, view the thresholds(sets the thresholds inside the screen as shown in image) and none (which will allow the user to adjust themselves by pulling the side axes bars). You can also change the amount of data points shown.
 ![](photos/aDBSScreen.PNG)
 
-### Sense Visualization
-Sense Vis screen allows you to view the time domain and the accelerometry data. You may change the data points and choose which time domain channel to visualize.
-![](photos/SenseVisScreen.PNG)
+### State Space Visualization
+When running adaptive, the state space will plot Power 1 from the dropdown menu selected in pink in the Vis(Adaptive) tab on the x axis and Power 2 from the dropdown menu selected in yellow in the Vis(Adaptive) tab on the y axis. You also have the ability to update the weights, thresholds, FFPV and update rate directly to the adaptive_config.json (pressing the aDBS On/Update is required after making the changes)
+![](photos/StateSpace.PNG)
 
 ### FFT Visualization
 FFT Vis screen allows you to view the fft data. You may view the auto scale (as shown in image), the log10 of the points, and none which allows you to adjust it yourself.  You can choose which time domain channel you would like to visualize from. You can also set the mean which will average the number of fft samples coming in. Setting it to 1 will not do any averaging.
@@ -65,142 +67,181 @@ Lead Integrity screen allows you to run a lead integrity test on all the contact
 
 ### Step 1: Add config files
 There are 3 config files needed for the application, the sensing configurations and another for reporting conditions/medications.  All of these files need to go into the directory *C:\AdaptiveDBS* and must be named application_config.json, sense_config.json and report_config.json, respectively.  
+** NOTE: You may also copy the config files from the location and put the in the correct directory: [Config Files](https://github.com/openmind-consortium/App-aDBS-ResearchFacingApp/tree/master/EmbeddedAdaptiveDBSApplication/bin/x64/Release/Auto_Update_Report/current_config_files)
+
 The sense_config.json template file is:
-```json
+```
 {
-  "eventType": {
-    "comment": "event name to use to log to .json files",
-    "type": "Home streaming"
-  },
-  "Mode": 3,
-  "Ratio": 32,
-  "SenseOptions": {
-    "comment": "lets you set what to sense",
-    "TimeDomain": true,
-    "FFT": true,
-    "Power": true,
-    "LD0": false,
-    "LD1": false,
-    "AdaptiveState": false,
-    "LoopRecording": false,
-    "Unused": false
-  },
-  "StreamEnables": {
-    "comment": "lets you set what to stream",
-    "TimeDomain": true,
-    "FFT": false,
-    "Power": true,
-    "Accelerometry": true,
-    "AdaptiveTherapy": false,
-    "AdaptiveState": false,
-    "EventMarker": false,
-    "TimeStamp": true
-  },
-  "Sense": {
-    "commentTDChannelDefinitions": "No more than two channels can be on a single bore. When configuring, channels on first bore will always be first. Can only have sampling rates of: 250, 500, and 1000 (Hz) or disable it by setting IsDisabled to true",
-    "commentFilters": "Stage one low pass(Lpf1) can only be: 450, 100, or 50 (Hz). Stage two low pass(Lpf2) can only be: 1700, 350, 160, or 100 (Hz). High pass(Hpf) can only be: 0.85, 1.2, 3.3, or 8.6 (Hz), Inputs[ anode(positive), cathode(negative) ]",
-    "TDSampleRate": 250,
-	"TimeDomains": [
-	  {
-		"ch0": "STN",
-		"IsEnabled": true,
-		"Hpf": 0.85,
-		"Lpf1": 100,
-		"Lpf2": 100,
-		"Inputs": [ 0, 2 ]
-	  },
-	  {
-		"ch1": "STN",
-		"IsEnabled": true,
-		"Hpf": 0.85,
-		"Lpf1": 100,
-		"Lpf2": 100,
-		"Inputs": [ 1, 3 ]
-	  },
-	  {
-		"ch2": "M1",
-		"IsEnabled": true,
-		"Hpf": 0.85,
-		"Lpf1": 450,
-		"Lpf2": 1700,
-		"Inputs": [ 8, 10 ]
-	  },
-	  {
-		"ch3": "M1",
-		"IsEnabled": true,
-		"Hpf": 0.85,
-		"Lpf1": 450,
-		"Lpf2": 1700,
-		"Inputs": [ 9, 11 ]
-	  }
-	],
-    "FFT": {
-      "commentFFTParameters": "FFT Size can be: 64, 256, or 1024 samples, Hanning window load can be: 25, 50, or 100 (%), channel is for the fft channel must be between 0-3 and time domain must be enabled for that channel",
-      "Channel": 1,
-      "FftSize": 1024,
-      "FftInterval": 100,
-      "WindowLoad": 100,
-      "StreamSizeBins": 0,
-      "StreamOffsetBins": 0,
-      "WindowEnabled": true
-    },
-	"commentPower": "each power band can be set from 0-250hz, 2 pos bands per channel. Ex: ChNPowerBandN:[lower, upper]",
-    "PowerBands": [
-		{
-			"comment": "Channel: 0 PowerBand: 0",
-			"ChannelPowerBand": [ 18, 22 ],
-			"IsEnabled": true
+	"eventType": {
+		"comment": "event name to use to log to .json files",
+		"type": "Home streaming"
+	},
+	"Mode": 4,
+	"Ratio": 4,
+	"SenseOptions": {
+		"comment": "lets you set what to sense",
+		"TimeDomain": true,
+		"FFT": true,
+		"Power": true,
+		"LD0": true,
+		"LD1": false,
+		"AdaptiveState": true,
+		"LoopRecording": false,
+		"Unused": false
+	},
+	"StreamEnables": {
+		"comment": "lets you set what to stream",
+		"TimeDomain": true,
+		"FFT": false,
+		"Power": true,
+		"Accelerometry": true,
+		"AdaptiveTherapy": true,
+		"AdaptiveState": true,
+		"EventMarker": false,
+		"TimeStamp": false
+	},
+	"Sense": {
+		"commentTDChannelDefinitions": "No more than two channels can be on a single bore. When configuring, channels on first bore will always be first. Can only have sampling rates of: 250, 500, and 1000 (Hz) or disable it by setting IsDisabled to true",
+		"commentFilters": "Stage one low pass(Lpf1) can only be: 450, 100, or 50 (Hz). Stage two low pass(Lpf2) can only be: 1700, 350, 160, or 100 (Hz). High pass(Hpf) can only be: 0.85, 1.2, 3.3, or 8.6 (Hz), Inputs[ anode(positive), cathode(negative) ], tdEvokedResponseEnable can either be 0 for standard, 16 for evoked 0 or 32 for evoked 1",
+		"TDSampleRate": 250,
+		"TimeDomains": [
+			{
+				"IsEnabled": true,
+				"Hpf": 0.85,
+				"Lpf1": 100,
+				"Lpf2": 100,
+				"Inputs": [
+					0,
+					2
+				],
+				"TdEvokedResponseEnable": 0
+			},
+			{
+				"IsEnabled": true,
+				"Hpf": 0.85,
+				"Lpf1": 100,
+				"Lpf2": 100,
+				"Inputs": [
+					0,
+					2
+				],
+				"TdEvokedResponseEnable": 0
+			},
+			{
+				"IsEnabled": false,
+				"Hpf": 0.85,
+				"Lpf1": 450,
+				"Lpf2": 1700,
+				"Inputs": [
+					8,
+					9
+				],
+				"TdEvokedResponseEnable": 0
+			},
+			{
+				"IsEnabled": false,
+				"Hpf": 0.85,
+				"Lpf1": 450,
+				"Lpf2": 1700,
+				"Inputs": [
+					10,
+					11
+				],
+				"TdEvokedResponseEnable": 0
+			}
+		],
+		"FFT": {
+			"commentFFTParameters": "FFT Size can be: 64, 256, or 1024 samples, Hanning window load can be: 25, 50, or 100 (%), channel is for the fft channel must be between 0-3 and time domain must be enabled for that channel, WeightMultiplies can be shift: 0-7",
+			"Channel": 0,
+			"FftSize": 256,
+			"FftInterval": 100,
+			"WindowLoad": 100,
+			"StreamSizeBins": 0,
+			"StreamOffsetBins": 0,
+			"WindowEnabled": true,
+			"WeightMultiplies": 7
 		},
-		{
-			"comment": "Channel: 0 PowerBand: 1",
-			"ChannelPowerBand": [ 10, 12 ],
-			"IsEnabled": true
+		"commentPower": "each power band can be set from 0-250hz, 2 pos bands per channel. Ex: ChNPowerBandN:[lower, upper]",
+		"PowerBands": [
+			{
+				"comment": "Channel: 0 PowerBand: 0",
+				"ChannelPowerBand": [
+					17.09,
+					22.95
+				],
+				"IsEnabled": true
+			},
+			{
+				"comment": "Channel: 0 PowerBand: 1",
+				"ChannelPowerBand": [
+					117.68,
+					121.58
+				],
+				"IsEnabled": true
+			},
+			{
+				"comment": "Channel: 1 PowerBand: 0",
+				"ChannelPowerBand": [
+					123.54,
+					124.51
+				],
+				"IsEnabled": true
+			},
+			{
+				"comment": "Channel: 1 PowerBand: 1",
+				"ChannelPowerBand": [
+					123.54,
+					124.51
+				],
+				"IsEnabled": true
+			},
+			{
+				"comment": "Channel: 2 PowerBand: 0",
+				"ChannelPowerBand": [
+					8.3,
+					13.18
+				],
+				"IsEnabled": false
+			},
+			{
+				"comment": "Channel: 2 PowerBand: 1",
+				"ChannelPowerBand": [
+					17.09,
+					22.95
+				],
+				"IsEnabled": false
+			},
+			{
+				"comment": "Channel: 3 PowerBand: 0",
+				"ChannelPowerBand": [
+					8.3,
+					13.18
+				],
+				"IsEnabled": false
+			},
+			{
+				"comment": "Channel: 3 PowerBand: 1",
+				"ChannelPowerBand": [
+					17.09,
+					22.95
+				],
+				"IsEnabled": false
+			}
+		],
+		"Accelerometer": {
+			"commentAcc": "Can be 4,8,16,32,64Hz or set SampleRateDisabled to true for disabled",
+			"SampleRateDisabled": false,
+			"SampleRate": 64
 		},
-		{	
-			"comment": "Channel: 1 PowerBand: 0",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": false
-		},
-		{
-			"comment": "Channel: 1 PowerBand: 1",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": false
-		},
-		{
-			"comment": "Channel: 2 PowerBand: 0",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": true
-		},
-		{
-			"comment": "Channel: 2 PowerBand: 1",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": false
-		},
-		{
-			"comment": "Channel: 3 PowerBand: 0",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": false
-		},
-		{
-			"comment": "Channel: 3 PowerBand: 1",
-			"ChannelPowerBand": [ 6, 7 ],
-			"IsEnabled": false
+		"Misc": {
+			"commentMiscParameters": "stream rate can be 30-100 by tens and is in ms; LoopRecordingTriggersState can be 0-8 or can be disabled by changing IsEnabled to false; Bridging can be 0 = None, 1 = Bridge 0-2 enabled, 2 = Bridge 1-3 enabled",
+			"StreamingRate": 100,
+			"LoopRecordingTriggersState": 0,
+			"LoopRecordingTriggersIsEnabled": true,
+			"LoopRecordingPostBufferTime": 53,
+			"Bridging": 0
 		}
-    ],
-    "Accelerometer": {
-      "commentAcc": "Can be 4,8,16,32,64Hz or set SampleRateDisabled to true for disabled",
-      "SampleRateDisabled": false,
-      "SampleRate": 64
-    },
-	"Misc": {
-      "commentMiscParameters": "stream rate can be 30-100 by tens and is in ms; LoopRecordingTriggersState can be 0-8 or can be disabled by changing IsEnabled to false; Bridging can be 0 = None, 1 = Bridge 0-2 enabled, 2 = Bridge 1-3 enabled",
-      "StreamingRate": 50,
-      "LoopRecordingTriggersState": 0,
-      "LoopRecordingTriggersIsEnabled": true,
-      "LoopRecordingPostBufferTime": 53,
-      "Bridging": 0
-    }
-  }
+	}
 }
 ```
 
@@ -249,18 +290,18 @@ If you plan to use the embedded adaptive capability, then you will need an addit
 ```
 {
 	"Comment": "config file for the adaptive DBS configurations",
-	"Detection":{
+	"Detection": {
 		"LD0": {
 			"Comment": "Detection settings for LD0",
-			"B0": 25000,
-			"B1": 45000,
-			"UpdateRate": 5,
+			"B0": 30,
+			"B1": 31,
+			"UpdateRate": 15,
 			"OnsetDuration": 0,
-			"TerminationDuration": 0,
-			"HoldOffOnStartupTime": 1,
+			"TerminationDuration": 2,
+			"HoldOffOnStartupTime": 0,
 			"StateChangeBlankingUponStateChange": 5,
-			"FractionalFixedPointValue": 0,
-			"DualThreshold": true,
+			"FractionalFixedPointValue": 4,
+			"DualThreshold": false,
 			"BlankBothLD": false,
 			"Inputs": {
 				"Ch0Band0": true,
@@ -272,22 +313,37 @@ If you plan to use the embedded adaptive capability, then you will need an addit
 				"Ch3Band0": false,
 				"Ch3Band1": false
 			},
-			"WeightVector": [1,0,0,0],
-			"NormalizationMultiplyVector": [1,0,0,0],
-			"NormalizationSubtractVector": [0,0,0,0]
+			"WeightVector": [
+				1.0,
+				0,
+				0,
+				0.0
+			],
+			"NormalizationMultiplyVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationSubtractVector": [
+				0,
+				0,
+				0,
+				0
+			]
 		},
 		"LD1": {
 			"Comment": "Detection settings for LD1",
 			"IsEnabled": false,
-			"B0": 1000,
-			"B1": 6000,
-			"UpdateRate": 5,
+			"B0": 0,
+			"B1": 2000,
+			"UpdateRate": 1,
 			"OnsetDuration": 0,
 			"TerminationDuration": 0,
-			"HoldOffOnStartupTime": 1,
-			"StateChangeBlankingUponStateChange": 2,
+			"HoldOffOnStartupTime": 0,
+			"StateChangeBlankingUponStateChange": 0,
 			"FractionalFixedPointValue": 0,
-			"DualThreshold": true,
+			"DualThreshold": false,
 			"BlankBothLD": false,
 			"Inputs": {
 				"Ch0Band0": true,
@@ -299,28 +355,123 @@ If you plan to use the embedded adaptive capability, then you will need an addit
 				"Ch3Band0": false,
 				"Ch3Band1": false
 			},
-			"WeightVector": [1,0,0,0],
-			"NormalizationMultiplyVector": [1,0,0,0],
-			"NormalizationSubtractVector": [0,0,0,0]
+			"WeightVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationMultiplyVector": [
+				1.0,
+				0,
+				0.0,
+				0.0
+			],
+			"NormalizationSubtractVector": [
+				0,
+				0,
+				0,
+				0
+			]
 		}
 	},
 	"Adaptive": {
 		"Program0": {
-			"Comment": "Rise_fall times how long it takes to ramp up or down. If stat is unused, set to 25.5",
-			"RiseTimes": 6500,
-			"FallTimes": 6500,
-			"RateTargetInHz": 100,
-			"State0AmpInMilliamps": 1,
-			"State1AmpInMilliamps": 1.5,
-			"State2AmpInMilliamps": 2,
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 100000,
+			"FallTimes": 100000,
+			"State0AmpInMilliamps": 0.0,
+			"State1AmpInMilliamps": 1.0,
+			"State2AmpInMilliamps": 2.5,
 			"State3AmpInMilliamps": 25.5,
 			"State4AmpInMilliamps": 25.5,
 			"State5AmpInMilliamps": 25.5,
 			"State6AmpInMilliamps": 25.5,
 			"State7AmpInMilliamps": 25.5,
 			"State8AmpInMilliamps": 25.5
+		},
+		"Program1": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Program2": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Program3": {
+			"Comment": "Rise_fall times how long it takes to ramp up or down. If state is unused, set to 25.5",
+			"RiseTimes": 0,
+			"FallTimes": 0,
+			"State0AmpInMilliamps": 25.5,
+			"State1AmpInMilliamps": 25.5,
+			"State2AmpInMilliamps": 25.5,
+			"State3AmpInMilliamps": 25.5,
+			"State4AmpInMilliamps": 25.5,
+			"State5AmpInMilliamps": 25.5,
+			"State6AmpInMilliamps": 25.5,
+			"State7AmpInMilliamps": 25.5,
+			"State8AmpInMilliamps": 25.5
+		},
+		"Rates": {
+			"Comment": "Rates can change for each state across all programs",
+			"State0": {
+				"RateTargetInHz": 128,
+				"SenseFriendly": true
+			},
+			"State1": {
+				"RateTargetInHz": 132,
+				"SenseFriendly": true
+			},
+			"State2": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State3": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State4": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State5": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State6": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State7": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			},
+			"State8": {
+				"RateTargetInHz": 120,
+				"SenseFriendly": true
+			}
 		}
-	}	
+	}
 }
 ```
 
