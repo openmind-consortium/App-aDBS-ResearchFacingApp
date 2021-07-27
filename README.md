@@ -18,13 +18,13 @@ Installation instructions are below, as well as more details about each "screen"
 
 ### Video Tutorials
 
-[Setup Instructions Walkthrough](https://ucsf.box.com/s/yzxs6vj8axaeuxsurmria5xq8axg51qd)
+[Setup Instructions Walkthrough](https://ucsf.box.com/s/uhpknjepmh4mibi9i9ssyxl0w6hp6gwk)
 
-[Config File Walkthrough](https://ucsf.box.com/s/j2hzbgpwldndrgsq33cyjl84r92t67g6)
+[Config File Walkthrough](https://ucsf.box.com/s/gfx8f61u3nd0x9hyqhg7c9l6n93teb51)
 
-[Application Walkthrough](https://ucsf.box.com/s/4rtvu8f206d8dtqy5f6lexh6ssjz7rbd)
+[Application Walkthrough](https://ucsf.box.com/s/yre8fj2743iz9h7ubmzf41pd0kjnwekx)
 
-[Sense/Stim Montage Setup and Walkthrough](https://ucsf.box.com/s/3q1p538oox0cji2p31pp75v9xw5wr7yl)
+[Sense/Stim Montage Setup and Walkthrough](https://ucsf.box.com/s/zi4q1wrnivda5vfg5834e4yh4dmn66bd)
 
 
 ### Main Screen
